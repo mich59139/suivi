@@ -28,3 +28,8 @@ Notes importantes
 - On ne “met pas tout le monde owner” : le champ owner correspond au compte/organisation
   qui possède le dépôt. Les autres sont ajoutés en collaborateurs (write/admin) sur ce repo.
 - Chaque admin utilise son propre token (ne jamais partager).
+
+
+Dépannage rapide :
+- Si tu ne vois pas les boutons “Modifier” : ouvre directement …/admin.html puis rafraîchis.
+- Si “Publier” échoue : token sans permission “Contents: write” ou pas de droit d’écriture sur le repo.
