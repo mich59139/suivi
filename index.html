@@ -5,215 +5,82 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Suivi communication — tableau vivant</title>
 <style>
-:root{
-  --bg1:#061024; --bg2:#071733; --card:rgba(255,255,255,.06); --card2:rgba(255,255,255,.08);
-  --text:#eaf0ff; --muted:rgba(234,240,255,.68); --line:rgba(255,255,255,.10);
-  --good:#2bd576; --warn:#ffb020; --bad:#ff5a6b; --info:#58a6ff;
-  --r:18px; --shadow:0 18px 45px rgba(0,0,0,.45);
-  --accent:#7dd3fc;
-}
+:root{--bg1:#061024;--bg2:#071733;--text:#eaf0ff;--muted:rgba(234,240,255,.68);--line:rgba(255,255,255,.10);--good:#2bd576;--warn:#ffb020;--bad:#ff5a6b;--info:#58a6ff;--r:18px;--shadow:0 18px 45px rgba(0,0,0,.45)}
 *{box-sizing:border-box}
-body{
-  margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  color:var(--text);
-  background:
-    radial-gradient(1200px 700px at 10% 0%, rgba(88,166,255,.22), transparent 60%),
-    radial-gradient(1000px 800px at 90% 10%, rgba(43,213,118,.14), transparent 55%),
-    linear-gradient(180deg, var(--bg1), var(--bg2));
-}
-a{color:inherit}
-header{
-  position:sticky; top:0; z-index:30;
-  backdrop-filter: blur(12px);
-  background: rgba(6,16,36,.78);
-  border-bottom:1px solid var(--line);
-}
-.wrap{max-width:1180px; margin:0 auto; padding:14px 14px 10px}
-.brand{
-  display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
-}
-.logo{
-  display:flex; align-items:center; gap:10px;
-  padding:10px 12px;
-  border:1px solid var(--line);
-  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-  border-radius: 999px;
-  box-shadow: 0 10px 22px rgba(0,0,0,.25);
-}
-.mark{
-  width:34px;height:34px;border-radius:12px;
-  background: radial-gradient(circle at 30% 30%, rgba(125,211,252,.9), rgba(88,166,255,.25) 60%, rgba(255,255,255,.06));
-  border:1px solid rgba(125,211,252,.30);
-  position:relative;
-}
-.mark:after{
-  content:""; position:absolute; inset:10px 8px 8px 10px;
-  border-radius:999px;
-  border:2px solid rgba(255,255,255,.65);
-  transform: rotate(12deg);
-}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial;color:var(--text);
+background:radial-gradient(1200px 700px at 10% 0%, rgba(88,166,255,.22), transparent 60%),
+radial-gradient(1000px 800px at 90% 10%, rgba(43,213,118,.14), transparent 55%),
+linear-gradient(180deg,var(--bg1),var(--bg2))}
+header{position:sticky;top:0;z-index:30;backdrop-filter:blur(12px);background:rgba(6,16,36,.78);border-bottom:1px solid var(--line)}
+.wrap{max-width:1180px;margin:0 auto;padding:14px 14px 10px}
+.brand{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.logo{display:flex;align-items:center;gap:10px;padding:10px 12px;border:1px solid var(--line);
+background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.05));border-radius:999px;box-shadow:0 10px 22px rgba(0,0,0,.25)}
+.mark{width:34px;height:34px;border-radius:12px;background:radial-gradient(circle at 30% 30%,rgba(125,211,252,.9),rgba(88,166,255,.25) 60%,rgba(255,255,255,.06));
+border:1px solid rgba(125,211,252,.30);position:relative}
+.mark:after{content:"";position:absolute;inset:10px 8px 8px 10px;border-radius:999px;border:2px solid rgba(255,255,255,.65);transform:rotate(12deg)}
 h1{margin:0;font-size:16px;font-weight:950}
 .sub{margin-top:4px;color:var(--muted);font-size:12.5px;line-height:1.35}
-.toprow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
-input,select{
-  background:rgba(255,255,255,.06);
-  border:1px solid var(--line);
-  color:var(--text);
-  padding:9px 10px;
-  border-radius:14px;
-  outline:none;
-  font-size:13px;
-}
-.btn{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.08);
-  color:var(--text);
-  padding:9px 10px;
-  border-radius:14px;
-  cursor:pointer;
-  font-weight:950;
-  font-size:13px;
-}
-.btn.primary{border-color:rgba(125,211,252,.35); background:rgba(125,211,252,.12)}
-.btn.ghost{background:transparent}
-.pill{
-  display:inline-flex; align-items:center; gap:7px;
-  padding:6px 10px; border-radius:999px;
-  border:1px solid var(--line);
-  background:rgba(0,0,0,.15);
-  color:var(--muted);
-  font-weight:900;
-  font-size:12px;
-}
+.toprow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px}
+input,select{background:rgba(255,255,255,.06);border:1px solid var(--line);color:var(--text);padding:9px 10px;border-radius:14px;outline:none;font-size:13px}
+.btn{border:1px solid var(--line);background:rgba(255,255,255,.08);color:var(--text);padding:9px 10px;border-radius:14px;cursor:pointer;font-weight:950;font-size:13px}
+.btn.primary{border-color:rgba(125,211,252,.35);background:rgba(125,211,252,.12)}
+.pill{display:inline-flex;align-items:center;gap:7px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(0,0,0,.15);color:var(--muted);font-weight:900;font-size:12px}
 .dot{width:8px;height:8px;border-radius:50%}
-.dot.good{background:var(--good)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)} .dot.info{background:var(--info)}
-main{max-width:1180px; margin:0 auto; padding:14px}
-.grid{display:grid; gap:14px; grid-template-columns:1fr}
-@media(min-width:980px){.grid{grid-template-columns: 360px 1fr;}}
-.card{
-  border:1px solid var(--line);
-  border-radius: var(--r);
-  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-  box-shadow: var(--shadow);
-  overflow:hidden;
-}
-.card h2{
-  margin:0;
-  padding:14px 14px 0;
-  font-size:12.5px;
-  letter-spacing:.35px;
-  text-transform:uppercase;
-  color:var(--muted);
-  font-weight:950;
-}
+.dot.good{background:var(--good)}.dot.warn{background:var(--warn)}.dot.bad{background:var(--bad)}.dot.info{background:var(--info)}
+main{max-width:1180px;margin:0 auto;padding:14px}
+.grid{display:grid;gap:14px;grid-template-columns:1fr}
+@media(min-width:980px){.grid{grid-template-columns:360px 1fr}}
+.card{border:1px solid var(--line);border-radius:var(--r);background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.05));box-shadow:var(--shadow);overflow:hidden}
+.card h2{margin:0;padding:14px 14px 0;font-size:12.5px;letter-spacing:.35px;text-transform:uppercase;color:var(--muted);font-weight:950}
 .card .content{padding:12px 14px 14px}
-.kpis{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
-.kpi{
-  border:1px solid var(--line);
-  border-radius:16px;
-  background:rgba(0,0,0,.20);
-  padding:10px;
-}
-.kpi .n{margin:0; font-size:24px; font-weight:950}
-.kpi .l{margin-top:2px; font-size:12px; color:var(--muted); font-weight:900}
-.hint{color:var(--muted); font-size:12px; line-height:1.35}
-.breadcrumb{
-  display:flex; gap:8px; flex-wrap:wrap; align-items:center;
-  margin-bottom:10px;
-}
-.crumb{
-  border:1px solid var(--line);
-  background:rgba(255,255,255,.06);
-  padding:7px 10px;
-  border-radius:999px;
-  cursor:pointer;
-  font-weight:950;
-  font-size:12.5px;
-  color:var(--text);
-}
-.crumb.muted{color:var(--muted)}
-.cards{display:grid; grid-template-columns:1fr; gap:12px}
+.hint{color:var(--muted);font-size:12px;line-height:1.35}
+.kpis{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.kpi{border:1px solid var(--line);border-radius:16px;background:rgba(0,0,0,.20);padding:10px}
+.kpi .n{margin:0;font-size:24px;font-weight:950}
+.cards{display:grid;grid-template-columns:1fr;gap:12px}
 @media(min-width:720px){.cards{grid-template-columns:repeat(2,1fr)}}
 @media(min-width:1060px){.cards{grid-template-columns:repeat(3,1fr)}}
-.tile{
-  border:1px solid var(--line);
-  border-radius:18px;
-  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
-  box-shadow: 0 14px 32px rgba(0,0,0,.35);
-  overflow:hidden;
-  cursor:pointer;
-  position:relative;
-}
+.tile{border:1px solid var(--line);border-radius:18px;background:linear-gradient(180deg,rgba(255,255,255,.10),rgba(255,255,255,.05));box-shadow:0 14px 32px rgba(0,0,0,.35);overflow:hidden;cursor:pointer;position:relative}
 .tile .bar{height:7px;background:var(--col);opacity:.95}
 .tile .b{padding:12px}
 .tile .title{font-weight:950}
-.tile .meta{margin-top:4px; color:var(--muted); font-size:12px}
-.metrics{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
-.metric{
-  border:1px solid rgba(255,255,255,.12);
-  background:rgba(0,0,0,.18);
-  border-radius:999px;
-  padding:5px 8px;
-  font-size:11px;
-  color:var(--muted);
-  font-weight:950;
-}
+.tile .meta{margin-top:4px;color:var(--muted);font-size:12px}
+.metrics{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.metric{border:1px solid rgba(255,255,255,.12);background:rgba(0,0,0,.18);border-radius:999px;padding:5px 8px;font-size:11px;color:var(--muted);font-weight:950}
 .metric b{color:var(--text)}
-.metric.bad b{color:var(--bad)} .metric.warn b{color:var(--warn)} .metric.info b{color:var(--info)}
-.icon{
-  width:34px; height:34px; border-radius:14px;
-  border:1px solid rgba(255,255,255,.14);
-  background: rgba(0,0,0,.18);
-  display:grid; place-items:center;
-}
-.icon svg{width:18px;height:18px; opacity:.9}
-.row2{display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap}
-.small{font-size:12px; color:var(--muted)}
-/* List view */
-details.action{
-  border:1px solid rgba(255,255,255,.12);
-  border-radius:16px;
-  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-  margin:10px 0;
-  overflow:hidden;
-  border-left:6px solid var(--col, rgba(255,255,255,.12));
-}
-details.action>summary{
-  list-style:none;
-  cursor:pointer;
-  padding:10px;
-  display:flex;
-  flex-direction:column;
-  gap:6px;
-}
+.metric.bad b{color:var(--bad)}.metric.warn b{color:var(--warn)}.metric.info b{color:var(--info)}
+.breadcrumb{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:10px}
+.crumb{border:1px solid var(--line);background:rgba(255,255,255,.06);padding:7px 10px;border-radius:999px;cursor:pointer;font-weight:950;font-size:12.5px;color:var(--text)}
+.crumb.muted{color:var(--muted)}
+details.action{border:1px solid rgba(255,255,255,.12);border-radius:16px;background:linear-gradient(180deg,rgba(255,255,255,.08),rgba(255,255,255,.05));margin:10px 0;overflow:hidden;border-left:6px solid var(--col, rgba(255,255,255,.12))}
+details.action>summary{list-style:none;cursor:pointer;padding:10px;display:flex;flex-direction:column;gap:6px}
 details.action>summary::-webkit-details-marker{display:none}
-.aTop{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
-.aId{font-weight:900; font-size:12px; color:var(--muted)}
+.aTop{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+.aId{font-weight:900;font-size:12px;color:var(--muted)}
 .aTitle{font-weight:950}
-.aPills{display:flex; gap:8px; flex-wrap:wrap}
-.aBody{border-top:1px solid rgba(255,255,255,.10); padding:10px}
-.kv{display:grid; grid-template-columns:120px 1fr; gap:6px 10px; font-size:13px}
-.kv div:nth-child(odd){color:var(--muted); font-weight:950}
-.badgeLate{color:var(--bad); font-weight:950}
+.aPills{display:flex;gap:8px;flex-wrap:wrap}
+.aBody{border-top:1px solid rgba(255,255,255,.10);padding:10px}
+.kv{display:grid;grid-template-columns:120px 1fr;gap:6px 10px;font-size:13px}
+.kv div:nth-child(odd){color:var(--muted);font-weight:950}
+.badgeLate{color:var(--bad);font-weight:950}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
     <div class="brand">
-      <div>
-        <div class="logo">
-          <div class="mark" aria-hidden="true"></div>
-          <div>
-            <h1>Suivi communication — tableau vivant</h1>
-            <div class="sub">Vue “cartes → listes” (comme un mini-site). Lecture simple pour tous.</div>
-          </div>
+      <div class="logo">
+        <div class="mark" aria-hidden="true"></div>
+        <div>
+          <h1>Suivi communication — tableau vivant</h1>
+          <div class="sub">Très simple : choisir <b>par Outil</b>, <b>par Responsable</b> ou <b>par Thème</b> → puis ouvrir les actions.</div>
         </div>
       </div>
       <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
         <span class="pill"><span class="dot info"></span><span id="src">source: —</span></span>
         <span class="pill"><span class="dot good"></span><span id="sync">synchro: —</span></span>
-        <button class="btn primary" id="btnAdmin" title="Ouvrir la page admin (édition)">Admin</button>
+        <button class="btn primary" id="btnAdmin">Admin</button>
       </div>
     </div>
 
@@ -237,13 +104,12 @@ details.action>summary::-webkit-details-marker{display:none}
         <div class="kpis" id="kpis"></div>
         <div class="hint" id="hint" style="margin-top:10px"></div>
       </div>
-
-      <h2>Mode d’emploi (lecture)</h2>
+      <h2>Mode d’emploi</h2>
       <div class="content">
         <div class="hint">
-          1) Choisir une carte (Outil ou Thème).<br>
-          2) Cliquer une action pour voir le détail (dépendances, notes).<br>
-          3) Pour modifier: bouton <b>Admin</b> (en haut à droite).
+          • Clique une grande carte (Outil / Responsable / Thème).<br>
+          • Clique une action pour voir le détail.<br>
+          • Pour attribuer des responsables “par domaines” : bouton <b>Admin</b>.
         </div>
       </div>
     </section>
@@ -259,40 +125,20 @@ details.action>summary::-webkit-details-marker{display:none}
 </main>
 
 <script>
-/* =========================
-   CONFIG : tu peux laisser vide.
-   - Si rempli : la page lit les données direct depuis GitHub (contents API)
-   - Sinon : elle lit ./data.json (GitHub Pages)
-========================= */
-const GITHUB = { owner:"", repo:"", branch:"main", path:"data.json" };
-const REFRESH_MS = 20000;
-
 const STATUTS=["À faire","En cours","Bloqué","Fait","En retard"];
 const PRIOS=["P1","P2","P3"];
-const TOOL_ORDER = ["actions terrain", "distribution de prospectus", "réunions de quartier", "communication Facebook/Instagram", "site internet"];
+const REFRESH_MS=20000;
 const el=id=>document.getElementById(id);
 
-let data=[];
-let nav={mode:"home", tool:null, theme:null}; // home -> tool -> theme -> list
-let lastUpdatedAt=null;
+let actions=[], responsables=[], lastUpdatedAt=null;
+let nav={mode:"home", dim:null, key:null}; // home | pick | list
 
 function todayISO(){ const d=new Date(), tz=d.getTimezoneOffset()*60000; return new Date(d-tz).toISOString().slice(0,10); }
 function isLate(t){ return t.echeance && t.statut!=="Fait" && t.echeance < todayISO(); }
 function dotClass(st){ return st==="Fait"?"good":st==="En cours"?"info":st==="Bloqué"?"warn":st==="En retard"?"bad":""; }
-function themeColor(name){ const s=(name||"Sans thème").toLowerCase(); let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i), h|=0; return `hsl(${Math.abs(h)%360} 78% 55%)`; }
-function toolColor(name){
-  // stable but distinct from theme: hash different seed
-  const s=("outil:"+(name||"Sans outil")).toLowerCase(); let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i), h|=0;
-  return `hsl(${Math.abs(h)%360} 82% 56%)`;
-}
+function colorFor(str, seed){ const s=(seed+":"+ (str||"")).toLowerCase(); let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i), h|=0; return `hsl(${Math.abs(h)%360} 78% 55%)`; }
 function unique(list,key){ return [...new Set(list.map(x=>x[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b)); }
-
-function withAutoStatus(list){
-  return list.map(x=>{
-    const late=isLate(x);
-    return late && x.statut!=="En retard" ? {...x, statutAuto:"En retard"} : {...x, statutAuto:x.statut};
-  });
-}
+function withAutoStatus(list){ return list.map(x=>{ const late=isLate(x); return late && x.statut!=="En retard" ? {...x, statutAuto:"En retard"} : {...x, statutAuto:x.statut}; }); }
 
 function applyFilters(list){
   const q=el("q").value.trim().toLowerCase();
@@ -304,7 +150,7 @@ function applyFilters(list){
     if(stat && (x.statut||"")!==stat) return false;
     if(prio && (x.priorite||"")!==prio) return false;
     if(q){
-      const blob=`${x.id} ${x.outil||""} ${x.categorie||""} ${x.action||""} ${x.responsable||""} ${x.notes||""} ${x.dependance||""}`.toLowerCase();
+      const blob=`${x.id} ${x.outil||""} ${x.categorie||""} ${x.action||""} ${x.responsable||""} ${x.notes||""}`.toLowerCase();
       if(!blob.includes(q)) return false;
     }
     return true;
@@ -312,12 +158,14 @@ function applyFilters(list){
 }
 
 function fillFilters(){
-  // Tool in preferred order then remaining
-  const tools=unique(data,"outil");
-  const ordered=[...TOOL_ORDER.filter(t=>tools.includes(t)), ...tools.filter(t=>!TOOL_ORDER.includes(t))];
-  el("fTool").innerHTML = `<option value="">Outil (tous)</option>` + ordered.map(t=>`<option value="${t}">${t}</option>`).join("");
-  el("fTheme").innerHTML = `<option value="">Thème (tous)</option>` + unique(data,"categorie").map(t=>`<option value="${t}">${t}</option>`).join("");
-  el("fResp").innerHTML = `<option value="">Responsable (tous)</option>` + unique(data,"responsable").map(r=>`<option value="${r}">${r}</option>`).join("");
+  el("fTool").innerHTML = `<option value="">Outil (tous)</option>` + unique(actions,"outil").map(t=>`<option value="${t}">${t}</option>`).join("");
+  el("fTheme").innerHTML = `<option value="">Thème (tous)</option>` + unique(actions,"categorie").map(t=>`<option value="${t}">${t}</option>`).join("");
+
+  const respNames = unique(responsables,"nom");
+  const fromActions = unique(actions,"responsable").filter(x=>x && x!=="—" && x!=="-");
+  const all = [...new Set([...respNames, ...fromActions])].sort((a,b)=>a.localeCompare(b));
+  el("fResp").innerHTML = `<option value="">Responsable (tous)</option>` + all.map(r=>`<option value="${r}">${r}</option>`).join("");
+
   el("fStat").innerHTML = `<option value="">Statut (tous)</option>` + STATUTS.map(s=>`<option value="${s}">${s}</option>`).join("");
   el("fPrio").innerHTML = `<option value="">Priorité (toutes)</option>` + PRIOS.map(p=>`<option value="${p}">${p}</option>`).join("");
 }
@@ -336,268 +184,142 @@ function renderKpis(list){
     <div class="kpi">
       <div class="pill"><span class="dot ${x.c||""}"></span>${x.l}</div>
       <p class="n">${x.n}</p>
-      <div class="l">${x.c? "": ""}</div>
     </div>
   `).join("");
   const updated = lastUpdatedAt ? new Date(lastUpdatedAt).toLocaleString() : "—";
-  el("hint").innerHTML = `Dernière lecture : <b>${updated}</b> · Filtres = ce que tu vois à droite.`;
-}
-
-function iconForTool(name){
-  const n=(name||"").toLowerCase();
-  if(n.includes("terrain")||n.includes("march")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21l6-6"/><path d="M7 17l4-4"/><path d="M10 6a4 4 0 0 1 8 0c0 3-4 4-4 7"/><path d="M14 20h4"/></svg>`;
-  if(n.includes("prospect")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h6"/></svg>`;
-  if(n.includes("réunion")||n.includes("quartier")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11c1.7 0 3 1.3 3 3v7H5v-7c0-1.7 1.3-3 3-3"/><path d="M12 3c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4 1.8-4 4-4z"/></svg>`;
-  if(n.includes("facebook")||n.includes("instagram")||n.includes("réseau")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 17h10"/><path d="M5 3h14v14H5z"/><path d="M9 9h6"/></svg>`;
-  if(n.includes("site")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18v16H3z"/><path d="M3 8h18"/><path d="M7 6h.01"/><path d="M10 6h.01"/></svg>`;
-  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>`;
+  el("hint").innerHTML = `Dernière lecture : <b>${updated}</b>`;
 }
 
 function setCrumbs(){
-  const c = [];
-  c.push({label:"Accueil", action:()=>{nav={mode:"home",tool:null,theme:null}; render();}});
-  if(nav.tool) c.push({label:nav.tool, action:()=>{nav={mode:"tool",tool:nav.tool,theme:null}; render();}});
-  if(nav.theme) c.push({label:nav.theme, action:()=>{nav={mode:"theme",tool:nav.tool,theme:nav.theme}; render();}});
-  el("crumbs").innerHTML = c.map((x,i)=>`<div class="crumb ${i===c.length-1?"":"muted"}" data-i="${i}">${x.label}</div>`).join("");
-  [...el("crumbs").querySelectorAll(".crumb")].forEach((node, idx)=>{
-    node.addEventListener("click", ()=>c[idx].action());
-  });
+  const items=[];
+  items.push({label:"Accueil", action:()=>{nav={mode:"home",dim:null,key:null}; render();}});
+  if(nav.dim) items.push({label: nav.dim==="outil"?"Par outil":nav.dim==="responsable"?"Par responsable":"Par thème", action:()=>{nav={mode:"pick",dim:nav.dim,key:null}; render();}});
+  if(nav.key) items.push({label: nav.key, action:()=>{nav={mode:"list",dim:nav.dim,key:nav.key}; render();}});
+  el("crumbs").innerHTML = items.map((x,i)=>`<div class="crumb ${i===items.length-1?"":"muted"}" data-i="${i}">${x.label}</div>`).join("");
+  [...el("crumbs").querySelectorAll(".crumb")].forEach((node,i)=>node.addEventListener("click", ()=>items[i].action()));
+}
+
+function metricBlock(items){
+  const late=items.filter(x=>isLate(x)).length;
+  const blocked=items.filter(x=>x.statutAuto==="Bloqué").length;
+  const p1=items.filter(x=>x.priorite==="P1" && x.statutAuto!=="Fait").length;
+  return `<div class="metrics">
+    <span class="metric info">P1 <b>${p1}</b></span>
+    <span class="metric warn">Bloqué <b>${blocked}</b></span>
+    <span class="metric bad">Retard <b>${late}</b></span>
+  </div>`;
 }
 
 function renderHome(list){
-  // Cards: by tool + a "Thèmes" shortcut
+  el("view").innerHTML = `
+    <div class="hint" style="margin-bottom:10px">Choisis une vue :</div>
+    <div class="cards">
+      <div class="tile" style="--col:${colorFor('outil','d')}" data-dim="outil"><div class="bar"></div><div class="b">
+        <div class="title">Par outil</div><div class="meta">Terrain · Prospectus · Réunions · Réseaux · Site</div>
+      </div></div>
+      <div class="tile" style="--col:${colorFor('responsable','d')}" data-dim="responsable"><div class="bar"></div><div class="b">
+        <div class="title">Par responsable</div><div class="meta">Qui fait quoi</div>
+      </div></div>
+      <div class="tile" style="--col:${colorFor('theme','d')}" data-dim="theme"><div class="bar"></div><div class="b">
+        <div class="title">Par thème</div><div class="meta">Bilans & programme</div>
+      </div></div>
+    </div>
+  `;
+  [...el("view").querySelectorAll(".tile")].forEach(t=>t.addEventListener("click", ()=>{
+    nav={mode:"pick", dim:t.dataset.dim, key:null}; render();
+  }));
+}
+
+function renderPick(list){
+  const dim=nav.dim;
   const map=new Map();
   for(const it of list){
-    const k=it.outil || "Sans outil";
-    if(!map.has(k)) map.set(k, []);
+    const k = dim==="outil" ? (it.outil||"Sans outil") : dim==="theme" ? (it.categorie||"Sans thème") : (it.responsable||"Non attribué");
+    if(!map.has(k)) map.set(k,[]);
     map.get(k).push(it);
   }
-  const tools=[...map.entries()].sort((a,b)=>{
-    const ia=TOOL_ORDER.indexOf(a[0]); const ib=TOOL_ORDER.indexOf(b[0]);
-    if(ia!==-1 || ib!==-1) return (ia===-1?999:ia) - (ib===-1?999:ib);
+  let groups=[...map.entries()];
+  groups.sort((a,b)=>{
+    if(dim==="responsable"){
+      if(a[0]==="Non attribué") return -1;
+      if(b[0]==="Non attribué") return 1;
+    }
     return a[0].localeCompare(b[0]);
   });
 
-  const tiles = tools.map(([tool, items])=>{
-    const color=toolColor(tool);
-    const total=items.length;
-    const late=items.filter(x=>isLate(x)).length;
-    const blocked=items.filter(x=>x.statutAuto==="Bloqué").length;
-    const p1=items.filter(x=>x.priorite==="P1" && x.statutAuto!=="Fait").length;
-    return `
-      <div class="tile" style="--col:${color}" data-tool="${tool}">
-        <div class="bar"></div>
-        <div class="b">
-          <div class="row2">
-            <div class="icon">${iconForTool(tool)}</div>
-            <div class="pill"><span class="dot info"></span>${total} actions</div>
-          </div>
-          <div style="margin-top:10px" class="title">${tool}</div>
-          <div class="meta">Clique pour voir les thèmes puis les actions.</div>
-          <div class="metrics">
-            <span class="metric info">P1 <b>${p1}</b></span>
-            <span class="metric warn">Bloqué <b>${blocked}</b></span>
-            <span class="metric bad">Retard <b>${late}</b></span>
-          </div>
-        </div>
-      </div>
-    `;
+  const tiles = groups.map(([k, items])=>{
+    const col=colorFor(k, dim);
+    return `<div class="tile" style="--col:${col}" data-key="${k.replace(/"/g,'&quot;')}">
+      <div class="bar"></div><div class="b">
+        <div class="title">${k}</div>
+        <div class="meta">${items.length} action(s)</div>
+        ${metricBlock(items)}
+      </div></div>`;
   }).join("");
 
-  el("view").innerHTML = `
-    <div class="hint" style="margin-bottom:10px">Vue “site” : <b>Outil → Thème → Actions</b>. (Tu peux aussi filtrer en haut.)</div>
-    <div class="cards">${tiles}</div>
-  `;
-
-  [...el("view").querySelectorAll(".tile")].forEach(tile=>{
-    tile.addEventListener("click", ()=>{
-      const tool = tile.dataset.tool;
-      nav={mode:"tool", tool, theme:null};
-      render();
-    });
-  });
+  el("view").innerHTML = `<div class="hint" style="margin-bottom:10px">Clique une carte :</div><div class="cards">${tiles}</div>`;
+  [...el("view").querySelectorAll(".tile")].forEach(t=>t.addEventListener("click", ()=>{
+    nav={mode:"list", dim, key:t.dataset.key}; render();
+  }));
 }
 
-function renderTool(list){
-  const tool = nav.tool;
-  const subset = list.filter(x=>(x.outil||"Sans outil")===tool);
-  // group by theme
-  const map=new Map();
-  for(const it of subset){
-    const k=it.categorie || "Sans thème";
-    if(!map.has(k)) map.set(k, []);
-    map.get(k).push(it);
-  }
-  const groups=[...map.entries()].sort((a,b)=>a[0].localeCompare(b[0]));
-  const tiles = groups.map(([theme, items])=>{
-    const color=themeColor(theme);
-    const total=items.length;
-    const late=items.filter(x=>isLate(x)).length;
-    const blocked=items.filter(x=>x.statutAuto==="Bloqué").length;
-    const p1=items.filter(x=>x.priorite==="P1" && x.statutAuto!=="Fait").length;
-    return `
-      <div class="tile" style="--col:${color}" data-theme="${theme}">
-        <div class="bar"></div>
-        <div class="b">
-          <div class="row2">
-            <div class="title">${theme}</div>
-            <div class="pill"><span class="dot info"></span>${total}</div>
-          </div>
-          <div class="meta">Clique pour afficher les actions de ce thème.</div>
-          <div class="metrics">
-            <span class="metric info">P1 <b>${p1}</b></span>
-            <span class="metric warn">Bloqué <b>${blocked}</b></span>
-            <span class="metric bad">Retard <b>${late}</b></span>
-          </div>
-          <div class="small">Outil : ${tool}</div>
-        </div>
-      </div>
-    `;
-  }).join("");
+function renderList(list){
+  const dim=nav.dim, key=nav.key;
+  let subset=list;
+  if(dim==="outil") subset=list.filter(x=>(x.outil||"Sans outil")===key);
+  else if(dim==="theme") subset=list.filter(x=>(x.categorie||"Sans thème")===key);
+  else subset=list.filter(x=>(x.responsable||"Non attribué")===key);
 
-  el("view").innerHTML = `
-    <div class="hint" style="margin-bottom:10px"><b>${tool}</b> — choisis un thème :</div>
-    <div class="cards">${tiles}</div>
-  `;
-
-  [...el("view").querySelectorAll(".tile")].forEach(tile=>{
-    tile.addEventListener("click", ()=>{
-      const theme = tile.dataset.theme;
-      nav={mode:"theme", tool, theme};
-      render();
-    });
-  });
-}
-
-function renderTheme(list){
-  const tool = nav.tool, theme = nav.theme;
-  const subset = list.filter(x=>(x.outil||"Sans outil")===tool && (x.categorie||"Sans thème")===theme);
-
-  // sort: late first, then priority, then due date
-  const rows=subset.slice().sort((a,b)=>{
+  subset=subset.slice().sort((a,b)=>{
     const al=isLate(a), bl=isLate(b);
     if(al!==bl) return al?-1:1;
-    const ap=a.priorite||"P9", bp=b.priorite||"P9";
-    if(ap!==bp) return ap.localeCompare(bp);
     return (a.echeance||"9999-12-31").localeCompare(b.echeance||"9999-12-31");
   });
 
   function actionCard(t){
-    const col = themeColor(theme);
-    const st = t.statutAuto;
-    const ech = t.echeance ? (isLate(t)?`<span class="badgeLate">${t.echeance}</span>`:t.echeance) : "—";
-    return `
-      <details class="action" style="--col:${col}">
-        <summary>
-          <div class="aTop">
-            <div class="aId">${t.id} · <span style="color:${col}; font-weight:950">${theme}</span></div>
-            <span class="pill"><span class="dot ${dotClass(st)}"></span>${st}</span>
-          </div>
-          <div class="aTitle">${t.action}</div>
-          <div class="aPills">
-            <span class="pill">Resp: ${t.responsable||"—"}</span>
-            <span class="pill">Prio: ${t.priorite||"—"}</span>
-            <span class="pill">Éch: ${ech}</span>
-          </div>
-        </summary>
-        <div class="aBody">
-          <div class="kv">
-            <div>Outil</div><div>${t.outil||"—"}</div>
-            <div>Dépendance</div><div>${t.dependance||"—"}</div>
-            <div>Notes</div><div>${t.notes||"—"}</div>
-          </div>
-        </div>
-      </details>
-    `;
+    const col=colorFor(key, dim);
+    const st=t.statutAuto;
+    const ech=t.echeance ? (isLate(t)?`<span class="badgeLate">${t.echeance}</span>`:t.echeance) : "—";
+    return `<details class="action" style="--col:${col}"><summary>
+      <div class="aTop"><div class="aId">${t.id} · ${t.outil||"—"} · ${t.categorie||"—"} · ${t.responsable||"Non attribué"}</div>
+      <span class="pill"><span class="dot ${dotClass(st)}"></span>${st}</span></div>
+      <div class="aTitle">${t.action}</div>
+      <div class="aPills"><span class="pill">Prio: ${t.priorite||"—"}</span><span class="pill">Éch: ${ech}</span></div>
+    </summary><div class="aBody"><div class="kv"><div>Notes</div><div>${t.notes||"—"}</div><div>Dépendance</div><div>${t.dependance||"—"}</div></div></div></details>`;
   }
-
-  el("view").innerHTML = `
-    <div class="hint" style="margin-bottom:10px"><b>${tool}</b> → <b>${theme}</b> — actions :</div>
-    ${rows.length ? rows.map(actionCard).join("") : `<div class="hint">Aucune action dans ce filtre.</div>`}
-  `;
+  el("view").innerHTML = `<div class="hint" style="margin-bottom:10px"><b>${key}</b> — actions :</div>` + (subset.length?subset.map(actionCard).join(""):`<div class="hint">Aucune action.</div>`);
 }
 
 function render(){
-  const list = applyFilters(data);
+  const list=applyFilters(actions);
   setCrumbs();
   renderKpis(list);
-
   if(nav.mode==="home") renderHome(list);
-  else if(nav.mode==="tool") renderTool(list);
-  else renderTheme(list);
+  else if(nav.mode==="pick") renderPick(list);
+  else renderList(list);
 }
-
 function resetAll(){
-  el("q").value="";
-  el("fTool").value="";
-  el("fTheme").value="";
-  el("fResp").value="";
-  el("fStat").value="";
-  el("fPrio").value="";
-  nav={mode:"home", tool:null, theme:null};
-  render();
+  el("q").value=""; el("fTool").value=""; el("fTheme").value=""; el("fResp").value=""; el("fStat").value=""; el("fPrio").value="";
+  nav={mode:"home",dim:null,key:null}; render();
 }
 
-function setSync(text){ el("sync").textContent = "synchro: " + text; }
-function setSrc(text){ el("src").textContent = "source: " + text; }
-
-// === Data loading ===
-function cfgReady(){
-  return GITHUB.owner && GITHUB.repo && GITHUB.branch && GITHUB.path;
-}
-function apiUrl(){
-  return `https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}?ref=${encodeURIComponent(GITHUB.branch)}&ts=${Date.now()}`;
-}
-function b64dec(b64){
-  const bin = atob((b64||"").replace(/\n/g,""));
-  const bytes = Uint8Array.from(bin, c=>c.charCodeAt(0));
-  return new TextDecoder().decode(bytes);
-}
-async function loadFromLocal(){
-  const res=await fetch("./data.json?ts="+Date.now());
-  const json=await res.json();
-  if(!Array.isArray(json)) throw new Error("data.json invalide");
-  return json;
-}
-async function loadFromGitHub(){
-  const res=await fetch(apiUrl(), {headers: {"Accept":"application/vnd.github+json"}});
-  if(!res.ok) throw new Error("GitHub GET " + res.status);
-  const j=await res.json();
-  const parsed = JSON.parse(b64dec(j.content));
-  if(!Array.isArray(parsed)) throw new Error("JSON GitHub invalide");
-  return parsed;
+async function loadLocal(){
+  const a=await fetch("./data.json?ts="+Date.now()).then(r=>r.json());
+  const r=await fetch("./responsables.json?ts="+Date.now()).then(r=>r.json()).catch(()=>[]);
+  actions=Array.isArray(a)?a:[];
+  responsables=Array.isArray(r)?r:[];
+  lastUpdatedAt=Date.now();
+  fillFilters(); render();
+  el("src").textContent="source: GitHub Pages";
+  el("sync").textContent="synchro: OK";
 }
 
-async function refresh(){
-  try{
-    setSync("…");
-    const json = cfgReady() ? await loadFromGitHub() : await loadFromLocal();
-    data = json;
-    lastUpdatedAt = Date.now();
-    fillFilters();
-    render();
-    setSrc(cfgReady() ? `${GITHUB.owner}/${GITHUB.repo}` : "GitHub Pages (local)");
-    setSync("OK");
-  }catch(e){
-    setSync("erreur");
-    console.error(e);
-  }
-}
+el("btnReset").addEventListener("click", resetAll);
+["q","fTool","fTheme","fResp","fStat","fPrio"].forEach(id=>el(id).addEventListener("input", render));
+el("btnAdmin").addEventListener("click", ()=>window.location.href="./admin.html");
 
-document.getElementById("btnReset").addEventListener("click", resetAll);
-["q","fTool","fTheme","fResp","fStat","fPrio"].forEach(id=>{
-  el(id).addEventListener("input", ()=>{
-    // when user uses filters, keep navigation but list respects filters
-    render();
-  });
-});
-document.getElementById("btnAdmin").addEventListener("click", ()=>{
-  // open admin page in same tab
-  window.location.href = "./admin.html";
-});
-
-refresh();
-setInterval(refresh, REFRESH_MS);
+loadLocal();
+setInterval(loadLocal, REFRESH_MS);
 </script>
 </body>
 </html>

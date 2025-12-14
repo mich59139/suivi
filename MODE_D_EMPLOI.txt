@@ -1,35 +1,15 @@
-MODE D’EMPLOI — Suivi com (style “cartes → listes”, comme un mini-site)
+MODE D’EMPLOI — Version “Responsables”
 
-Fichiers :
-- index.html  : vue simple (lecture) — cartes Outil → Thème → Actions
-- admin.html  : vue admin (édition + publication GitHub)
-- data.json   : données
+But : d’abord attribuer des domaines à des responsables, puis suivre les actions.
 
-1) Installation dans un repo GitHub
-   - déposer index.html, admin.html, data.json à la racine du repo
-   - activer GitHub Pages (Settings → Pages → Branch main → /(root))
+1) Sur le site (index.html)
+- Accueil → Par outil / Par responsable / Par thème
+- Cliquer une carte → liste d’actions → déplier
 
-2) Pour tous (lecture)
-   - ouvrir l’URL GitHub Pages
-   - cliquer une carte (Outil), puis une carte (Thème), puis ouvrir une action
+2) Dans Admin (admin.html)
+- Onglet “Responsables” : attribuer des domaines (outils / thèmes)
+- Bouton “Appliquer” : remplit automatiquement le champ “responsable” des actions non attribuées
 
-3) Pour les admins (édition)
-   - cliquer “Admin” (en haut à droite) → ouvre admin.html
-   - dans “Connexion GitHub (1 fois)” :
-       owner = compte ou ORGANISATION qui possède le repo
-       repo  = nom du dépôt
-       branch = main (souvent)
-       fichier = data.json
-       token = token personnel (fine-grained recommandé, permission Contents: write)
-   - modifier une action → enregistrer (local)
-   - cliquer “Publier (commit)” pour écrire data.json sur GitHub
-
-Notes importantes
-- On ne “met pas tout le monde owner” : le champ owner correspond au compte/organisation
-  qui possède le dépôt. Les autres sont ajoutés en collaborateurs (write/admin) sur ce repo.
-- Chaque admin utilise son propre token (ne jamais partager).
-
-
-Dépannage rapide :
-- Si tu ne vois pas les boutons “Modifier” : ouvre directement …/admin.html puis rafraîchis.
-- Si “Publier” échoue : token sans permission “Contents: write” ou pas de droit d’écriture sur le repo.
+3) Publication GitHub
+- Cette version-ci est volontairement “simple” (pas de token).
+- Pour publier en direct dans GitHub, utilise la version Admin GitHub (celle d’avant).
