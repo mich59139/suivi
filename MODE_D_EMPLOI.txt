@@ -1,0 +1,30 @@
+MODE D’EMPLOI — Suivi com (style “cartes → listes”, comme un mini-site)
+
+Fichiers :
+- index.html  : vue simple (lecture) — cartes Outil → Thème → Actions
+- admin.html  : vue admin (édition + publication GitHub)
+- data.json   : données
+
+1) Installation dans un repo GitHub
+   - déposer index.html, admin.html, data.json à la racine du repo
+   - activer GitHub Pages (Settings → Pages → Branch main → /(root))
+
+2) Pour tous (lecture)
+   - ouvrir l’URL GitHub Pages
+   - cliquer une carte (Outil), puis une carte (Thème), puis ouvrir une action
+
+3) Pour les admins (édition)
+   - cliquer “Admin” (en haut à droite) → ouvre admin.html
+   - dans “Connexion GitHub (1 fois)” :
+       owner = compte ou ORGANISATION qui possède le repo
+       repo  = nom du dépôt
+       branch = main (souvent)
+       fichier = data.json
+       token = token personnel (fine-grained recommandé, permission Contents: write)
+   - modifier une action → enregistrer (local)
+   - cliquer “Publier (commit)” pour écrire data.json sur GitHub
+
+Notes importantes
+- On ne “met pas tout le monde owner” : le champ owner correspond au compte/organisation
+  qui possède le dépôt. Les autres sont ajoutés en collaborateurs (write/admin) sur ce repo.
+- Chaque admin utilise son propre token (ne jamais partager).

@@ -1,0 +1,452 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Suivi communication — Admin</title>
+<style>
+:root{
+  --bg1:#061024; --bg2:#071733; --card:rgba(255,255,255,.06); --card2:rgba(255,255,255,.08);
+  --text:#eaf0ff; --muted:rgba(234,240,255,.68); --line:rgba(255,255,255,.10);
+  --good:#2bd576; --warn:#ffb020; --bad:#ff5a6b; --info:#58a6ff;
+  --r:18px; --shadow:0 18px 45px rgba(0,0,0,.45);
+  --accent:#7dd3fc;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  color:var(--text);
+  background:
+    radial-gradient(1200px 700px at 10% 0%, rgba(88,166,255,.22), transparent 60%),
+    radial-gradient(1000px 800px at 90% 10%, rgba(43,213,118,.14), transparent 55%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
+}
+header{
+  position:sticky; top:0; z-index:30;
+  backdrop-filter: blur(12px);
+  background: rgba(6,16,36,.78);
+  border-bottom:1px solid var(--line);
+}
+.wrap{max-width:1180px; margin:0 auto; padding:14px 14px 10px}
+h1{margin:0;font-size:16px;font-weight:950}
+.sub{margin-top:4px;color:var(--muted);font-size:12.5px;line-height:1.35}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
+input,select,textarea{
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
+  color:var(--text);
+  padding:9px 10px;
+  border-radius:14px;
+  outline:none;
+  font-size:13px;
+}
+textarea{min-height:80px; resize:vertical}
+.btn{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.08);
+  color:var(--text);
+  padding:9px 10px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:950;
+  font-size:13px;
+}
+.btn.primary{border-color:rgba(125,211,252,.35); background:rgba(125,211,252,.12)}
+.btn.danger{border-color:rgba(255,90,107,.35); background:rgba(255,90,107,.12)}
+.pill{
+  display:inline-flex; align-items:center; gap:7px;
+  padding:6px 10px; border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.15);
+  color:var(--muted);
+  font-weight:900;
+  font-size:12px;
+}
+.dot{width:8px;height:8px;border-radius:50%}
+.dot.good{background:var(--good)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)} .dot.info{background:var(--info)}
+main{max-width:1180px; margin:0 auto; padding:14px}
+.card{
+  border:1px solid var(--line);
+  border-radius: var(--r);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+  box-shadow: var(--shadow);
+  overflow:hidden;
+}
+.card h2{
+  margin:0;
+  padding:14px 14px 0;
+  font-size:12.5px;
+  letter-spacing:.35px;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:950;
+}
+.card .content{padding:12px 14px 14px}
+.hint{color:var(--muted); font-size:12px; line-height:1.35}
+
+details.action{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:16px;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+  margin:10px 0;
+  overflow:hidden;
+  border-left:6px solid var(--col, rgba(255,255,255,.12));
+}
+details.action>summary{list-style:none; cursor:pointer; padding:10px; display:flex; flex-direction:column; gap:6px}
+details.action>summary::-webkit-details-marker{display:none}
+.aId{font-weight:900; font-size:12px; color:var(--muted)}
+.aTitle{font-weight:950}
+.aPills{display:flex; gap:8px; flex-wrap:wrap}
+.aBody{border-top:1px solid rgba(255,255,255,.10); padding:10px}
+.kv{display:grid; grid-template-columns:120px 1fr; gap:6px 10px; font-size:13px}
+.kv div:nth-child(odd){color:var(--muted); font-weight:950}
+.badgeLate{color:var(--bad); font-weight:950}
+.modal{position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; padding:16px; z-index:100}
+.modal.open{display:flex}
+.modalbox{width:min(880px,100%); border:1px solid var(--line); border-radius:18px; background:rgba(17,26,46,.96); overflow:hidden}
+.modalhead{display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--line)}
+.modalhead .t{font-weight:950}
+.modalbody{padding:14px}
+.two{display:grid; grid-template-columns:1fr; gap:10px}
+@media(min-width:880px){.two{grid-template-columns:1fr 1fr}}
+label{display:block; font-size:12px; color:var(--muted); font-weight:950; margin:0 0 6px 2px}
+.foot{display:flex; justify-content:flex-end; gap:10px; padding:12px 14px; border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div style="display:flex; justify-content:space-between; align-items:flex-start; gap:10px; flex-wrap:wrap">
+      <div>
+        <h1>Suivi communication — Admin</h1>
+        <div class="sub">Ici on modifie, puis on <b>publie</b> (commit) dans GitHub. <br>Retour à la vue simple : <b>index.html</b>.</div>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+        <button class="btn" id="btnBack">← Retour</button>
+        <span class="pill"><span class="dot info"></span><span id="src">source: —</span></span>
+        <span class="pill"><span class="dot good"></span><span id="sha">sha: —</span></span>
+      </div>
+    </div>
+
+    <details style="margin-top:10px" class="card">
+      <summary style="cursor:pointer; padding:12px 14px; color:var(--muted); font-weight:950">Connexion GitHub (1 fois)</summary>
+      <div class="content" style="padding-top:0">
+        <div class="row">
+          <input id="ghOwner" placeholder="owner (compte ou organisation)" style="min-width:220px">
+          <input id="ghRepo" placeholder="repo" style="min-width:220px">
+          <input id="ghBranch" placeholder="branch (main)" style="min-width:160px">
+          <input id="ghPath" placeholder="fichier (data.json)" style="min-width:200px">
+        </div>
+        <div class="row">
+          <input id="ghToken" type="password" placeholder="Token GitHub (Contents: write)" style="flex:1; min-width:260px">
+          <button class="btn primary" id="btnSaveCfg">Enregistrer</button>
+          <button class="btn danger" id="btnForgetCfg">Oublier</button>
+        </div>
+        <div class="hint">Chaque admin utilise <b>son propre token</b> (ne jamais partager). Idéal : token <b>fine‑grained</b> limité à ce repo.</div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn" id="btnReload">Recharger GitHub</button>
+          <button class="btn primary" id="btnPublish">Publier (commit)</button>
+        </div>
+      </div>
+    </details>
+  </div>
+</header>
+
+<main>
+  <div class="card">
+    <h2>Actions (clique pour modifier)</h2>
+    <div class="content">
+      <div class="row">
+        <input id="q" type="search" placeholder="Filtrer…" style="flex:1; min-width:240px">
+        <select id="fTool"><option value="">Outil (tous)</option></select>
+        <select id="fTheme"><option value="">Thème (tous)</option></select>
+        <select id="fStat"><option value="">Statut (tous)</option></select>
+        <select id="fPrio"><option value="">Priorité (toutes)</option></select>
+      </div>
+      <div id="list"></div>
+    </div>
+  </div>
+</main>
+
+<div class="modal" id="modal">
+  <div class="modalbox">
+    <div class="modalhead">
+      <div class="t" id="mTitle">Action</div>
+      <button class="btn" id="mClose">Fermer</button>
+    </div>
+    <div class="modalbody">
+      <div class="two">
+        <div><label>ID</label><input id="mId" disabled></div>
+        <div><label>Outil</label><input id="mTool"></div>
+        <div><label>Thème</label><input id="mTheme"></div>
+        <div><label>Responsable</label><input id="mResp"></div>
+        <div><label>Statut</label><select id="mStat"></select></div>
+        <div><label>Priorité</label><select id="mPrio"></select></div>
+        <div><label>Échéance</label><input id="mDue" type="date"></div>
+        <div><label>Dépendances</label><input id="mDep" placeholder="A02,A03"></div>
+      </div>
+      <div style="margin-top:10px">
+        <label>Action</label><textarea id="mAction"></textarea>
+      </div>
+      <div style="margin-top:10px">
+        <label>Notes</label><textarea id="mNotes"></textarea>
+      </div>
+      <div class="hint" style="margin-top:10px">Sauver = modif locale. Puis <b>Publier</b> pour partager.</div>
+    </div>
+    <div class="foot">
+      <button class="btn" id="mCancel">Annuler</button>
+      <button class="btn primary" id="mSave">Enregistrer (local)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CFG_KEY="suivi_comm_admin_cfg_v1", TOKEN_KEY="suivi_comm_admin_token_v1";
+const DEFAULT_CFG={owner:"",repo:"",branch:"main",path:"data.json"};
+const STATUTS=["À faire","En cours","Bloqué","Fait","En retard"];
+const PRIOS=["P1","P2","P3"];
+const el=id=>document.getElementById(id);
+
+let data=[], lastSha=null;
+
+function todayISO(){ const d=new Date(), tz=d.getTimezoneOffset()*60000; return new Date(d-tz).toISOString().slice(0,10); }
+function isLate(t){ return t.echeance && t.statut!=="Fait" && t.echeance < todayISO(); }
+function dotClass(st){ return st==="Fait"?"good":st==="En cours"?"info":st==="Bloqué"?"warn":st==="En retard"?"bad":""; }
+function themeColor(name){ const s=(name||"Sans thème").toLowerCase(); let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i), h|=0; return `hsl(${Math.abs(h)%360} 78% 55%)`; }
+function unique(list,key){ return [...new Set(list.map(x=>x[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b)); }
+function b64enc(str){ const bytes=new TextEncoder().encode(str); let bin=""; bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin); }
+function b64dec(b64){ const bin=atob((b64||"").replace(/\\n/g,"")); const bytes=Uint8Array.from(bin, c=>c.charCodeAt(0)); return new TextDecoder().decode(bytes); }
+
+function loadCfg(){ try{ const raw=localStorage.getItem(CFG_KEY); return raw?{...DEFAULT_CFG,...JSON.parse(raw)}:{...DEFAULT_CFG}; }catch(e){ return {...DEFAULT_CFG}; } }
+function saveCfg(cfg){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
+function loadToken(){ return localStorage.getItem(TOKEN_KEY)||""; }
+function saveToken(t){ localStorage.setItem(TOKEN_KEY, t||""); }
+function forgetAll(){ localStorage.removeItem(CFG_KEY); localStorage.removeItem(TOKEN_KEY); }
+
+function setUI(cfg){
+  el("ghOwner").value=cfg.owner||"";
+  el("ghRepo").value=cfg.repo||"";
+  el("ghBranch").value=cfg.branch||"main";
+  el("ghPath").value=cfg.path||"data.json";
+  el("ghToken").value=loadToken();
+}
+function cfgFromUI(){
+  return {
+    owner: el("ghOwner").value.trim(),
+    repo: el("ghRepo").value.trim(),
+    branch: (el("ghBranch").value.trim() || "main"),
+    path: (el("ghPath").value.trim() || "data.json")
+  };
+}
+function apiUrl(cfg){
+  return `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${encodeURIComponent(cfg.branch)}&ts=${Date.now()}`;
+}
+async function ghGet(cfg, token){
+  const headers={ "Accept":"application/vnd.github+json" };
+  if(token) headers["Authorization"]=`token ${token}`;
+  const res=await fetch(apiUrl(cfg), {headers});
+  if(!res.ok) throw new Error(`GitHub GET ${res.status}`);
+  const j=await res.json();
+  return { sha:j.sha, content:j.content };
+}
+async function ghPut(cfg, token, contentStr, sha){
+  const url=`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
+  const headers={
+    "Accept":"application/vnd.github+json",
+    "Authorization":`token ${token}`,
+    "Content-Type":"application/json"
+  };
+  const body={
+    message:`MAJ suivi com (${cfg.path})`,
+    content:b64enc(contentStr),
+    branch:cfg.branch,
+    sha:sha
+  };
+  const res=await fetch(url, {method:"PUT", headers, body:JSON.stringify(body)});
+  const j=await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(`GitHub PUT ${res.status}: ${JSON.stringify(j)}`);
+  return j?.content?.sha || null;
+}
+
+function autoStatus(list){
+  return list.map(x=>{
+    const late=isLate(x);
+    return late && x.statut!=="En retard" ? {...x, statutAuto:"En retard"} : {...x, statutAuto:x.statut};
+  });
+}
+function applyFilters(list){
+  const q=el("q").value.trim().toLowerCase();
+  const tool=el("fTool").value, theme=el("fTheme").value, st=el("fStat").value, pr=el("fPrio").value;
+  return autoStatus(list).filter(x=>{
+    if(tool && (x.outil||"")!==tool) return false;
+    if(theme && (x.categorie||"")!==theme) return false;
+    if(st && (x.statut||"")!==st) return false;
+    if(pr && (x.priorite||"")!==pr) return false;
+    if(q){
+      const blob=`${x.id} ${x.outil||""} ${x.categorie||""} ${x.action||""} ${x.responsable||""} ${x.notes||""} ${x.dependance||""}`.toLowerCase();
+      if(!blob.includes(q)) return false;
+    }
+    return true;
+  });
+}
+function fillFilters(){
+  el("fTool").innerHTML = `<option value="">Outil (tous)</option>` + unique(data,"outil").map(t=>`<option value="${t}">${t}</option>`).join("");
+  el("fTheme").innerHTML = `<option value="">Thème (tous)</option>` + unique(data,"categorie").map(t=>`<option value="${t}">${t}</option>`).join("");
+  el("fStat").innerHTML = `<option value="">Statut (tous)</option>` + STATUTS.map(s=>`<option value="${s}">${s}</option>`).join("");
+  el("fPrio").innerHTML = `<option value="">Priorité (toutes)</option>` + PRIOS.map(p=>`<option value="${p}">${p}</option>`).join("");
+}
+
+function renderList(){
+  const rows=applyFilters(data).slice().sort((a,b)=>{
+    const al=isLate(a), bl=isLate(b);
+    if(al!==bl) return al?-1:1;
+    const ap=a.priorite||"P9", bp=b.priorite||"P9";
+    if(ap!==bp) return ap.localeCompare(bp);
+    return (a.echeance||"9999-12-31").localeCompare(b.echeance||"9999-12-31");
+  });
+  const html = rows.map(t=>{
+    const col = themeColor(t.categorie||"Sans thème");
+    const st = t.statutAuto;
+    const ech = t.echeance ? (isLate(t)?`<span class="badgeLate">${t.echeance}</span>`:t.echeance) : "—";
+    return `
+      <details class="action" style="--col:${col}">
+        <summary>
+          <div class="aId">${t.id} · ${t.outil||"—"} · <span style="color:${col}; font-weight:950">${t.categorie||"Sans thème"}</span></div>
+          <div class="aTitle">${t.action}</div>
+          <div class="aPills">
+            <span class="pill"><span class="dot ${dotClass(st)}"></span>${st}</span>
+            <span class="pill">Resp: ${t.responsable||"—"}</span>
+            <span class="pill">Prio: ${t.priorite||"—"}</span>
+            <span class="pill">Éch: ${ech}</span>
+            <button class="btn primary" style="padding:6px 10px" onclick="event.preventDefault();event.stopPropagation();openModal('${t.id}')">Modifier</button>
+          </div>
+        </summary>
+        <div class="aBody">
+          <div class="kv">
+            <div>Dépendance</div><div>${t.dependance||"—"}</div>
+            <div>Notes</div><div>${t.notes||"—"}</div>
+          </div>
+        </div>
+      </details>
+    `;
+  }).join("");
+  el("list").innerHTML = html || `<div class="hint">Aucune action.</div>`;
+}
+
+function openModal(id){
+  const t=data.find(x=>x.id===id); if(!t) return;
+  el("mTitle").textContent = `${t.id} — ${t.outil||""} / ${t.categorie||""}`;
+  el("mId").value=t.id;
+  el("mTool").value=t.outil||"";
+  el("mTheme").value=t.categorie||"";
+  el("mResp").value=t.responsable||"";
+  el("mStat").innerHTML = STATUTS.map(s=>`<option value="${s}">${s}</option>`).join("");
+  el("mStat").value=t.statut||"À faire";
+  el("mPrio").innerHTML = PRIOS.map(p=>`<option value="${p}">${p}</option>`).join("");
+  el("mPrio").value=t.priorite||"P2";
+  el("mDue").value=t.echeance||"";
+  el("mDep").value=t.dependance||"";
+  el("mAction").value=t.action||"";
+  el("mNotes").value=t.notes||"";
+  el("modal").classList.add("open");
+}
+function closeModal(){ el("modal").classList.remove("open"); }
+function saveModal(){
+  const id=el("mId").value;
+  const i=data.findIndex(x=>x.id===id); if(i<0) return;
+  data[i]={...data[i],
+    outil: el("mTool").value.trim(),
+    categorie: el("mTheme").value.trim(),
+    responsable: el("mResp").value.trim(),
+    statut: el("mStat").value,
+    priorite: el("mPrio").value,
+    echeance: el("mDue").value,
+    dependance: el("mDep").value.trim(),
+    action: el("mAction").value.trim(),
+    notes: el("mNotes").value.trim()
+  };
+  fillFilters();
+  renderList();
+  closeModal();
+}
+
+async function load(){
+  const cfg=cfgFromUI();
+  if(!cfg.owner||!cfg.repo) throw new Error("Renseigne owner + repo");
+  const file=await ghGet(cfg, loadToken());
+  lastSha=file.sha;
+  el("sha").textContent = "sha: " + (lastSha?lastSha.slice(0,12):"—");
+  el("src").textContent = `source: ${cfg.owner}/${cfg.repo}`;
+  const parsed=JSON.parse(b64dec(file.content));
+  if(!Array.isArray(parsed)) throw new Error("JSON invalide");
+  data=parsed;
+  fillFilters();
+  renderList();
+}
+
+async function publish(){
+  const cfg=cfgFromUI();
+  const token=el("ghToken").value.trim();
+  if(!cfg.owner||!cfg.repo) return alert("owner + repo manquants");
+  if(!token) return alert("Token requis");
+  saveToken(token);
+
+  let cur=await ghGet(cfg, token);
+  lastSha=cur.sha;
+  const payload = JSON.stringify(data, null, 2);
+
+  try{
+    const newSha=await ghPut(cfg, token, payload, cur.sha);
+    lastSha=newSha || lastSha;
+    el("sha").textContent = "sha: " + (lastSha?lastSha.slice(0,12):"—");
+    await load();
+    alert("Publié ✅");
+  }catch(e){
+    const msg=String(e.message||e);
+    if(msg.includes("409")||msg.includes("conflict")){
+      try{
+        cur=await ghGet(cfg, token);
+        const newSha=await ghPut(cfg, token, payload, cur.sha);
+        lastSha=newSha||cur.sha;
+        await load();
+        alert("Publié ✅ (conflit résolu)");
+      }catch(e2){
+        alert("Conflit : recharge puis republie.\n"+e2.message);
+      }
+      return;
+    }
+    alert("Erreur:\n"+msg);
+  }
+}
+
+document.getElementById("btnBack").addEventListener("click", ()=>window.location.href="./index.html");
+document.getElementById("btnSaveCfg").addEventListener("click", ()=>{
+  const cfg=cfgFromUI();
+  saveCfg(cfg);
+  saveToken(el("ghToken").value.trim());
+  alert("OK ✅");
+});
+document.getElementById("btnForgetCfg").addEventListener("click", ()=>{
+  if(!confirm("Oublier paramètres + token sur cet ordinateur ?")) return;
+  forgetAll();
+  setUI({...DEFAULT_CFG});
+  el("src").textContent="source: —";
+  el("sha").textContent="sha: —";
+  alert("OK.");
+});
+document.getElementById("btnReload").addEventListener("click", async()=>{ try{ await load(); }catch(e){ alert(e.message); } });
+document.getElementById("btnPublish").addEventListener("click", async()=>{ try{ await publish(); }catch(e){ alert(e.message); } });
+
+["q","fTool","fTheme","fStat","fPrio"].forEach(id=>el(id).addEventListener("input", renderList));
+
+document.getElementById("mClose").addEventListener("click", closeModal);
+document.getElementById("mCancel").addEventListener("click", closeModal);
+document.getElementById("mSave").addEventListener("click", saveModal);
+document.getElementById("modal").addEventListener("click", (e)=>{ if(e.target.id==="modal") closeModal(); });
+
+setUI(loadCfg());
+// Try load automatically if cfg exists
+(async()=>{ const cfg=loadCfg(); if(cfg.owner && cfg.repo){ try{ await load(); }catch(e){ /* ignore */ } } })();
+</script>
+</body>
+</html>

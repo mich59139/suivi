@@ -2,279 +2,324 @@
 <html lang="fr">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Suivi communication — Live GitHub</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Suivi communication — tableau vivant</title>
 <style>
 :root{
-  --bg:#0b1220; --text:#e8edf7; --muted:#a9b6d3; --line:rgba(255,255,255,.10);
+  --bg1:#061024; --bg2:#071733; --card:rgba(255,255,255,.06); --card2:rgba(255,255,255,.08);
+  --text:#eaf0ff; --muted:rgba(234,240,255,.68); --line:rgba(255,255,255,.10);
   --good:#2bd576; --warn:#ffb020; --bad:#ff5a6b; --info:#58a6ff;
-  --r:16px;
+  --r:18px; --shadow:0 18px 45px rgba(0,0,0,.45);
+  --accent:#7dd3fc;
 }
 *{box-sizing:border-box}
 body{
   margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
-  background: radial-gradient(1200px 600px at 10% 0%, rgba(88,166,255,.20), transparent 60%),
-              radial-gradient(900px 700px at 90% 10%, rgba(43,213,118,.12), transparent 55%),
-              var(--bg);
   color:var(--text);
+  background:
+    radial-gradient(1200px 700px at 10% 0%, rgba(88,166,255,.22), transparent 60%),
+    radial-gradient(1000px 800px at 90% 10%, rgba(43,213,118,.14), transparent 55%),
+    linear-gradient(180deg, var(--bg1), var(--bg2));
 }
+a{color:inherit}
 header{
-  position:sticky; top:0; z-index:40;
-  background:rgba(11,18,32,.88); backdrop-filter: blur(10px);
+  position:sticky; top:0; z-index:30;
+  backdrop-filter: blur(12px);
+  background: rgba(6,16,36,.78);
   border-bottom:1px solid var(--line);
-  padding:14px 14px 10px;
 }
-.wrap{max-width:1180px; margin:0 auto;}
-h1{margin:0; font-size:18px; font-weight:950}
-.sub{margin-top:6px; color:var(--muted); font-size:13px; line-height:1.35}
-.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
-input,select,textarea{
-  background:rgba(255,255,255,.06); border:1px solid var(--line); color:var(--text);
-  padding:9px 10px; border-radius:12px; outline:none; font-size:13px;
+.wrap{max-width:1180px; margin:0 auto; padding:14px 14px 10px}
+.brand{
+  display:flex; gap:12px; align-items:center; justify-content:space-between; flex-wrap:wrap;
 }
-textarea{min-height:90px; resize:vertical}
+.logo{
+  display:flex; align-items:center; gap:10px;
+  padding:10px 12px;
+  border:1px solid var(--line);
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  border-radius: 999px;
+  box-shadow: 0 10px 22px rgba(0,0,0,.25);
+}
+.mark{
+  width:34px;height:34px;border-radius:12px;
+  background: radial-gradient(circle at 30% 30%, rgba(125,211,252,.9), rgba(88,166,255,.25) 60%, rgba(255,255,255,.06));
+  border:1px solid rgba(125,211,252,.30);
+  position:relative;
+}
+.mark:after{
+  content:""; position:absolute; inset:10px 8px 8px 10px;
+  border-radius:999px;
+  border:2px solid rgba(255,255,255,.65);
+  transform: rotate(12deg);
+}
+h1{margin:0;font-size:16px;font-weight:950}
+.sub{margin-top:4px;color:var(--muted);font-size:12.5px;line-height:1.35}
+.toprow{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
+input,select{
+  background:rgba(255,255,255,.06);
+  border:1px solid var(--line);
+  color:var(--text);
+  padding:9px 10px;
+  border-radius:14px;
+  outline:none;
+  font-size:13px;
+}
 .btn{
   border:1px solid var(--line);
   background:rgba(255,255,255,.08);
   color:var(--text);
-  padding:8px 10px; border-radius:12px;
-  cursor:pointer; font-weight:900; font-size:13px;
+  padding:9px 10px;
+  border-radius:14px;
+  cursor:pointer;
+  font-weight:950;
+  font-size:13px;
 }
-.btn.primary{border-color:rgba(88,166,255,.35); background:rgba(88,166,255,.14)}
-.btn.danger{border-color:rgba(255,90,107,.35); background:rgba(255,90,107,.12)}
-.tab{
-  padding:8px 10px; border-radius:12px; border:1px solid var(--line);
-  color:var(--muted); cursor:pointer; font-weight:950; font-size:13px;
+.btn.primary{border-color:rgba(125,211,252,.35); background:rgba(125,211,252,.12)}
+.btn.ghost{background:transparent}
+.pill{
+  display:inline-flex; align-items:center; gap:7px;
+  padding:6px 10px; border-radius:999px;
+  border:1px solid var(--line);
+  background:rgba(0,0,0,.15);
+  color:var(--muted);
+  font-weight:900;
+  font-size:12px;
 }
-.tab.active{color:var(--text); background:rgba(255,255,255,.08)}
-.grid{display:grid; grid-template-columns:1fr; gap:12px; padding:14px}
-@media(min-width:980px){ .grid{grid-template-columns: 380px 1fr;} }
+.dot{width:8px;height:8px;border-radius:50%}
+.dot.good{background:var(--good)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)} .dot.info{background:var(--info)}
+main{max-width:1180px; margin:0 auto; padding:14px}
+.grid{display:grid; gap:14px; grid-template-columns:1fr}
+@media(min-width:980px){.grid{grid-template-columns: 360px 1fr;}}
 .card{
   border:1px solid var(--line);
-  background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
-  border-radius:var(--r);
+  border-radius: var(--r);
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+  box-shadow: var(--shadow);
+  overflow:hidden;
 }
 .card h2{
-  margin:0; padding:14px 14px 0;
-  font-size:13px; color:var(--muted); font-weight:950;
-  text-transform:uppercase; letter-spacing:.3px;
+  margin:0;
+  padding:14px 14px 0;
+  font-size:12.5px;
+  letter-spacing:.35px;
+  text-transform:uppercase;
+  color:var(--muted);
+  font-weight:950;
 }
 .card .content{padding:12px 14px 14px}
-.hint{color:var(--muted); font-size:12px; line-height:1.35}
-.pill{
-  display:inline-flex; align-items:center; gap:6px;
-  border:1px solid var(--line); background:rgba(255,255,255,.08);
-  padding:5px 8px; border-radius:999px; font-weight:900; font-size:12px; color:var(--muted)
-}
-.dot{width:8px; height:8px; border-radius:50%}
-.dot.good{background:var(--good)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)} .dot.info{background:var(--info)}
 .kpis{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
-.kpi{border:1px solid var(--line); background:rgba(0,0,0,.20); border-radius:14px; padding:10px}
-.kpi .n{margin:0; font-size:22px; font-weight:950}
-
-.themes{display:grid; grid-template-columns:1fr; gap:12px}
-@media(min-width:720px){.themes{grid-template-columns:repeat(2,1fr)}}
-@media(min-width:1060px){.themes{grid-template-columns:repeat(3,1fr)}}
-.theme{
+.kpi{
   border:1px solid var(--line);
   border-radius:16px;
-  background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
-  overflow:hidden; cursor:pointer;
+  background:rgba(0,0,0,.20);
+  padding:10px;
 }
-.theme .bar{height:6px; background:var(--theme); opacity:.95}
-.theme .b{padding:12px}
-.theme .t{font-weight:950}
-.theme .m{color:var(--muted); font-size:12px; margin-top:4px}
-.theme .metrics{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
-.metric{border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.18); border-radius:999px; padding:5px 8px; font-size:11px; color:var(--muted); font-weight:950}
+.kpi .n{margin:0; font-size:24px; font-weight:950}
+.kpi .l{margin-top:2px; font-size:12px; color:var(--muted); font-weight:900}
+.hint{color:var(--muted); font-size:12px; line-height:1.35}
+.breadcrumb{
+  display:flex; gap:8px; flex-wrap:wrap; align-items:center;
+  margin-bottom:10px;
+}
+.crumb{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.06);
+  padding:7px 10px;
+  border-radius:999px;
+  cursor:pointer;
+  font-weight:950;
+  font-size:12.5px;
+  color:var(--text);
+}
+.crumb.muted{color:var(--muted)}
+.cards{display:grid; grid-template-columns:1fr; gap:12px}
+@media(min-width:720px){.cards{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1060px){.cards{grid-template-columns:repeat(3,1fr)}}
+.tile{
+  border:1px solid var(--line);
+  border-radius:18px;
+  background: linear-gradient(180deg, rgba(255,255,255,.10), rgba(255,255,255,.05));
+  box-shadow: 0 14px 32px rgba(0,0,0,.35);
+  overflow:hidden;
+  cursor:pointer;
+  position:relative;
+}
+.tile .bar{height:7px;background:var(--col);opacity:.95}
+.tile .b{padding:12px}
+.tile .title{font-weight:950}
+.tile .meta{margin-top:4px; color:var(--muted); font-size:12px}
+.metrics{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+.metric{
+  border:1px solid rgba(255,255,255,.12);
+  background:rgba(0,0,0,.18);
+  border-radius:999px;
+  padding:5px 8px;
+  font-size:11px;
+  color:var(--muted);
+  font-weight:950;
+}
 .metric b{color:var(--text)}
 .metric.bad b{color:var(--bad)} .metric.warn b{color:var(--warn)} .metric.info b{color:var(--info)}
-
-details.task{
+.icon{
+  width:34px; height:34px; border-radius:14px;
+  border:1px solid rgba(255,255,255,.14);
+  background: rgba(0,0,0,.18);
+  display:grid; place-items:center;
+}
+.icon svg{width:18px;height:18px; opacity:.9}
+.row2{display:flex; gap:10px; align-items:center; justify-content:space-between; flex-wrap:wrap}
+.small{font-size:12px; color:var(--muted)}
+/* List view */
+details.action{
   border:1px solid rgba(255,255,255,.12);
-  border-radius:14px;
-  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
-  border-left:6px solid var(--theme, rgba(255,255,255,.12));
-  margin:10px 0; overflow:hidden;
+  border-radius:16px;
+  background: linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+  margin:10px 0;
+  overflow:hidden;
+  border-left:6px solid var(--col, rgba(255,255,255,.12));
 }
-details.task summary{
-  cursor:pointer; list-style:none;
+details.action>summary{
+  list-style:none;
+  cursor:pointer;
   padding:10px;
-  display:flex; flex-direction:column; gap:6px;
+  display:flex;
+  flex-direction:column;
+  gap:6px;
 }
-details.task summary::-webkit-details-marker{display:none}
-.tId{font-weight:900; font-size:12px; color:var(--muted)}
-.tAction{font-weight:950}
-.tPills{display:flex; gap:8px; flex-wrap:wrap}
-.tBody{border-top:1px solid rgba(255,255,255,.10); padding:10px}
+details.action>summary::-webkit-details-marker{display:none}
+.aTop{display:flex; align-items:flex-start; justify-content:space-between; gap:10px}
+.aId{font-weight:900; font-size:12px; color:var(--muted)}
+.aTitle{font-weight:950}
+.aPills{display:flex; gap:8px; flex-wrap:wrap}
+.aBody{border-top:1px solid rgba(255,255,255,.10); padding:10px}
 .kv{display:grid; grid-template-columns:120px 1fr; gap:6px 10px; font-size:13px}
 .kv div:nth-child(odd){color:var(--muted); font-weight:950}
 .badgeLate{color:var(--bad); font-weight:950}
-
-details.adv{border:1px solid var(--line); border-radius:14px; padding:10px; background:rgba(0,0,0,.18); margin-top:10px}
-details.adv summary{cursor:pointer; font-weight:950; color:var(--muted)}
-
-.modal{position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; padding:16px; z-index:100}
-.modal.open{display:flex}
-.modalbox{width:min(820px,100%); border:1px solid var(--line); border-radius:18px; background:rgba(17,26,46,.96); overflow:hidden}
-.modalhead{display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--line)}
-.modalhead .t{font-weight:950}
-.modalbody{padding:14px}
-.two{display:grid; grid-template-columns:1fr; gap:10px}
-@media(min-width:820px){.two{grid-template-columns:1fr 1fr}}
-label{display:block; font-size:12px; color:var(--muted); font-weight:950; margin:0 0 6px 2px}
-.foot{display:flex; justify-content:flex-end; gap:10px; padding:12px 14px; border-top:1px solid var(--line)}
 </style>
 </head>
 <body>
 <header>
   <div class="wrap">
-    <div style="display:flex; gap:12px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap">
+    <div class="brand">
       <div>
-        <h1>Suivi communication — Live GitHub</h1>
-        <div class="sub"><b>Lecture pour tous.</b> Écriture uniquement si <b>token GitHub</b> saisi.<br>Cliquer un <b>thème</b> → liste → modifier → <b>Publier</b>.</div>
+        <div class="logo">
+          <div class="mark" aria-hidden="true"></div>
+          <div>
+            <h1>Suivi communication — tableau vivant</h1>
+            <div class="sub">Vue “cartes → listes” (comme un mini-site). Lecture simple pour tous.</div>
+          </div>
+        </div>
       </div>
-      <div style="display:flex; gap:8px; align-items:center">
-        <div class="tab active" data-tab="themes">Thèmes</div>
-        <div class="tab" data-tab="actions">Actions</div>
+      <div style="display:flex; gap:8px; align-items:center; flex-wrap:wrap">
+        <span class="pill"><span class="dot info"></span><span id="src">source: —</span></span>
+        <span class="pill"><span class="dot good"></span><span id="sync">synchro: —</span></span>
+        <button class="btn primary" id="btnAdmin" title="Ouvrir la page admin (édition)">Admin</button>
       </div>
     </div>
 
-    <div class="row">
-      <input id="q" type="search" placeholder="Rechercher…" style="flex:1; min-width:220px">
-      <select id="fCat"><option value="">Thème (tous)</option></select>
+    <div class="toprow">
+      <input id="q" type="search" placeholder="Rechercher (action, id, notes…)" style="flex:1; min-width:240px">
+      <select id="fTool"><option value="">Outil (tous)</option></select>
+      <select id="fTheme"><option value="">Thème (tous)</option></select>
       <select id="fResp"><option value="">Responsable (tous)</option></select>
-      <select id="fStatut"><option value="">Statut (tous)</option></select>
+      <select id="fStat"><option value="">Statut (tous)</option></select>
       <select id="fPrio"><option value="">Priorité (toutes)</option></select>
       <button class="btn" id="btnReset">Réinitialiser</button>
-      <button class="btn primary" id="btnBack" style="display:none">← Retour</button>
     </div>
-
-    <details class="adv">
-      <summary>Paramètres GitHub + publication</summary>
-      <div class="row">
-        <input id="ghOwner" placeholder="owner" style="min-width:200px">
-        <input id="ghRepo" placeholder="repo" style="min-width:200px">
-        <input id="ghBranch" placeholder="branch (main)" style="min-width:140px">
-        <input id="ghPath" placeholder="fichier (data.json)" style="min-width:180px">
-      </div>
-      <div class="row">
-        <input id="ghToken" type="password" placeholder="Token GitHub (Contents: write)" style="flex:1; min-width:260px">
-        <button class="btn" id="btnSaveCfg">Enregistrer</button>
-        <button class="btn danger" id="btnForgetCfg">Oublier</button>
-      </div>
-      <div class="row">
-        <span class="pill">Source</span> <span class="hint" id="srcStatus">—</span>
-        <span class="pill">SHA</span> <span class="hint" id="shaStatus">—</span>
-        <span class="pill">Auto</span> <span class="hint">20s</span>
-      </div>
-      <div class="row">
-        <button class="btn primary" id="btnPublish">Publier (commit)</button>
-        <button class="btn" id="btnReload">Recharger GitHub</button>
-      </div>
-      <div class="hint">Conseil : token <b>fine‑grained</b>, limité à ce repo, permission <b>Contents: write</b>.</div>
-    </details>
   </div>
 </header>
 
-<main class="wrap">
+<main>
   <div class="grid">
     <section class="card">
       <h2>Indicateurs</h2>
       <div class="content">
         <div class="kpis" id="kpis"></div>
-        <div class="hint" id="hint"></div>
+        <div class="hint" id="hint" style="margin-top:10px"></div>
       </div>
 
-      <h2>Flash hebdo</h2>
+      <h2>Mode d’emploi (lecture)</h2>
       <div class="content">
-        <div class="hint">Le flash reprend la vue courante (filtres).</div>
-        <textarea id="flash" spellcheck="false"></textarea>
-        <div class="row">
-          <button class="btn primary" id="btnBuildFlash">Générer</button>
-          <button class="btn" id="btnCopyFlash">Copier</button>
+        <div class="hint">
+          1) Choisir une carte (Outil ou Thème).<br>
+          2) Cliquer une action pour voir le détail (dépendances, notes).<br>
+          3) Pour modifier: bouton <b>Admin</b> (en haut à droite).
         </div>
       </div>
     </section>
 
     <section class="card">
-      <h2 id="viewTitle">Thèmes</h2>
-      <div class="content" id="view"></div>
+      <h2>Tableau</h2>
+      <div class="content">
+        <div class="breadcrumb" id="crumbs"></div>
+        <div id="view"></div>
+      </div>
     </section>
   </div>
 </main>
 
-<div class="modal" id="modal">
-  <div class="modalbox">
-    <div class="modalhead">
-      <div class="t" id="mTitle">Action</div>
-      <button class="btn" id="mClose">Fermer</button>
-    </div>
-    <div class="modalbody">
-      <div class="two">
-        <div><label>ID</label><input id="mId" disabled></div>
-        <div><label>Thème</label><input id="mCat"></div>
-        <div><label>Responsable</label><input id="mResp"></div>
-        <div><label>Statut</label><select id="mStatut"></select></div>
-        <div><label>Priorité</label><select id="mPrio"></select></div>
-        <div><label>Échéance</label><input id="mEch" type="date"></div>
-        <div><label>Dépendances</label><input id="mDep" placeholder="A02,A03"></div>
-      </div>
-      <div style="margin-top:10px">
-        <label>Action</label><textarea id="mAction"></textarea>
-      </div>
-      <div style="margin-top:10px">
-        <label>Notes</label><textarea id="mNotes"></textarea>
-      </div>
-      <div class="hint" style="margin-top:10px">Ensuite : <b>Publier</b> pour partager à tout le monde.</div>
-    </div>
-    <div class="foot">
-      <button class="btn" id="mCancel">Annuler</button>
-      <button class="btn primary" id="mSave">Enregistrer (local)</button>
-    </div>
-  </div>
-</div>
-
 <script>
-const CFG_KEY="suivi_comm_cfg_v1", TOKEN_KEY="suivi_comm_token_v1";
-const DEFAULT_CFG={owner:"",repo:"",branch:"main",path:"data.json"};
+/* =========================
+   CONFIG : tu peux laisser vide.
+   - Si rempli : la page lit les données direct depuis GitHub (contents API)
+   - Sinon : elle lit ./data.json (GitHub Pages)
+========================= */
+const GITHUB = { owner:"", repo:"", branch:"main", path:"data.json" };
+const REFRESH_MS = 20000;
+
 const STATUTS=["À faire","En cours","Bloqué","Fait","En retard"];
 const PRIOS=["P1","P2","P3"];
+const TOOL_ORDER = ["actions terrain", "distribution de prospectus", "réunions de quartier", "communication Facebook/Instagram", "site internet"];
 const el=id=>document.getElementById(id);
-const tabs=[...document.querySelectorAll(".tab")];
 
-let data=[], activeTab="themes", lastSha=null, currentSource="local", refreshTimer=null;
+let data=[];
+let nav={mode:"home", tool:null, theme:null}; // home -> tool -> theme -> list
+let lastUpdatedAt=null;
 
-function todayISO(){const d=new Date(), tz=d.getTimezoneOffset()*60000; return new Date(d-tz).toISOString().slice(0,10);}
-function isLate(t){return t.echeance && t.statut!=="Fait" && t.echeance<todayISO();}
-function dotClass(st){return st==="Fait"?"good":st==="En cours"?"info":st==="Bloqué"?"warn":st==="En retard"?"bad":"";}
-function themeColor(name){const s=(name||"Sans thème").toLowerCase(); let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i), h|=0; return `hsl(${Math.abs(h)%360} 78% 55%)`; }
-function unique(list,key){return [...new Set(list.map(x=>x[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b));}
+function todayISO(){ const d=new Date(), tz=d.getTimezoneOffset()*60000; return new Date(d-tz).toISOString().slice(0,10); }
+function isLate(t){ return t.echeance && t.statut!=="Fait" && t.echeance < todayISO(); }
+function dotClass(st){ return st==="Fait"?"good":st==="En cours"?"info":st==="Bloqué"?"warn":st==="En retard"?"bad":""; }
+function themeColor(name){ const s=(name||"Sans thème").toLowerCase(); let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i), h|=0; return `hsl(${Math.abs(h)%360} 78% 55%)`; }
+function toolColor(name){
+  // stable but distinct from theme: hash different seed
+  const s=("outil:"+(name||"Sans outil")).toLowerCase(); let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i), h|=0;
+  return `hsl(${Math.abs(h)%360} 82% 56%)`;
+}
+function unique(list,key){ return [...new Set(list.map(x=>x[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b)); }
 
-function applyFilters(list){
-  const q=el("q").value.trim().toLowerCase();
-  const cat=el("fCat").value, st=el("fStatut").value, rp=el("fResp").value, pr=el("fPrio").value;
-  return list.filter(x=>{
-    if(cat && (x.categorie||"")!==cat) return false;
-    if(st && x.statut!==st) return false;
-    if(rp && x.responsable!==rp) return false;
-    if(pr && x.priorite!==pr) return false;
-    if(q){
-      const blob=`${x.id} ${x.categorie||""} ${x.outil||""} ${x.action||""} ${x.responsable||""} ${x.notes||""} ${x.dependance||""}`.toLowerCase();
-      if(!blob.includes(q)) return false;
-    }
-    return true;
-  }).map(x=>{
+function withAutoStatus(list){
+  return list.map(x=>{
     const late=isLate(x);
     return late && x.statut!=="En retard" ? {...x, statutAuto:"En retard"} : {...x, statutAuto:x.statut};
   });
 }
 
+function applyFilters(list){
+  const q=el("q").value.trim().toLowerCase();
+  const tool=el("fTool").value, theme=el("fTheme").value, resp=el("fResp").value, stat=el("fStat").value, prio=el("fPrio").value;
+  return withAutoStatus(list).filter(x=>{
+    if(tool && (x.outil||"")!==tool) return false;
+    if(theme && (x.categorie||"")!==theme) return false;
+    if(resp && (x.responsable||"")!==resp) return false;
+    if(stat && (x.statut||"")!==stat) return false;
+    if(prio && (x.priorite||"")!==prio) return false;
+    if(q){
+      const blob=`${x.id} ${x.outil||""} ${x.categorie||""} ${x.action||""} ${x.responsable||""} ${x.notes||""} ${x.dependance||""}`.toLowerCase();
+      if(!blob.includes(q)) return false;
+    }
+    return true;
+  });
+}
+
 function fillFilters(){
-  el("fCat").innerHTML=`<option value="">Thème (tous)</option>` + unique(data,"categorie").map(c=>`<option value="${c}">${c}</option>`).join("");
-  el("fResp").innerHTML=`<option value="">Responsable (tous)</option>` + unique(data,"responsable").map(r=>`<option value="${r}">${r}</option>`).join("");
-  el("fStatut").innerHTML=`<option value="">Statut (tous)</option>` + STATUTS.map(s=>`<option value="${s}">${s}</option>`).join("");
-  el("fPrio").innerHTML=`<option value="">Priorité (toutes)</option>` + PRIOS.map(p=>`<option value="${p}">${p}</option>`).join("");
+  // Tool in preferred order then remaining
+  const tools=unique(data,"outil");
+  const ordered=[...TOOL_ORDER.filter(t=>tools.includes(t)), ...tools.filter(t=>!TOOL_ORDER.includes(t))];
+  el("fTool").innerHTML = `<option value="">Outil (tous)</option>` + ordered.map(t=>`<option value="${t}">${t}</option>`).join("");
+  el("fTheme").innerHTML = `<option value="">Thème (tous)</option>` + unique(data,"categorie").map(t=>`<option value="${t}">${t}</option>`).join("");
+  el("fResp").innerHTML = `<option value="">Responsable (tous)</option>` + unique(data,"responsable").map(r=>`<option value="${r}">${r}</option>`).join("");
+  el("fStat").innerHTML = `<option value="">Statut (tous)</option>` + STATUTS.map(s=>`<option value="${s}">${s}</option>`).join("");
+  el("fPrio").innerHTML = `<option value="">Priorité (toutes)</option>` + PRIOS.map(p=>`<option value="${p}">${p}</option>`).join("");
 }
 
 function renderKpis(list){
@@ -287,362 +332,272 @@ function renderKpis(list){
     {n:by("Bloqué"),l:"Bloqué",c:"warn"},
     {n:late,l:"En retard",c:"bad"},
   ];
-  el("kpis").innerHTML=k.map(x=>`
+  el("kpis").innerHTML = k.map(x=>`
     <div class="kpi">
       <div class="pill"><span class="dot ${x.c||""}"></span>${x.l}</div>
       <p class="n">${x.n}</p>
-    </div>`).join("");
-  el("hint").innerHTML=`Source : <b>${currentSource}</b> · SHA : <b>${lastSha?lastSha.slice(0,7):"—"}</b>`;
-}
-
-function openTheme(theme){
-  el("fCat").value = theme;
-  setTab("actions");
-  rerender();
-}
-window.openTheme=openTheme;
-
-function renderThemes(){
-  const q=el("q").value.trim().toLowerCase(), st=el("fStatut").value, rp=el("fResp").value, pr=el("fPrio").value;
-  const filtered=data.filter(x=>{
-    if(st && x.statut!==st) return false;
-    if(rp && x.responsable!==rp) return false;
-    if(pr && x.priorite!==pr) return false;
-    if(q){
-      const blob=`${x.id} ${x.categorie||""} ${x.outil||""} ${x.action||""} ${x.responsable||""} ${x.notes||""} ${x.dependance||""}`.toLowerCase();
-      if(!blob.includes(q)) return false;
-    }
-    return true;
-  }).map(x=> isLate(x) && x.statut!=="En retard" ? {...x, statutAuto:"En retard"} : {...x, statutAuto:x.statut});
-
-  const map=new Map();
-  for(const it of filtered){
-    const t=it.categorie||"Sans thème";
-    if(!map.has(t)) map.set(t, []);
-    map.get(t).push(it);
-  }
-  const groups=[...map.entries()].sort((a,b)=>a[0].localeCompare(b[0]));
-
-  el("viewTitle").textContent="Thèmes";
-  el("view").innerHTML = `
-    <div class="themes">
-      ${groups.map(([theme, items])=>{
-        const color=themeColor(theme);
-        const total=items.length;
-        const late=items.filter(x=>isLate(x)).length;
-        const blocked=items.filter(x=>x.statutAuto==="Bloqué").length;
-        const p1=items.filter(x=>x.priorite==="P1" && x.statutAuto!=="Fait").length;
-        return `
-          <div class="theme" style="--theme:${color}" onclick="openTheme('${theme.replace(/'/g,"\\'")}')">
-            <div class="bar"></div>
-            <div class="b">
-              <div class="t">${theme}</div>
-              <div class="m">${total} action(s)</div>
-              <div class="metrics">
-                <span class="metric">Total <b>${total}</b></span>
-                <span class="metric info">P1 <b>${p1}</b></span>
-                <span class="metric warn">Bloqué <b>${blocked}</b></span>
-                <span class="metric bad">Retard <b>${late}</b></span>
-              </div>
-            </div>
-          </div>`;
-      }).join("")}
+      <div class="l">${x.c? "": ""}</div>
     </div>
-    <div class="hint" style="margin-top:12px">Clique un thème pour afficher les actions de ce thème.</div>
-  `;
+  `).join("");
+  const updated = lastUpdatedAt ? new Date(lastUpdatedAt).toLocaleString() : "—";
+  el("hint").innerHTML = `Dernière lecture : <b>${updated}</b> · Filtres = ce que tu vois à droite.`;
 }
 
-function taskCard(t){
-  const theme=t.categorie||"Sans thème";
-  const color=themeColor(theme);
-  const st=t.statutAuto;
-  const ech = t.echeance ? (isLate(t) ? `<span class="badgeLate">${t.echeance}</span>` : t.echeance) : "—";
-  const dep=t.dependance||"—", notes=t.notes||"—", outil=t.outil||"—";
-  return `
-    <details class="task" style="--theme:${color}">
-      <summary>
-        <div class="tId">${t.id} · <span style="color:${color}; font-weight:950">${theme}</span></div>
-        <div class="tAction">${t.action}</div>
-        <div class="tPills">
-          <span class="pill"><span class="dot ${dotClass(st)}"></span>${st}</span>
-          <span class="pill">Resp: ${t.responsable||"—"}</span>
-          <span class="pill">Prio: ${t.priorite||"—"}</span>
-          <span class="pill">Éch: ${ech}</span>
-        </div>
-      </summary>
-      <div class="tBody">
-        <div class="kv">
-          <div>Outil</div><div>${outil}</div>
-          <div>Dépendance</div><div>${dep}</div>
-          <div>Notes</div><div>${notes}</div>
-        </div>
-        <div class="row" style="margin-top:10px">
-          <button class="btn primary" onclick="event.preventDefault(); event.stopPropagation(); openModal('${t.id}')">Modifier</button>
+function iconForTool(name){
+  const n=(name||"").toLowerCase();
+  if(n.includes("terrain")||n.includes("march")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21l6-6"/><path d="M7 17l4-4"/><path d="M10 6a4 4 0 0 1 8 0c0 3-4 4-4 7"/><path d="M14 20h4"/></svg>`;
+  if(n.includes("prospect")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16v16H4z"/><path d="M8 8h8"/><path d="M8 12h8"/><path d="M8 16h6"/></svg>`;
+  if(n.includes("réunion")||n.includes("quartier")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 11c1.7 0 3 1.3 3 3v7H5v-7c0-1.7 1.3-3 3-3"/><path d="M12 3c2.2 0 4 1.8 4 4s-1.8 4-4 4-4-1.8-4-4 1.8-4 4-4z"/></svg>`;
+  if(n.includes("facebook")||n.includes("instagram")||n.includes("réseau")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 17h10"/><path d="M5 3h14v14H5z"/><path d="M9 9h6"/></svg>`;
+  if(n.includes("site")) return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 4h18v16H3z"/><path d="M3 8h18"/><path d="M7 6h.01"/><path d="M10 6h.01"/></svg>`;
+  return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 7h16"/><path d="M4 12h16"/><path d="M4 17h16"/></svg>`;
+}
+
+function setCrumbs(){
+  const c = [];
+  c.push({label:"Accueil", action:()=>{nav={mode:"home",tool:null,theme:null}; render();}});
+  if(nav.tool) c.push({label:nav.tool, action:()=>{nav={mode:"tool",tool:nav.tool,theme:null}; render();}});
+  if(nav.theme) c.push({label:nav.theme, action:()=>{nav={mode:"theme",tool:nav.tool,theme:nav.theme}; render();}});
+  el("crumbs").innerHTML = c.map((x,i)=>`<div class="crumb ${i===c.length-1?"":"muted"}" data-i="${i}">${x.label}</div>`).join("");
+  [...el("crumbs").querySelectorAll(".crumb")].forEach((node, idx)=>{
+    node.addEventListener("click", ()=>c[idx].action());
+  });
+}
+
+function renderHome(list){
+  // Cards: by tool + a "Thèmes" shortcut
+  const map=new Map();
+  for(const it of list){
+    const k=it.outil || "Sans outil";
+    if(!map.has(k)) map.set(k, []);
+    map.get(k).push(it);
+  }
+  const tools=[...map.entries()].sort((a,b)=>{
+    const ia=TOOL_ORDER.indexOf(a[0]); const ib=TOOL_ORDER.indexOf(b[0]);
+    if(ia!==-1 || ib!==-1) return (ia===-1?999:ia) - (ib===-1?999:ib);
+    return a[0].localeCompare(b[0]);
+  });
+
+  const tiles = tools.map(([tool, items])=>{
+    const color=toolColor(tool);
+    const total=items.length;
+    const late=items.filter(x=>isLate(x)).length;
+    const blocked=items.filter(x=>x.statutAuto==="Bloqué").length;
+    const p1=items.filter(x=>x.priorite==="P1" && x.statutAuto!=="Fait").length;
+    return `
+      <div class="tile" style="--col:${color}" data-tool="${tool}">
+        <div class="bar"></div>
+        <div class="b">
+          <div class="row2">
+            <div class="icon">${iconForTool(tool)}</div>
+            <div class="pill"><span class="dot info"></span>${total} actions</div>
+          </div>
+          <div style="margin-top:10px" class="title">${tool}</div>
+          <div class="meta">Clique pour voir les thèmes puis les actions.</div>
+          <div class="metrics">
+            <span class="metric info">P1 <b>${p1}</b></span>
+            <span class="metric warn">Bloqué <b>${blocked}</b></span>
+            <span class="metric bad">Retard <b>${late}</b></span>
+          </div>
         </div>
       </div>
-    </details>
+    `;
+  }).join("");
+
+  el("view").innerHTML = `
+    <div class="hint" style="margin-bottom:10px">Vue “site” : <b>Outil → Thème → Actions</b>. (Tu peux aussi filtrer en haut.)</div>
+    <div class="cards">${tiles}</div>
   `;
+
+  [...el("view").querySelectorAll(".tile")].forEach(tile=>{
+    tile.addEventListener("click", ()=>{
+      const tool = tile.dataset.tool;
+      nav={mode:"tool", tool, theme:null};
+      render();
+    });
+  });
 }
 
-function renderActions(){
-  const list=applyFilters(data);
-  el("viewTitle").textContent = el("fCat").value ? `Actions — ${el("fCat").value}` : "Actions";
-  const rows=list.slice().sort((a,b)=>{
+function renderTool(list){
+  const tool = nav.tool;
+  const subset = list.filter(x=>(x.outil||"Sans outil")===tool);
+  // group by theme
+  const map=new Map();
+  for(const it of subset){
+    const k=it.categorie || "Sans thème";
+    if(!map.has(k)) map.set(k, []);
+    map.get(k).push(it);
+  }
+  const groups=[...map.entries()].sort((a,b)=>a[0].localeCompare(b[0]));
+  const tiles = groups.map(([theme, items])=>{
+    const color=themeColor(theme);
+    const total=items.length;
+    const late=items.filter(x=>isLate(x)).length;
+    const blocked=items.filter(x=>x.statutAuto==="Bloqué").length;
+    const p1=items.filter(x=>x.priorite==="P1" && x.statutAuto!=="Fait").length;
+    return `
+      <div class="tile" style="--col:${color}" data-theme="${theme}">
+        <div class="bar"></div>
+        <div class="b">
+          <div class="row2">
+            <div class="title">${theme}</div>
+            <div class="pill"><span class="dot info"></span>${total}</div>
+          </div>
+          <div class="meta">Clique pour afficher les actions de ce thème.</div>
+          <div class="metrics">
+            <span class="metric info">P1 <b>${p1}</b></span>
+            <span class="metric warn">Bloqué <b>${blocked}</b></span>
+            <span class="metric bad">Retard <b>${late}</b></span>
+          </div>
+          <div class="small">Outil : ${tool}</div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  el("view").innerHTML = `
+    <div class="hint" style="margin-bottom:10px"><b>${tool}</b> — choisis un thème :</div>
+    <div class="cards">${tiles}</div>
+  `;
+
+  [...el("view").querySelectorAll(".tile")].forEach(tile=>{
+    tile.addEventListener("click", ()=>{
+      const theme = tile.dataset.theme;
+      nav={mode:"theme", tool, theme};
+      render();
+    });
+  });
+}
+
+function renderTheme(list){
+  const tool = nav.tool, theme = nav.theme;
+  const subset = list.filter(x=>(x.outil||"Sans outil")===tool && (x.categorie||"Sans thème")===theme);
+
+  // sort: late first, then priority, then due date
+  const rows=subset.slice().sort((a,b)=>{
     const al=isLate(a), bl=isLate(b);
     if(al!==bl) return al?-1:1;
     const ap=a.priorite||"P9", bp=b.priorite||"P9";
     if(ap!==bp) return ap.localeCompare(bp);
     return (a.echeance||"9999-12-31").localeCompare(b.echeance||"9999-12-31");
   });
-  el("view").innerHTML = rows.length ? rows.map(taskCard).join("") : `<div class="hint">Aucune action.</div>`;
+
+  function actionCard(t){
+    const col = themeColor(theme);
+    const st = t.statutAuto;
+    const ech = t.echeance ? (isLate(t)?`<span class="badgeLate">${t.echeance}</span>`:t.echeance) : "—";
+    return `
+      <details class="action" style="--col:${col}">
+        <summary>
+          <div class="aTop">
+            <div class="aId">${t.id} · <span style="color:${col}; font-weight:950">${theme}</span></div>
+            <span class="pill"><span class="dot ${dotClass(st)}"></span>${st}</span>
+          </div>
+          <div class="aTitle">${t.action}</div>
+          <div class="aPills">
+            <span class="pill">Resp: ${t.responsable||"—"}</span>
+            <span class="pill">Prio: ${t.priorite||"—"}</span>
+            <span class="pill">Éch: ${ech}</span>
+          </div>
+        </summary>
+        <div class="aBody">
+          <div class="kv">
+            <div>Outil</div><div>${t.outil||"—"}</div>
+            <div>Dépendance</div><div>${t.dependance||"—"}</div>
+            <div>Notes</div><div>${t.notes||"—"}</div>
+          </div>
+        </div>
+      </details>
+    `;
+  }
+
+  el("view").innerHTML = `
+    <div class="hint" style="margin-bottom:10px"><b>${tool}</b> → <b>${theme}</b> — actions :</div>
+    ${rows.length ? rows.map(actionCard).join("") : `<div class="hint">Aucune action dans ce filtre.</div>`}
+  `;
 }
 
-function rerender(){
-  const list=applyFilters(data);
+function render(){
+  const list = applyFilters(data);
+  setCrumbs();
   renderKpis(list);
-  fillFilters();
-  if(activeTab==="themes") renderThemes(); else renderActions();
+
+  if(nav.mode==="home") renderHome(list);
+  else if(nav.mode==="tool") renderTool(list);
+  else renderTheme(list);
 }
 
-function setTab(name){
-  activeTab=name;
-  tabs.forEach(t=>t.classList.toggle("active", t.dataset.tab===name));
-  el("btnBack").style.display = (name==="actions" && el("fCat").value) ? "inline-flex" : "none";
-  rerender();
+function resetAll(){
+  el("q").value="";
+  el("fTool").value="";
+  el("fTheme").value="";
+  el("fResp").value="";
+  el("fStat").value="";
+  el("fPrio").value="";
+  nav={mode:"home", tool:null, theme:null};
+  render();
 }
 
-function openModal(id){
-  const t=data.find(x=>x.id===id);
-  if(!t) return;
-  el("mTitle").textContent = `${t.id} — ${t.categorie||""}`;
-  el("mId").value=t.id;
-  el("mCat").value=t.categorie||"";
-  el("mResp").value=t.responsable||"";
-  el("mStatut").innerHTML=STATUTS.map(s=>`<option value="${s}">${s}</option>`).join("");
-  el("mStatut").value=t.statut||"À faire";
-  el("mPrio").innerHTML=PRIOS.map(p=>`<option value="${p}">${p}</option>`).join("");
-  el("mPrio").value=t.priorite||"P2";
-  el("mEch").value=t.echeance||"";
-  el("mDep").value=t.dependance||"";
-  el("mAction").value=t.action||"";
-  el("mNotes").value=t.notes||"";
-  el("modal").classList.add("open");
-}
-function closeModal(){ el("modal").classList.remove("open"); }
-function saveModal(){
-  const id=el("mId").value;
-  const idx=data.findIndex(x=>x.id===id);
-  if(idx<0) return;
-  data[idx]={...data[idx],
-    categorie: el("mCat").value.trim(),
-    responsable: el("mResp").value.trim(),
-    statut: el("mStatut").value,
-    priorite: el("mPrio").value,
-    echeance: el("mEch").value,
-    dependance: el("mDep").value.trim(),
-    action: el("mAction").value.trim(),
-    notes: el("mNotes").value.trim(),
-  };
-  rerender();
-  closeModal();
-}
+function setSync(text){ el("sync").textContent = "synchro: " + text; }
+function setSrc(text){ el("src").textContent = "source: " + text; }
 
-// ===== GitHub live read/write =====
-function loadCfg(){ try{ const raw=localStorage.getItem(CFG_KEY); return raw?{...DEFAULT_CFG,...JSON.parse(raw)}:{...DEFAULT_CFG}; }catch(e){ return {...DEFAULT_CFG}; } }
-function saveCfg(cfg){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
-function loadToken(){ return localStorage.getItem(TOKEN_KEY)||""; }
-function saveToken(t){ localStorage.setItem(TOKEN_KEY, t||""); }
-function forgetAll(){ localStorage.removeItem(CFG_KEY); localStorage.removeItem(TOKEN_KEY); }
-
-function cfgFromUI(){
-  return {
-    owner: el("ghOwner").value.trim(),
-    repo: el("ghRepo").value.trim(),
-    branch: (el("ghBranch").value.trim()||"main"),
-    path: (el("ghPath").value.trim()||"data.json"),
-  };
+// === Data loading ===
+function cfgReady(){
+  return GITHUB.owner && GITHUB.repo && GITHUB.branch && GITHUB.path;
 }
-function setUIFromCfg(cfg){
-  el("ghOwner").value = cfg.owner||"";
-  el("ghRepo").value  = cfg.repo||"";
-  el("ghBranch").value= cfg.branch||"main";
-  el("ghPath").value  = cfg.path||"data.json";
-  el("ghToken").value = loadToken();
-  updateStatus();
+function apiUrl(){
+  return `https://api.github.com/repos/${GITHUB.owner}/${GITHUB.repo}/contents/${GITHUB.path}?ref=${encodeURIComponent(GITHUB.branch)}&ts=${Date.now()}`;
 }
-function updateStatus(){
-  el("srcStatus").textContent = currentSource;
-  el("shaStatus").textContent = lastSha ? lastSha.slice(0,12) : "—";
+function b64dec(b64){
+  const bin = atob((b64||"").replace(/\n/g,""));
+  const bytes = Uint8Array.from(bin, c=>c.charCodeAt(0));
+  return new TextDecoder().decode(bytes);
 }
-
-function apiUrl(cfg){
-  return `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${encodeURIComponent(cfg.branch)}&ts=${Date.now()}`;
-}
-function b64enc(str){ const bytes=new TextEncoder().encode(str); let bin=""; bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin); }
-function b64dec(b64){ const bin=atob(b64.replace(/\n/g,"")); const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0)); return new TextDecoder().decode(bytes); }
-
-async function ghGet(cfg, token){
-  const headers={ "Accept":"application/vnd.github+json" };
-  if(token) headers["Authorization"]=`token ${token}`;
-  const res=await fetch(apiUrl(cfg), { headers });
-  if(!res.ok) throw new Error(`GitHub GET ${res.status}`);
+async function loadFromLocal(){
+  const res=await fetch("./data.json?ts="+Date.now());
   const json=await res.json();
-  return { sha: json.sha, content: json.content, encoding: json.encoding };
+  if(!Array.isArray(json)) throw new Error("data.json invalide");
+  return json;
 }
-async function ghPut(cfg, token, contentStr, sha){
-  if(!token) throw new Error("Token requis");
-  const url=`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
-  const headers={
-    "Accept":"application/vnd.github+json",
-    "Authorization":`token ${token}`,
-    "Content-Type":"application/json"
-  };
-  const body={
-    message:`MAJ suivi com (${cfg.path})`,
-    content:b64enc(contentStr),
-    branch:cfg.branch,
-    sha:sha
-  };
-  const res=await fetch(url, {method:"PUT", headers, body:JSON.stringify(body)});
-  const json=await res.json().catch(()=>({}));
-  if(!res.ok) throw new Error(`GitHub PUT ${res.status}: ${JSON.stringify(json)}`);
-  return json?.content?.sha || null;
+async function loadFromGitHub(){
+  const res=await fetch(apiUrl(), {headers: {"Accept":"application/vnd.github+json"}});
+  if(!res.ok) throw new Error("GitHub GET " + res.status);
+  const j=await res.json();
+  const parsed = JSON.parse(b64dec(j.content));
+  if(!Array.isArray(parsed)) throw new Error("JSON GitHub invalide");
+  return parsed;
 }
 
-async function reloadGitHub(){
-  const cfg=cfgFromUI();
-  if(!cfg.owner||!cfg.repo) throw new Error("Renseigne owner + repo");
-  const token=loadToken();
-  const f=await ghGet(cfg, token);
-  lastSha=f.sha; currentSource="github"; updateStatus();
-  const parsed=JSON.parse(b64dec(f.content));
-  if(!Array.isArray(parsed)) throw new Error("Le fichier n'est pas une liste JSON.");
-  data=parsed;
-  rerender();
-}
-async function publishGitHub(){
-  const cfg=cfgFromUI();
-  if(!cfg.owner||!cfg.repo) return alert("Renseigne owner + repo");
-  const token=el("ghToken").value.trim();
-  if(!token) return alert("Token requis");
-  saveToken(token);
-
-  // refresh sha just before publish
-  let cur = await ghGet(cfg, token);
-  lastSha=cur.sha; currentSource="github"; updateStatus();
-
-  const payload = JSON.stringify(data, null, 2);
+async function refresh(){
   try{
-    const newSha = await ghPut(cfg, token, payload, cur.sha);
-    lastSha = newSha || lastSha;
-    updateStatus();
-    await reloadGitHub();
-    alert("Publié ✅");
+    setSync("…");
+    const json = cfgReady() ? await loadFromGitHub() : await loadFromLocal();
+    data = json;
+    lastUpdatedAt = Date.now();
+    fillFilters();
+    render();
+    setSrc(cfgReady() ? `${GITHUB.owner}/${GITHUB.repo}` : "GitHub Pages (local)");
+    setSync("OK");
   }catch(e){
-    const msg=String(e.message||e);
-    if(msg.includes("409") || msg.includes("conflict")){
-      try{
-        cur=await ghGet(cfg, token);
-        const newSha=await ghPut(cfg, token, payload, cur.sha);
-        lastSha=newSha||cur.sha;
-        await reloadGitHub();
-        alert("Publié ✅ (conflit résolu)");
-      }catch(e2){
-        alert("Conflit : recharger puis republier.\n"+e2.message);
-      }
-      return;
-    }
-    alert("Erreur :\n"+msg);
+    setSync("erreur");
+    console.error(e);
   }
 }
 
-async function checkRemote(){
-  const cfg=cfgFromUI();
-  if(!cfg.owner||!cfg.repo) return;
-  try{
-    const f=await ghGet(cfg, loadToken());
-    if(lastSha && f.sha && f.sha!==lastSha){
-      await reloadGitHub();
-    }else{
-      currentSource="github"; lastSha=f.sha; updateStatus();
-    }
-  }catch(e){}
-}
-function startAuto(){
-  if(refreshTimer) clearInterval(refreshTimer);
-  refreshTimer=setInterval(checkRemote, 20000);
-}
-
-// ===== Flash hebdo =====
-function buildFlash(){
-  const list=applyFilters(data);
-  const prio=list.filter(x=>x.priorite==="P1" && x.statutAuto!=="Fait").slice(0,12);
-  const block=list.filter(x=>x.statutAuto==="Bloqué" || isLate(x)).slice(0,12);
-  const lines=[];
-  lines.push(`FLASH COM — semaine du ${todayISO()}`, "");
-  lines.push("🎯 Priorités :");
-  lines.push(prio.length? prio.map(x=>`- ${x.id} (Resp ${x.responsable||"?"}, Éch ${x.echeance||"—"}) — ${x.action}`).join("\n") : "- (à compléter)");
-  lines.push(""); lines.push("⛔ Blocages / Retards :");
-  lines.push(block.length? block.map(x=>`- ${x.id} [${isLate(x)?"EN RETARD":x.statutAuto.toUpperCase()}] — ${x.action}`).join("\n") : "- Aucun 🎉");
-  el("flash").value=lines.join("\n");
-}
-function copyFlash(){ navigator.clipboard.writeText(el("flash").value).then(()=>alert("Copié ✅")).catch(()=>alert("Copie impossible")); }
-
-// ===== Init =====
-async function init(){
-  const cfg=loadCfg();
-  setUIFromCfg(cfg);
-
-  // load local first
-  try{
-    const res=await fetch("./data.json?ts="+Date.now());
-    const local=await res.json();
-    if(Array.isArray(local)){
-      data=local;
-      currentSource="local";
-      lastSha=null;
-      rerender();
-      buildFlash();
-    }
-  }catch(e){}
-
-  // if cfg filled, load github
-  if(cfg.owner && cfg.repo){
-    try{ await reloadGitHub(); buildFlash(); }catch(e){ /* keep local */ }
-  }
-  startAuto();
-  buildFlash();
-}
-
-tabs.forEach(t=>t.addEventListener("click", ()=>setTab(t.dataset.tab)));
-["q","fCat","fResp","fStatut","fPrio"].forEach(id=>el(id).addEventListener("input", ()=>rerender()));
-el("btnReset").addEventListener("click", ()=>{ el("q").value=""; el("fCat").value=""; el("fResp").value=""; el("fStatut").value=""; el("fPrio").value=""; setTab("themes"); });
-el("btnBack").addEventListener("click", ()=>{ el("fCat").value=""; setTab("themes"); });
-
-el("mClose").addEventListener("click", closeModal);
-el("mCancel").addEventListener("click", closeModal);
-el("mSave").addEventListener("click", saveModal);
-el("modal").addEventListener("click", (e)=>{ if(e.target.id==="modal") closeModal(); });
-
-el("btnBuildFlash").addEventListener("click", buildFlash);
-el("btnCopyFlash").addEventListener("click", copyFlash);
-
-el("btnSaveCfg").addEventListener("click", ()=>{
-  const cfg=cfgFromUI();
-  saveCfg(cfg);
-  saveToken(el("ghToken").value.trim());
-  alert("OK ✅");
+document.getElementById("btnReset").addEventListener("click", resetAll);
+["q","fTool","fTheme","fResp","fStat","fPrio"].forEach(id=>{
+  el(id).addEventListener("input", ()=>{
+    // when user uses filters, keep navigation but list respects filters
+    render();
+  });
 });
-el("btnForgetCfg").addEventListener("click", ()=>{
-  if(!confirm("Oublier paramètres + token sur cet ordinateur ?")) return;
-  forgetAll();
-  setUIFromCfg({...DEFAULT_CFG});
-  alert("OK.");
+document.getElementById("btnAdmin").addEventListener("click", ()=>{
+  // open admin page in same tab
+  window.location.href = "./admin.html";
 });
-el("btnReload").addEventListener("click", async()=>{ try{ await reloadGitHub(); buildFlash(); }catch(e){ alert(e.message); }});
-el("btnPublish").addEventListener("click", publishGitHub);
 
-init();
+refresh();
+setInterval(refresh, REFRESH_MS);
 </script>
 </body>
 </html>
