@@ -1,0 +1,648 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Suivi communication — Live GitHub</title>
+<style>
+:root{
+  --bg:#0b1220; --text:#e8edf7; --muted:#a9b6d3; --line:rgba(255,255,255,.10);
+  --good:#2bd576; --warn:#ffb020; --bad:#ff5a6b; --info:#58a6ff;
+  --r:16px;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family: system-ui,-apple-system,Segoe UI,Roboto,Arial;
+  background: radial-gradient(1200px 600px at 10% 0%, rgba(88,166,255,.20), transparent 60%),
+              radial-gradient(900px 700px at 90% 10%, rgba(43,213,118,.12), transparent 55%),
+              var(--bg);
+  color:var(--text);
+}
+header{
+  position:sticky; top:0; z-index:40;
+  background:rgba(11,18,32,.88); backdrop-filter: blur(10px);
+  border-bottom:1px solid var(--line);
+  padding:14px 14px 10px;
+}
+.wrap{max-width:1180px; margin:0 auto;}
+h1{margin:0; font-size:18px; font-weight:950}
+.sub{margin-top:6px; color:var(--muted); font-size:13px; line-height:1.35}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:10px}
+input,select,textarea{
+  background:rgba(255,255,255,.06); border:1px solid var(--line); color:var(--text);
+  padding:9px 10px; border-radius:12px; outline:none; font-size:13px;
+}
+textarea{min-height:90px; resize:vertical}
+.btn{
+  border:1px solid var(--line);
+  background:rgba(255,255,255,.08);
+  color:var(--text);
+  padding:8px 10px; border-radius:12px;
+  cursor:pointer; font-weight:900; font-size:13px;
+}
+.btn.primary{border-color:rgba(88,166,255,.35); background:rgba(88,166,255,.14)}
+.btn.danger{border-color:rgba(255,90,107,.35); background:rgba(255,90,107,.12)}
+.tab{
+  padding:8px 10px; border-radius:12px; border:1px solid var(--line);
+  color:var(--muted); cursor:pointer; font-weight:950; font-size:13px;
+}
+.tab.active{color:var(--text); background:rgba(255,255,255,.08)}
+.grid{display:grid; grid-template-columns:1fr; gap:12px; padding:14px}
+@media(min-width:980px){ .grid{grid-template-columns: 380px 1fr;} }
+.card{
+  border:1px solid var(--line);
+  background:linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.05));
+  border-radius:var(--r);
+}
+.card h2{
+  margin:0; padding:14px 14px 0;
+  font-size:13px; color:var(--muted); font-weight:950;
+  text-transform:uppercase; letter-spacing:.3px;
+}
+.card .content{padding:12px 14px 14px}
+.hint{color:var(--muted); font-size:12px; line-height:1.35}
+.pill{
+  display:inline-flex; align-items:center; gap:6px;
+  border:1px solid var(--line); background:rgba(255,255,255,.08);
+  padding:5px 8px; border-radius:999px; font-weight:900; font-size:12px; color:var(--muted)
+}
+.dot{width:8px; height:8px; border-radius:50%}
+.dot.good{background:var(--good)} .dot.warn{background:var(--warn)} .dot.bad{background:var(--bad)} .dot.info{background:var(--info)}
+.kpis{display:grid; grid-template-columns:repeat(2,1fr); gap:10px}
+.kpi{border:1px solid var(--line); background:rgba(0,0,0,.20); border-radius:14px; padding:10px}
+.kpi .n{margin:0; font-size:22px; font-weight:950}
+
+.themes{display:grid; grid-template-columns:1fr; gap:12px}
+@media(min-width:720px){.themes{grid-template-columns:repeat(2,1fr)}}
+@media(min-width:1060px){.themes{grid-template-columns:repeat(3,1fr)}}
+.theme{
+  border:1px solid var(--line);
+  border-radius:16px;
+  background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.05));
+  overflow:hidden; cursor:pointer;
+}
+.theme .bar{height:6px; background:var(--theme); opacity:.95}
+.theme .b{padding:12px}
+.theme .t{font-weight:950}
+.theme .m{color:var(--muted); font-size:12px; margin-top:4px}
+.theme .metrics{display:flex; gap:8px; flex-wrap:wrap; margin-top:10px}
+.metric{border:1px solid rgba(255,255,255,.12); background:rgba(0,0,0,.18); border-radius:999px; padding:5px 8px; font-size:11px; color:var(--muted); font-weight:950}
+.metric b{color:var(--text)}
+.metric.bad b{color:var(--bad)} .metric.warn b{color:var(--warn)} .metric.info b{color:var(--info)}
+
+details.task{
+  border:1px solid rgba(255,255,255,.12);
+  border-radius:14px;
+  background:linear-gradient(180deg, rgba(255,255,255,.08), rgba(255,255,255,.05));
+  border-left:6px solid var(--theme, rgba(255,255,255,.12));
+  margin:10px 0; overflow:hidden;
+}
+details.task summary{
+  cursor:pointer; list-style:none;
+  padding:10px;
+  display:flex; flex-direction:column; gap:6px;
+}
+details.task summary::-webkit-details-marker{display:none}
+.tId{font-weight:900; font-size:12px; color:var(--muted)}
+.tAction{font-weight:950}
+.tPills{display:flex; gap:8px; flex-wrap:wrap}
+.tBody{border-top:1px solid rgba(255,255,255,.10); padding:10px}
+.kv{display:grid; grid-template-columns:120px 1fr; gap:6px 10px; font-size:13px}
+.kv div:nth-child(odd){color:var(--muted); font-weight:950}
+.badgeLate{color:var(--bad); font-weight:950}
+
+details.adv{border:1px solid var(--line); border-radius:14px; padding:10px; background:rgba(0,0,0,.18); margin-top:10px}
+details.adv summary{cursor:pointer; font-weight:950; color:var(--muted)}
+
+.modal{position:fixed; inset:0; background:rgba(0,0,0,.55); display:none; align-items:center; justify-content:center; padding:16px; z-index:100}
+.modal.open{display:flex}
+.modalbox{width:min(820px,100%); border:1px solid var(--line); border-radius:18px; background:rgba(17,26,46,.96); overflow:hidden}
+.modalhead{display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid var(--line)}
+.modalhead .t{font-weight:950}
+.modalbody{padding:14px}
+.two{display:grid; grid-template-columns:1fr; gap:10px}
+@media(min-width:820px){.two{grid-template-columns:1fr 1fr}}
+label{display:block; font-size:12px; color:var(--muted); font-weight:950; margin:0 0 6px 2px}
+.foot{display:flex; justify-content:flex-end; gap:10px; padding:12px 14px; border-top:1px solid var(--line)}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div style="display:flex; gap:12px; align-items:flex-start; justify-content:space-between; flex-wrap:wrap">
+      <div>
+        <h1>Suivi communication — Live GitHub</h1>
+        <div class="sub"><b>Lecture pour tous.</b> Écriture uniquement si <b>token GitHub</b> saisi.<br>Cliquer un <b>thème</b> → liste → modifier → <b>Publier</b>.</div>
+      </div>
+      <div style="display:flex; gap:8px; align-items:center">
+        <div class="tab active" data-tab="themes">Thèmes</div>
+        <div class="tab" data-tab="actions">Actions</div>
+      </div>
+    </div>
+
+    <div class="row">
+      <input id="q" type="search" placeholder="Rechercher…" style="flex:1; min-width:220px">
+      <select id="fCat"><option value="">Thème (tous)</option></select>
+      <select id="fResp"><option value="">Responsable (tous)</option></select>
+      <select id="fStatut"><option value="">Statut (tous)</option></select>
+      <select id="fPrio"><option value="">Priorité (toutes)</option></select>
+      <button class="btn" id="btnReset">Réinitialiser</button>
+      <button class="btn primary" id="btnBack" style="display:none">← Retour</button>
+    </div>
+
+    <details class="adv">
+      <summary>Paramètres GitHub + publication</summary>
+      <div class="row">
+        <input id="ghOwner" placeholder="owner" style="min-width:200px">
+        <input id="ghRepo" placeholder="repo" style="min-width:200px">
+        <input id="ghBranch" placeholder="branch (main)" style="min-width:140px">
+        <input id="ghPath" placeholder="fichier (data.json)" style="min-width:180px">
+      </div>
+      <div class="row">
+        <input id="ghToken" type="password" placeholder="Token GitHub (Contents: write)" style="flex:1; min-width:260px">
+        <button class="btn" id="btnSaveCfg">Enregistrer</button>
+        <button class="btn danger" id="btnForgetCfg">Oublier</button>
+      </div>
+      <div class="row">
+        <span class="pill">Source</span> <span class="hint" id="srcStatus">—</span>
+        <span class="pill">SHA</span> <span class="hint" id="shaStatus">—</span>
+        <span class="pill">Auto</span> <span class="hint">20s</span>
+      </div>
+      <div class="row">
+        <button class="btn primary" id="btnPublish">Publier (commit)</button>
+        <button class="btn" id="btnReload">Recharger GitHub</button>
+      </div>
+      <div class="hint">Conseil : token <b>fine‑grained</b>, limité à ce repo, permission <b>Contents: write</b>.</div>
+    </details>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="grid">
+    <section class="card">
+      <h2>Indicateurs</h2>
+      <div class="content">
+        <div class="kpis" id="kpis"></div>
+        <div class="hint" id="hint"></div>
+      </div>
+
+      <h2>Flash hebdo</h2>
+      <div class="content">
+        <div class="hint">Le flash reprend la vue courante (filtres).</div>
+        <textarea id="flash" spellcheck="false"></textarea>
+        <div class="row">
+          <button class="btn primary" id="btnBuildFlash">Générer</button>
+          <button class="btn" id="btnCopyFlash">Copier</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 id="viewTitle">Thèmes</h2>
+      <div class="content" id="view"></div>
+    </section>
+  </div>
+</main>
+
+<div class="modal" id="modal">
+  <div class="modalbox">
+    <div class="modalhead">
+      <div class="t" id="mTitle">Action</div>
+      <button class="btn" id="mClose">Fermer</button>
+    </div>
+    <div class="modalbody">
+      <div class="two">
+        <div><label>ID</label><input id="mId" disabled></div>
+        <div><label>Thème</label><input id="mCat"></div>
+        <div><label>Responsable</label><input id="mResp"></div>
+        <div><label>Statut</label><select id="mStatut"></select></div>
+        <div><label>Priorité</label><select id="mPrio"></select></div>
+        <div><label>Échéance</label><input id="mEch" type="date"></div>
+        <div><label>Dépendances</label><input id="mDep" placeholder="A02,A03"></div>
+      </div>
+      <div style="margin-top:10px">
+        <label>Action</label><textarea id="mAction"></textarea>
+      </div>
+      <div style="margin-top:10px">
+        <label>Notes</label><textarea id="mNotes"></textarea>
+      </div>
+      <div class="hint" style="margin-top:10px">Ensuite : <b>Publier</b> pour partager à tout le monde.</div>
+    </div>
+    <div class="foot">
+      <button class="btn" id="mCancel">Annuler</button>
+      <button class="btn primary" id="mSave">Enregistrer (local)</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CFG_KEY="suivi_comm_cfg_v1", TOKEN_KEY="suivi_comm_token_v1";
+const DEFAULT_CFG={owner:"",repo:"",branch:"main",path:"data.json"};
+const STATUTS=["À faire","En cours","Bloqué","Fait","En retard"];
+const PRIOS=["P1","P2","P3"];
+const el=id=>document.getElementById(id);
+const tabs=[...document.querySelectorAll(".tab")];
+
+let data=[], activeTab="themes", lastSha=null, currentSource="local", refreshTimer=null;
+
+function todayISO(){const d=new Date(), tz=d.getTimezoneOffset()*60000; return new Date(d-tz).toISOString().slice(0,10);}
+function isLate(t){return t.echeance && t.statut!=="Fait" && t.echeance<todayISO();}
+function dotClass(st){return st==="Fait"?"good":st==="En cours"?"info":st==="Bloqué"?"warn":st==="En retard"?"bad":"";}
+function themeColor(name){const s=(name||"Sans thème").toLowerCase(); let h=0; for(let i=0;i<s.length;i++) h=((h<<5)-h)+s.charCodeAt(i), h|=0; return `hsl(${Math.abs(h)%360} 78% 55%)`; }
+function unique(list,key){return [...new Set(list.map(x=>x[key]).filter(Boolean))].sort((a,b)=>a.localeCompare(b));}
+
+function applyFilters(list){
+  const q=el("q").value.trim().toLowerCase();
+  const cat=el("fCat").value, st=el("fStatut").value, rp=el("fResp").value, pr=el("fPrio").value;
+  return list.filter(x=>{
+    if(cat && (x.categorie||"")!==cat) return false;
+    if(st && x.statut!==st) return false;
+    if(rp && x.responsable!==rp) return false;
+    if(pr && x.priorite!==pr) return false;
+    if(q){
+      const blob=`${x.id} ${x.categorie||""} ${x.outil||""} ${x.action||""} ${x.responsable||""} ${x.notes||""} ${x.dependance||""}`.toLowerCase();
+      if(!blob.includes(q)) return false;
+    }
+    return true;
+  }).map(x=>{
+    const late=isLate(x);
+    return late && x.statut!=="En retard" ? {...x, statutAuto:"En retard"} : {...x, statutAuto:x.statut};
+  });
+}
+
+function fillFilters(){
+  el("fCat").innerHTML=`<option value="">Thème (tous)</option>` + unique(data,"categorie").map(c=>`<option value="${c}">${c}</option>`).join("");
+  el("fResp").innerHTML=`<option value="">Responsable (tous)</option>` + unique(data,"responsable").map(r=>`<option value="${r}">${r}</option>`).join("");
+  el("fStatut").innerHTML=`<option value="">Statut (tous)</option>` + STATUTS.map(s=>`<option value="${s}">${s}</option>`).join("");
+  el("fPrio").innerHTML=`<option value="">Priorité (toutes)</option>` + PRIOS.map(p=>`<option value="${p}">${p}</option>`).join("");
+}
+
+function renderKpis(list){
+  const by=s=>list.filter(x=>x.statutAuto===s).length;
+  const late=list.filter(x=>isLate(x)).length;
+  const k=[
+    {n:list.length,l:"Actions (vue)"},
+    {n:by("Fait"),l:"Fait",c:"good"},
+    {n:by("En cours"),l:"En cours",c:"info"},
+    {n:by("Bloqué"),l:"Bloqué",c:"warn"},
+    {n:late,l:"En retard",c:"bad"},
+  ];
+  el("kpis").innerHTML=k.map(x=>`
+    <div class="kpi">
+      <div class="pill"><span class="dot ${x.c||""}"></span>${x.l}</div>
+      <p class="n">${x.n}</p>
+    </div>`).join("");
+  el("hint").innerHTML=`Source : <b>${currentSource}</b> · SHA : <b>${lastSha?lastSha.slice(0,7):"—"}</b>`;
+}
+
+function openTheme(theme){
+  el("fCat").value = theme;
+  setTab("actions");
+  rerender();
+}
+window.openTheme=openTheme;
+
+function renderThemes(){
+  const q=el("q").value.trim().toLowerCase(), st=el("fStatut").value, rp=el("fResp").value, pr=el("fPrio").value;
+  const filtered=data.filter(x=>{
+    if(st && x.statut!==st) return false;
+    if(rp && x.responsable!==rp) return false;
+    if(pr && x.priorite!==pr) return false;
+    if(q){
+      const blob=`${x.id} ${x.categorie||""} ${x.outil||""} ${x.action||""} ${x.responsable||""} ${x.notes||""} ${x.dependance||""}`.toLowerCase();
+      if(!blob.includes(q)) return false;
+    }
+    return true;
+  }).map(x=> isLate(x) && x.statut!=="En retard" ? {...x, statutAuto:"En retard"} : {...x, statutAuto:x.statut});
+
+  const map=new Map();
+  for(const it of filtered){
+    const t=it.categorie||"Sans thème";
+    if(!map.has(t)) map.set(t, []);
+    map.get(t).push(it);
+  }
+  const groups=[...map.entries()].sort((a,b)=>a[0].localeCompare(b[0]));
+
+  el("viewTitle").textContent="Thèmes";
+  el("view").innerHTML = `
+    <div class="themes">
+      ${groups.map(([theme, items])=>{
+        const color=themeColor(theme);
+        const total=items.length;
+        const late=items.filter(x=>isLate(x)).length;
+        const blocked=items.filter(x=>x.statutAuto==="Bloqué").length;
+        const p1=items.filter(x=>x.priorite==="P1" && x.statutAuto!=="Fait").length;
+        return `
+          <div class="theme" style="--theme:${color}" onclick="openTheme('${theme.replace(/'/g,"\\'")}')">
+            <div class="bar"></div>
+            <div class="b">
+              <div class="t">${theme}</div>
+              <div class="m">${total} action(s)</div>
+              <div class="metrics">
+                <span class="metric">Total <b>${total}</b></span>
+                <span class="metric info">P1 <b>${p1}</b></span>
+                <span class="metric warn">Bloqué <b>${blocked}</b></span>
+                <span class="metric bad">Retard <b>${late}</b></span>
+              </div>
+            </div>
+          </div>`;
+      }).join("")}
+    </div>
+    <div class="hint" style="margin-top:12px">Clique un thème pour afficher les actions de ce thème.</div>
+  `;
+}
+
+function taskCard(t){
+  const theme=t.categorie||"Sans thème";
+  const color=themeColor(theme);
+  const st=t.statutAuto;
+  const ech = t.echeance ? (isLate(t) ? `<span class="badgeLate">${t.echeance}</span>` : t.echeance) : "—";
+  const dep=t.dependance||"—", notes=t.notes||"—", outil=t.outil||"—";
+  return `
+    <details class="task" style="--theme:${color}">
+      <summary>
+        <div class="tId">${t.id} · <span style="color:${color}; font-weight:950">${theme}</span></div>
+        <div class="tAction">${t.action}</div>
+        <div class="tPills">
+          <span class="pill"><span class="dot ${dotClass(st)}"></span>${st}</span>
+          <span class="pill">Resp: ${t.responsable||"—"}</span>
+          <span class="pill">Prio: ${t.priorite||"—"}</span>
+          <span class="pill">Éch: ${ech}</span>
+        </div>
+      </summary>
+      <div class="tBody">
+        <div class="kv">
+          <div>Outil</div><div>${outil}</div>
+          <div>Dépendance</div><div>${dep}</div>
+          <div>Notes</div><div>${notes}</div>
+        </div>
+        <div class="row" style="margin-top:10px">
+          <button class="btn primary" onclick="event.preventDefault(); event.stopPropagation(); openModal('${t.id}')">Modifier</button>
+        </div>
+      </div>
+    </details>
+  `;
+}
+
+function renderActions(){
+  const list=applyFilters(data);
+  el("viewTitle").textContent = el("fCat").value ? `Actions — ${el("fCat").value}` : "Actions";
+  const rows=list.slice().sort((a,b)=>{
+    const al=isLate(a), bl=isLate(b);
+    if(al!==bl) return al?-1:1;
+    const ap=a.priorite||"P9", bp=b.priorite||"P9";
+    if(ap!==bp) return ap.localeCompare(bp);
+    return (a.echeance||"9999-12-31").localeCompare(b.echeance||"9999-12-31");
+  });
+  el("view").innerHTML = rows.length ? rows.map(taskCard).join("") : `<div class="hint">Aucune action.</div>`;
+}
+
+function rerender(){
+  const list=applyFilters(data);
+  renderKpis(list);
+  fillFilters();
+  if(activeTab==="themes") renderThemes(); else renderActions();
+}
+
+function setTab(name){
+  activeTab=name;
+  tabs.forEach(t=>t.classList.toggle("active", t.dataset.tab===name));
+  el("btnBack").style.display = (name==="actions" && el("fCat").value) ? "inline-flex" : "none";
+  rerender();
+}
+
+function openModal(id){
+  const t=data.find(x=>x.id===id);
+  if(!t) return;
+  el("mTitle").textContent = `${t.id} — ${t.categorie||""}`;
+  el("mId").value=t.id;
+  el("mCat").value=t.categorie||"";
+  el("mResp").value=t.responsable||"";
+  el("mStatut").innerHTML=STATUTS.map(s=>`<option value="${s}">${s}</option>`).join("");
+  el("mStatut").value=t.statut||"À faire";
+  el("mPrio").innerHTML=PRIOS.map(p=>`<option value="${p}">${p}</option>`).join("");
+  el("mPrio").value=t.priorite||"P2";
+  el("mEch").value=t.echeance||"";
+  el("mDep").value=t.dependance||"";
+  el("mAction").value=t.action||"";
+  el("mNotes").value=t.notes||"";
+  el("modal").classList.add("open");
+}
+function closeModal(){ el("modal").classList.remove("open"); }
+function saveModal(){
+  const id=el("mId").value;
+  const idx=data.findIndex(x=>x.id===id);
+  if(idx<0) return;
+  data[idx]={...data[idx],
+    categorie: el("mCat").value.trim(),
+    responsable: el("mResp").value.trim(),
+    statut: el("mStatut").value,
+    priorite: el("mPrio").value,
+    echeance: el("mEch").value,
+    dependance: el("mDep").value.trim(),
+    action: el("mAction").value.trim(),
+    notes: el("mNotes").value.trim(),
+  };
+  rerender();
+  closeModal();
+}
+
+// ===== GitHub live read/write =====
+function loadCfg(){ try{ const raw=localStorage.getItem(CFG_KEY); return raw?{...DEFAULT_CFG,...JSON.parse(raw)}:{...DEFAULT_CFG}; }catch(e){ return {...DEFAULT_CFG}; } }
+function saveCfg(cfg){ localStorage.setItem(CFG_KEY, JSON.stringify(cfg)); }
+function loadToken(){ return localStorage.getItem(TOKEN_KEY)||""; }
+function saveToken(t){ localStorage.setItem(TOKEN_KEY, t||""); }
+function forgetAll(){ localStorage.removeItem(CFG_KEY); localStorage.removeItem(TOKEN_KEY); }
+
+function cfgFromUI(){
+  return {
+    owner: el("ghOwner").value.trim(),
+    repo: el("ghRepo").value.trim(),
+    branch: (el("ghBranch").value.trim()||"main"),
+    path: (el("ghPath").value.trim()||"data.json"),
+  };
+}
+function setUIFromCfg(cfg){
+  el("ghOwner").value = cfg.owner||"";
+  el("ghRepo").value  = cfg.repo||"";
+  el("ghBranch").value= cfg.branch||"main";
+  el("ghPath").value  = cfg.path||"data.json";
+  el("ghToken").value = loadToken();
+  updateStatus();
+}
+function updateStatus(){
+  el("srcStatus").textContent = currentSource;
+  el("shaStatus").textContent = lastSha ? lastSha.slice(0,12) : "—";
+}
+
+function apiUrl(cfg){
+  return `https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}?ref=${encodeURIComponent(cfg.branch)}&ts=${Date.now()}`;
+}
+function b64enc(str){ const bytes=new TextEncoder().encode(str); let bin=""; bytes.forEach(b=>bin+=String.fromCharCode(b)); return btoa(bin); }
+function b64dec(b64){ const bin=atob(b64.replace(/\n/g,"")); const bytes=Uint8Array.from(bin,c=>c.charCodeAt(0)); return new TextDecoder().decode(bytes); }
+
+async function ghGet(cfg, token){
+  const headers={ "Accept":"application/vnd.github+json" };
+  if(token) headers["Authorization"]=`token ${token}`;
+  const res=await fetch(apiUrl(cfg), { headers });
+  if(!res.ok) throw new Error(`GitHub GET ${res.status}`);
+  const json=await res.json();
+  return { sha: json.sha, content: json.content, encoding: json.encoding };
+}
+async function ghPut(cfg, token, contentStr, sha){
+  if(!token) throw new Error("Token requis");
+  const url=`https://api.github.com/repos/${cfg.owner}/${cfg.repo}/contents/${cfg.path}`;
+  const headers={
+    "Accept":"application/vnd.github+json",
+    "Authorization":`token ${token}`,
+    "Content-Type":"application/json"
+  };
+  const body={
+    message:`MAJ suivi com (${cfg.path})`,
+    content:b64enc(contentStr),
+    branch:cfg.branch,
+    sha:sha
+  };
+  const res=await fetch(url, {method:"PUT", headers, body:JSON.stringify(body)});
+  const json=await res.json().catch(()=>({}));
+  if(!res.ok) throw new Error(`GitHub PUT ${res.status}: ${JSON.stringify(json)}`);
+  return json?.content?.sha || null;
+}
+
+async function reloadGitHub(){
+  const cfg=cfgFromUI();
+  if(!cfg.owner||!cfg.repo) throw new Error("Renseigne owner + repo");
+  const token=loadToken();
+  const f=await ghGet(cfg, token);
+  lastSha=f.sha; currentSource="github"; updateStatus();
+  const parsed=JSON.parse(b64dec(f.content));
+  if(!Array.isArray(parsed)) throw new Error("Le fichier n'est pas une liste JSON.");
+  data=parsed;
+  rerender();
+}
+async function publishGitHub(){
+  const cfg=cfgFromUI();
+  if(!cfg.owner||!cfg.repo) return alert("Renseigne owner + repo");
+  const token=el("ghToken").value.trim();
+  if(!token) return alert("Token requis");
+  saveToken(token);
+
+  // refresh sha just before publish
+  let cur = await ghGet(cfg, token);
+  lastSha=cur.sha; currentSource="github"; updateStatus();
+
+  const payload = JSON.stringify(data, null, 2);
+  try{
+    const newSha = await ghPut(cfg, token, payload, cur.sha);
+    lastSha = newSha || lastSha;
+    updateStatus();
+    await reloadGitHub();
+    alert("Publié ✅");
+  }catch(e){
+    const msg=String(e.message||e);
+    if(msg.includes("409") || msg.includes("conflict")){
+      try{
+        cur=await ghGet(cfg, token);
+        const newSha=await ghPut(cfg, token, payload, cur.sha);
+        lastSha=newSha||cur.sha;
+        await reloadGitHub();
+        alert("Publié ✅ (conflit résolu)");
+      }catch(e2){
+        alert("Conflit : recharger puis republier.\n"+e2.message);
+      }
+      return;
+    }
+    alert("Erreur :\n"+msg);
+  }
+}
+
+async function checkRemote(){
+  const cfg=cfgFromUI();
+  if(!cfg.owner||!cfg.repo) return;
+  try{
+    const f=await ghGet(cfg, loadToken());
+    if(lastSha && f.sha && f.sha!==lastSha){
+      await reloadGitHub();
+    }else{
+      currentSource="github"; lastSha=f.sha; updateStatus();
+    }
+  }catch(e){}
+}
+function startAuto(){
+  if(refreshTimer) clearInterval(refreshTimer);
+  refreshTimer=setInterval(checkRemote, 20000);
+}
+
+// ===== Flash hebdo =====
+function buildFlash(){
+  const list=applyFilters(data);
+  const prio=list.filter(x=>x.priorite==="P1" && x.statutAuto!=="Fait").slice(0,12);
+  const block=list.filter(x=>x.statutAuto==="Bloqué" || isLate(x)).slice(0,12);
+  const lines=[];
+  lines.push(`FLASH COM — semaine du ${todayISO()}`, "");
+  lines.push("🎯 Priorités :");
+  lines.push(prio.length? prio.map(x=>`- ${x.id} (Resp ${x.responsable||"?"}, Éch ${x.echeance||"—"}) — ${x.action}`).join("\n") : "- (à compléter)");
+  lines.push(""); lines.push("⛔ Blocages / Retards :");
+  lines.push(block.length? block.map(x=>`- ${x.id} [${isLate(x)?"EN RETARD":x.statutAuto.toUpperCase()}] — ${x.action}`).join("\n") : "- Aucun 🎉");
+  el("flash").value=lines.join("\n");
+}
+function copyFlash(){ navigator.clipboard.writeText(el("flash").value).then(()=>alert("Copié ✅")).catch(()=>alert("Copie impossible")); }
+
+// ===== Init =====
+async function init(){
+  const cfg=loadCfg();
+  setUIFromCfg(cfg);
+
+  // load local first
+  try{
+    const res=await fetch("./data.json?ts="+Date.now());
+    const local=await res.json();
+    if(Array.isArray(local)){
+      data=local;
+      currentSource="local";
+      lastSha=null;
+      rerender();
+      buildFlash();
+    }
+  }catch(e){}
+
+  // if cfg filled, load github
+  if(cfg.owner && cfg.repo){
+    try{ await reloadGitHub(); buildFlash(); }catch(e){ /* keep local */ }
+  }
+  startAuto();
+  buildFlash();
+}
+
+tabs.forEach(t=>t.addEventListener("click", ()=>setTab(t.dataset.tab)));
+["q","fCat","fResp","fStatut","fPrio"].forEach(id=>el(id).addEventListener("input", ()=>rerender()));
+el("btnReset").addEventListener("click", ()=>{ el("q").value=""; el("fCat").value=""; el("fResp").value=""; el("fStatut").value=""; el("fPrio").value=""; setTab("themes"); });
+el("btnBack").addEventListener("click", ()=>{ el("fCat").value=""; setTab("themes"); });
+
+el("mClose").addEventListener("click", closeModal);
+el("mCancel").addEventListener("click", closeModal);
+el("mSave").addEventListener("click", saveModal);
+el("modal").addEventListener("click", (e)=>{ if(e.target.id==="modal") closeModal(); });
+
+el("btnBuildFlash").addEventListener("click", buildFlash);
+el("btnCopyFlash").addEventListener("click", copyFlash);
+
+el("btnSaveCfg").addEventListener("click", ()=>{
+  const cfg=cfgFromUI();
+  saveCfg(cfg);
+  saveToken(el("ghToken").value.trim());
+  alert("OK ✅");
+});
+el("btnForgetCfg").addEventListener("click", ()=>{
+  if(!confirm("Oublier paramètres + token sur cet ordinateur ?")) return;
+  forgetAll();
+  setUIFromCfg({...DEFAULT_CFG});
+  alert("OK.");
+});
+el("btnReload").addEventListener("click", async()=>{ try{ await reloadGitHub(); buildFlash(); }catch(e){ alert(e.message); }});
+el("btnPublish").addEventListener("click", publishGitHub);
+
+init();
+</script>
+</body>
+</html>
