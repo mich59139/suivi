@@ -292,6 +292,16 @@
             border-color: var(--bleu-vizille);
         }
         
+        .btn-team {
+            background: var(--bleu-clair);
+            color: white;
+            border: none;
+        }
+        
+        .btn-team:hover {
+            background: var(--bleu-vizille);
+        }
+        
         .btn-github {
             background: #24292e;
             color: white;
@@ -685,6 +695,107 @@
             cursor: pointer;
         }
         
+        /* ===== TEAM MODAL ===== */
+        .team-list {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .team-member {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0.75rem 1rem;
+            background: var(--blanc-casse);
+            border-radius: var(--radius-sm);
+            margin-bottom: 0.5rem;
+            transition: all 0.2s ease;
+        }
+        
+        .team-member:hover {
+            background: var(--gris-doux);
+        }
+        
+        .team-member-name {
+            font-weight: 600;
+            color: var(--bleu-vizille);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .team-member-name::before {
+            content: '👤';
+        }
+        
+        .btn-remove-member {
+            background: transparent;
+            border: none;
+            color: var(--rouge-bloque);
+            font-size: 1.25rem;
+            cursor: pointer;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-remove-member:hover {
+            background: rgba(231, 76, 60, 0.1);
+        }
+        
+        .add-member-form {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 2px solid var(--gris-doux);
+        }
+        
+        .add-member-form input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--gris-doux);
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-family: inherit;
+        }
+        
+        .add-member-form input:focus {
+            outline: none;
+            border-color: var(--bleu-vizille);
+        }
+        
+        .btn-add-member {
+            background: var(--vert-fait);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.25rem;
+            border-radius: var(--radius-sm);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .btn-add-member:hover {
+            background: #219a52;
+        }
+        
+        .team-count {
+            text-align: center;
+            color: var(--gris-texte);
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid var(--gris-doux);
+        }
+        
+        .team-count strong {
+            color: var(--bleu-vizille);
+            font-family: 'Playfair Display', serif;
+        }
+        
         /* ===== RESPONSIVE ===== */
         @media (max-width: 768px) {
             .header-top {
@@ -884,6 +995,11 @@
             <span>Nouvelle</span>
         </button>
         
+        <button class="btn-action btn-team" id="btn-team">
+            <span>👥</span>
+            <span>Équipe</span>
+        </button>
+        
         <button class="btn-action btn-secondary" id="btn-export">
             <span>📥</span>
             <span>Export CSV</span>
@@ -899,6 +1015,32 @@
             <span>⚙️</span>
             <span id="github-status">GitHub</span>
         </button>
+    </div>
+    
+    <!-- TEAM MODAL -->
+    <div class="modal-overlay" id="team-modal-overlay">
+        <div class="modal" style="max-width: 450px;">
+            <div class="modal-header">
+                <h2>👥 Gestion de l'équipe</h2>
+                <button class="modal-close" id="team-modal-close">×</button>
+            </div>
+            <div class="modal-body">
+                <div class="team-count">
+                    <strong id="team-count-number">0</strong> membres dans l'équipe
+                </div>
+                <ul class="team-list" id="team-list">
+                    <!-- Membres générés dynamiquement -->
+                </ul>
+                <div class="add-member-form">
+                    <input type="text" id="new-member-name" placeholder="Nom du nouveau membre">
+                    <button class="btn-add-member" id="btn-add-member">➕ Ajouter</button>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <div style="flex:1"></div>
+                <button class="btn-cancel" id="team-modal-done">Terminé</button>
+            </div>
+        </div>
     </div>
     
     <!-- GITHUB CONFIG MODAL -->
@@ -972,7 +1114,7 @@
         </table>
     </div>
     
-    <!-- MODAL -->
+    <!-- MODAL ACTION -->
     <div class="modal-overlay" id="modal-overlay">
         <div class="modal">
             <div class="modal-header">
@@ -1015,10 +1157,7 @@
                         <div class="form-group">
                             <label for="form-responsable">Responsable</label>
                             <select id="form-responsable">
-                                <option value="Michel">Michel</option>
-                                <option value="Laurent">Laurent</option>
-                                <option value="Catherine">Catherine</option>
-                                <option value="Équipe">Équipe</option>
+                                <!-- Options générées dynamiquement -->
                             </select>
                         </div>
                         <div class="form-group">
@@ -1073,6 +1212,7 @@
         // ===== CONFIGURATION GITHUB =====
         const GITHUB_REPO = 'mich59139/suivi';
         const GITHUB_FILE = 'data/communication.json';
+        const GITHUB_TEAM_FILE = 'data/equipe.json';
         const GITHUB_BRANCH = 'main';
         
         // ===== DONNÉES =====
@@ -1096,11 +1236,15 @@
             { id: "COM-017", axe: "Site web", categorie: "Administration", tache: "Interface admin", description: "Panneau d'administration pour mise à jour autonome", responsable: "Michel", statut: "Fait", priorite: "Haute", echeance: "2025-02-28" }
         ];
         
+        const defaultTeam = ["Michel", "Laurent", "Catherine", "Équipe"];
+        
         let actions = JSON.parse(localStorage.getItem('vizille_actions')) || defaultData;
+        let team = JSON.parse(localStorage.getItem('vizille_team')) || defaultTeam;
         let filteredActions = [...actions];
         let currentView = 'cards';
         let editingId = null;
         let githubSha = null;
+        let githubTeamSha = null;
         
         // ===== FONCTIONS GITHUB =====
         function getGithubToken() { return localStorage.getItem('github_token') || ''; }
@@ -1153,17 +1297,31 @@
             if (!token) return false;
             try {
                 showSyncIndicator('Chargement depuis GitHub...');
+                
+                // Charger les actions
                 const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
                     headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
                 });
-                if (response.status === 404) { showSyncIndicator('Fichier non trouvé, création...', 'info'); return false; }
-                if (!response.ok) throw new Error(`Erreur: ${response.status}`);
-                const data = await response.json();
-                githubSha = data.sha;
-                // Décodage UTF-8 correct
-                const jsonContent = decodeBase64UTF8(data.content);
-                actions = JSON.parse(jsonContent);
-                localStorage.setItem('vizille_actions', JSON.stringify(actions));
+                if (response.ok) {
+                    const data = await response.json();
+                    githubSha = data.sha;
+                    const jsonContent = decodeBase64UTF8(data.content);
+                    actions = JSON.parse(jsonContent);
+                    localStorage.setItem('vizille_actions', JSON.stringify(actions));
+                }
+                
+                // Charger l'équipe
+                const teamResponse = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_TEAM_FILE}`, {
+                    headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+                });
+                if (teamResponse.ok) {
+                    const teamData = await teamResponse.json();
+                    githubTeamSha = teamData.sha;
+                    const teamContent = decodeBase64UTF8(teamData.content);
+                    team = JSON.parse(teamContent);
+                    localStorage.setItem('vizille_team', JSON.stringify(team));
+                }
+                
                 showSyncIndicator('Données chargées', 'success');
                 return true;
             } catch (error) { console.error(error); showSyncIndicator('Erreur chargement', 'error'); return false; }
@@ -1175,13 +1333,16 @@
             try {
                 document.getElementById('btn-github').classList.add('syncing');
                 showSyncIndicator('Synchronisation...');
+                
+                // Récupérer le SHA actuel si nécessaire
                 if (!githubSha) {
                     try {
                         const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
                         if (r.ok) githubSha = (await r.json()).sha;
                     } catch(e) {}
                 }
-                // Encodage UTF-8 correct
+                
+                // Sauvegarder les actions
                 const jsonContent = JSON.stringify(actions, null, 2);
                 const body = { 
                     message: `MAJ communication - ${new Date().toLocaleString('fr-FR')}`, 
@@ -1189,16 +1350,50 @@
                     branch: GITHUB_BRANCH 
                 };
                 if (githubSha) body.sha = githubSha;
+                
                 const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, {
                     method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body)
                 });
-                if (!response.ok) throw new Error((await response.json()).message);
-                const result = await response.json();
-                githubSha = result.content.sha;
+                if (response.ok) {
+                    const result = await response.json();
+                    githubSha = result.content.sha;
+                }
+                
                 document.getElementById('btn-github').classList.remove('syncing');
                 showSyncIndicator('Synchronisé ✓', 'success');
                 return true;
             } catch (error) { document.getElementById('btn-github').classList.remove('syncing'); showSyncIndicator('Erreur: ' + error.message, 'error'); return false; }
+        }
+        
+        async function saveTeamToGitHub() {
+            const token = getGithubToken();
+            if (!token) return false;
+            try {
+                // Récupérer le SHA actuel si nécessaire
+                if (!githubTeamSha) {
+                    try {
+                        const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_TEAM_FILE}`, { headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' } });
+                        if (r.ok) githubTeamSha = (await r.json()).sha;
+                    } catch(e) {}
+                }
+                
+                const jsonContent = JSON.stringify(team, null, 2);
+                const body = { 
+                    message: `MAJ équipe - ${new Date().toLocaleString('fr-FR')}`, 
+                    content: encodeBase64UTF8(jsonContent), 
+                    branch: GITHUB_BRANCH 
+                };
+                if (githubTeamSha) body.sha = githubTeamSha;
+                
+                const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_TEAM_FILE}`, {
+                    method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json', 'Content-Type': 'application/json' }, body: JSON.stringify(body)
+                });
+                if (response.ok) {
+                    const result = await response.json();
+                    githubTeamSha = result.content.sha;
+                }
+                return true;
+            } catch (error) { console.error(error); return false; }
         }
         
         async function testGithubConnection() {
@@ -1211,6 +1406,76 @@
                 if (r.ok) { statusDiv.style.background = '#efe'; statusDiv.style.color = '#080'; statusDiv.textContent = '✅ Connexion réussie !'; }
                 else { statusDiv.style.background = '#fee'; statusDiv.style.color = '#c00'; statusDiv.textContent = r.status === 401 ? '❌ Token invalide' : '❌ Erreur ' + r.status; }
             } catch (e) { statusDiv.style.background = '#fee'; statusDiv.style.color = '#c00'; statusDiv.textContent = '❌ ' + e.message; }
+        }
+        
+        // ===== GESTION ÉQUIPE =====
+        function renderTeamList() {
+            const list = document.getElementById('team-list');
+            document.getElementById('team-count-number').textContent = team.length;
+            list.innerHTML = team.map((member, index) => `
+                <li class="team-member">
+                    <span class="team-member-name">${member}</span>
+                    <button class="btn-remove-member" data-index="${index}" title="Supprimer">✕</button>
+                </li>
+            `).join('');
+            
+            // Event listeners pour suppression
+            list.querySelectorAll('.btn-remove-member').forEach(btn => {
+                btn.addEventListener('click', () => removeMember(parseInt(btn.dataset.index)));
+            });
+        }
+        
+        function updateResponsableSelects() {
+            const options = team.map(m => `<option value="${m}">${m}</option>`).join('');
+            document.getElementById('form-responsable').innerHTML = options;
+            
+            // Mettre à jour le filtre aussi
+            document.getElementById('filter-responsable').innerHTML = '<option value="">Tous responsables</option>' + options;
+        }
+        
+        function addMember() {
+            const input = document.getElementById('new-member-name');
+            const name = input.value.trim();
+            if (!name) { alert('Entrez un nom'); return; }
+            if (team.includes(name)) { alert('Ce membre existe déjà'); return; }
+            
+            team.push(name);
+            localStorage.setItem('vizille_team', JSON.stringify(team));
+            if (isGithubConnected()) saveTeamToGitHub();
+            
+            input.value = '';
+            renderTeamList();
+            updateResponsableSelects();
+            populateFilters();
+        }
+        
+        function removeMember(index) {
+            const member = team[index];
+            
+            // Vérifier si des actions utilisent ce membre
+            const actionsWithMember = actions.filter(a => a.responsable === member);
+            if (actionsWithMember.length > 0) {
+                if (!confirm(`${member} est responsable de ${actionsWithMember.length} action(s). Supprimer quand même ?`)) {
+                    return;
+                }
+            }
+            
+            team.splice(index, 1);
+            localStorage.setItem('vizille_team', JSON.stringify(team));
+            if (isGithubConnected()) saveTeamToGitHub();
+            
+            renderTeamList();
+            updateResponsableSelects();
+            populateFilters();
+        }
+        
+        function openTeamModal() {
+            renderTeamList();
+            document.getElementById('team-modal-overlay').classList.add('active');
+        }
+        
+        function closeTeamModal() {
+            document.getElementById('team-modal-overlay').classList.remove('active');
         }
         
         // ===== UTILITAIRES =====
@@ -1237,7 +1502,7 @@
         
         // ===== FILTRES =====
         function populateFilters() {
-            document.getElementById('filter-responsable').innerHTML = '<option value="">Tous responsables</option>' + [...new Set(actions.map(a => a.responsable))].sort().map(r => `<option value="${r}">${r}</option>`).join('');
+            updateResponsableSelects();
             document.getElementById('filter-axe').innerHTML = '<option value="">Tous les axes</option>' + [...new Set(actions.map(a => a.axe))].sort().map(a => `<option value="${a}">${a}</option>`).join('');
         }
         
@@ -1269,6 +1534,8 @@
         function openModal(id = null) {
             editingId = id;
             const del = document.getElementById('btn-delete');
+            updateResponsableSelects();
+            
             if (id) {
                 const a = actions.find(x => x.id === id); if (!a) return;
                 document.getElementById('modal-icon').textContent = '📝'; document.getElementById('modal-title').textContent = `Modifier ${a.id}`;
@@ -1276,7 +1543,7 @@
                 del.style.display = 'flex';
             } else {
                 document.getElementById('modal-icon').textContent = '➕'; document.getElementById('modal-title').textContent = 'Nouvelle action';
-                document.getElementById('form-id').value = getNextId(); document.getElementById('form-axe').value = 'Site web'; document.getElementById('form-categorie').value = ''; document.getElementById('form-tache').value = ''; document.getElementById('form-description').value = ''; document.getElementById('form-responsable').value = 'Michel'; document.getElementById('form-statut').value = 'À faire'; document.getElementById('form-priorite').value = 'Moyenne'; document.getElementById('form-echeance').value = '';
+                document.getElementById('form-id').value = getNextId(); document.getElementById('form-axe').value = 'Site web'; document.getElementById('form-categorie').value = ''; document.getElementById('form-tache').value = ''; document.getElementById('form-description').value = ''; document.getElementById('form-responsable').value = team[0] || 'Michel'; document.getElementById('form-statut').value = 'À faire'; document.getElementById('form-priorite').value = 'Moyenne'; document.getElementById('form-echeance').value = '';
                 del.style.display = 'none';
             }
             document.getElementById('modal-overlay').classList.add('active');
@@ -1295,7 +1562,6 @@
         
         // ===== EXPORT CSV (compatible Excel avec accents) =====
         function exportData() {
-            // BOM pour Excel + séparateur point-virgule pour compatibilité française
             const BOM = '\uFEFF';
             const headers = ['ID', 'Axe', 'Catégorie', 'Tâche', 'Description', 'Responsable', 'Statut', 'Priorité', 'Échéance'];
             const csvContent = BOM + headers.join(';') + '\n' + actions.map(a => 
@@ -1330,7 +1596,6 @@
                 try { 
                     let d;
                     if (f.name.endsWith('.csv')) {
-                        // Import CSV
                         const lines = ev.target.result.split('\n').filter(l => l.trim());
                         const headers = lines[0].replace(/^\uFEFF/, '').split(';').map(h => h.replace(/"/g, '').trim());
                         d = lines.slice(1).map(line => {
@@ -1348,7 +1613,6 @@
                             };
                         }).filter(item => item.id);
                     } else {
-                        // Import JSON
                         d = JSON.parse(ev.target.result); 
                     }
                     if (Array.isArray(d) && confirm(`Importer ${d.length} actions ?`)) { 
@@ -1372,8 +1636,14 @@
         // ===== INIT =====
         async function init() {
             updateGithubStatus();
-            if (isGithubConnected()) { const ok = await loadFromGitHub(); if (ok) filteredActions = [...actions]; }
-            populateFilters(); updateStats(); updateChart(); renderView();
+            if (isGithubConnected()) { 
+                const ok = await loadFromGitHub(); 
+                if (ok) filteredActions = [...actions]; 
+            }
+            populateFilters(); 
+            updateStats(); 
+            updateChart(); 
+            renderView();
             
             // Event listeners
             document.getElementById('search-input').addEventListener('input', applyFilters);
@@ -1390,6 +1660,14 @@
             document.getElementById('btn-import').addEventListener('click', () => document.getElementById('import-file').click());
             document.getElementById('import-file').addEventListener('change', importData);
             
+            // Équipe
+            document.getElementById('btn-team').addEventListener('click', openTeamModal);
+            document.getElementById('team-modal-close').addEventListener('click', closeTeamModal);
+            document.getElementById('team-modal-done').addEventListener('click', closeTeamModal);
+            document.getElementById('team-modal-overlay').addEventListener('click', e => { if (e.target === document.getElementById('team-modal-overlay')) closeTeamModal(); });
+            document.getElementById('btn-add-member').addEventListener('click', addMember);
+            document.getElementById('new-member-name').addEventListener('keypress', e => { if (e.key === 'Enter') { e.preventDefault(); addMember(); } });
+            
             // GitHub
             document.getElementById('btn-github').addEventListener('click', () => { document.getElementById('github-token').value = getGithubToken(); document.getElementById('github-connection-status').style.display = 'none'; document.getElementById('github-modal-overlay').classList.add('active'); });
             document.getElementById('github-modal-close').addEventListener('click', () => document.getElementById('github-modal-overlay').classList.remove('active'));
@@ -1399,7 +1677,14 @@
             document.getElementById('github-disconnect').addEventListener('click', () => { setGithubToken(''); document.getElementById('github-token').value = ''; document.getElementById('github-connection-status').style.display = 'none'; showSyncIndicator('Déconnecté', 'info'); });
             
             // Raccourcis clavier
-            document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeModal(); document.getElementById('github-modal-overlay').classList.remove('active'); } if (e.ctrlKey && e.key === 'n') { e.preventDefault(); openModal(); } });
+            document.addEventListener('keydown', e => { 
+                if (e.key === 'Escape') { 
+                    closeModal(); 
+                    closeTeamModal();
+                    document.getElementById('github-modal-overlay').classList.remove('active'); 
+                } 
+                if (e.ctrlKey && e.key === 'n') { e.preventDefault(); openModal(); } 
+            });
         }
         
         init();
