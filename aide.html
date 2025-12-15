@@ -1,0 +1,457 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aide – Suivi Communication</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Source+Sans+3:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bleu: #1a3a5c;
+            --bleu-clair: #2d5a87;
+            --or: #c9a227;
+            --or-clair: #e8c84a;
+            --blanc: #f8f6f1;
+            --gris: #4a4a4a;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Source Sans 3', sans-serif;
+            background: var(--blanc);
+            color: var(--gris);
+            line-height: 1.8;
+        }
+        
+        /* HEADER */
+        .header {
+            background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-clair) 100%);
+            color: white;
+            padding: 3rem 2rem;
+            text-align: center;
+        }
+        .header img {
+            width: 120px;
+            margin-bottom: 1.5rem;
+            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.3));
+        }
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.5rem;
+            margin-bottom: 0.5rem;
+        }
+        .header p {
+            color: var(--or-clair);
+            font-size: 1.2rem;
+        }
+        
+        /* CONTAINER */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* BACK BUTTON */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--bleu);
+            text-decoration: none;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            background: white;
+            border-radius: 30px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+        }
+        .back-btn:hover {
+            background: var(--or);
+            transform: translateX(-5px);
+        }
+        
+        /* SECTIONS */
+        .section {
+            background: white;
+            border-radius: 20px;
+            padding: 2rem 2.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        .section h2 {
+            font-family: 'Playfair Display', serif;
+            color: var(--bleu);
+            font-size: 1.6rem;
+            margin-bottom: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        .section h2 .icon {
+            font-size: 2rem;
+        }
+        .section p {
+            margin-bottom: 1rem;
+        }
+        
+        /* INTRO BOX */
+        .intro-box {
+            background: linear-gradient(135deg, #e8f4fc 0%, #d4e8f5 100%);
+            border-left: 5px solid var(--bleu);
+            padding: 1.5rem 2rem;
+            border-radius: 0 16px 16px 0;
+            font-size: 1.1rem;
+        }
+        
+        /* FEATURES GRID */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .feature-card {
+            background: linear-gradient(135deg, #f8f9fa 0%, #fff 100%);
+            border-radius: 16px;
+            padding: 1.5rem;
+            text-align: center;
+            border: 2px solid #eee;
+            transition: all 0.3s;
+        }
+        .feature-card:hover {
+            border-color: var(--or);
+            transform: translateY(-3px);
+        }
+        .feature-card .emoji {
+            font-size: 3rem;
+            margin-bottom: 0.75rem;
+        }
+        .feature-card h3 {
+            color: var(--bleu);
+            margin-bottom: 0.5rem;
+        }
+        .feature-card p {
+            font-size: 0.9rem;
+            margin: 0;
+            color: #666;
+        }
+        
+        /* STEPS */
+        .steps {
+            counter-reset: step;
+        }
+        .step {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            padding: 1.2rem 0;
+            border-bottom: 1px dashed #ddd;
+        }
+        .step:last-child { border-bottom: none; }
+        .step-number {
+            counter-increment: step;
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, var(--or) 0%, var(--or-clair) 100%);
+            color: var(--bleu);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.2rem;
+            flex-shrink: 0;
+        }
+        .step-number::before { content: counter(step); }
+        .step-content h4 {
+            color: var(--bleu);
+            margin-bottom: 0.25rem;
+        }
+        
+        /* TIP BOX */
+        .tip {
+            background: linear-gradient(135deg, #fff9e6 0%, #fff5d6 100%);
+            border-left: 4px solid var(--or);
+            padding: 1.2rem 1.5rem;
+            border-radius: 0 12px 12px 0;
+            margin: 1.5rem 0;
+        }
+        .tip-title {
+            font-weight: 700;
+            color: var(--bleu);
+            margin-bottom: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        /* SUPPORT BOX */
+        .support-box {
+            background: linear-gradient(135deg, var(--bleu) 0%, var(--bleu-clair) 100%);
+            color: white;
+            border-radius: 24px;
+            padding: 3rem 2rem;
+            text-align: center;
+            margin-top: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        .support-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -50%;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, transparent 70%);
+        }
+        .support-box h2 {
+            color: white;
+            justify-content: center;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+        .support-box p {
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+            font-size: 1.1rem;
+            position: relative;
+        }
+        .whatsapp-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            background: #25D366;
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 25px rgba(37, 211, 102, 0.4);
+            position: relative;
+        }
+        .whatsapp-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 8px 30px rgba(37, 211, 102, 0.5);
+        }
+        .whatsapp-btn svg {
+            width: 28px;
+            height: 28px;
+        }
+        .phone-number {
+            margin-top: 1.5rem;
+            font-size: 1.1rem;
+            opacity: 0.9;
+            position: relative;
+        }
+        .phone-number strong {
+            font-size: 1.3rem;
+        }
+        
+        /* FOOTER */
+        .footer {
+            text-align: center;
+            padding: 2rem;
+            color: #999;
+            font-size: 0.9rem;
+        }
+        
+        /* RESPONSIVE */
+        @media (max-width: 600px) {
+            .container { padding: 1rem; }
+            .section { padding: 1.5rem; }
+            .header h1 { font-size: 1.8rem; }
+            .features-grid { grid-template-columns: 1fr; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <img src="https://raw.githubusercontent.com/mich59139/Vizille-en-mouvement2/main/images/logo.png" alt="Logo Vizille en Mouvement">
+        <h1>Guide d'utilisation</h1>
+        <p>Suivi Communication de Campagne</p>
+    </div>
+    
+    <div class="container">
+        <a href="index.html" class="back-btn">← Retour à l'application</a>
+        
+        <!-- PRÉSENTATION GÉNÉRALE -->
+        <div class="section">
+            <h2><span class="icon">📋</span> C'est quoi cet outil ?</h2>
+            
+            <div class="intro-box">
+                <strong>Le Suivi Communication</strong> est un tableau de bord partagé qui permet à toute l'équipe de campagne de voir, créer et suivre les actions de communication.
+            </div>
+            
+            <p style="margin-top: 1.5rem;">Concrètement, vous pouvez :</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="emoji">📝</div>
+                    <h3>Créer des tâches</h3>
+                    <p>Ajouter une action à faire (tract, post, réunion...)</p>
+                </div>
+                <div class="feature-card">
+                    <div class="emoji">👀</div>
+                    <h3>Suivre l'avancement</h3>
+                    <p>Voir ce qui est fait, en cours ou bloqué</p>
+                </div>
+                <div class="feature-card">
+                    <div class="emoji">👥</div>
+                    <h3>Travailler en équipe</h3>
+                    <p>Chacun voit les mêmes infos, à jour</p>
+                </div>
+                <div class="feature-card">
+                    <div class="emoji">🚨</div>
+                    <h3>Alerter le groupe</h3>
+                    <p>Prévenir tout le monde rapidement</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- COMMENT ÇA MARCHE -->
+        <div class="section">
+            <h2><span class="icon">🎯</span> Comment ça marche ?</h2>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number"></div>
+                    <div class="step-content">
+                        <h4>Ouvrez l'application</h4>
+                        <p>Tout se charge automatiquement avec les dernières données.</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number"></div>
+                    <div class="step-content">
+                        <h4>Consultez le tableau de bord</h4>
+                        <p>Les compteurs en haut vous montrent l'état général : combien de tâches à faire, en cours, terminées...</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number"></div>
+                    <div class="step-content">
+                        <h4>Cliquez sur une carte pour la modifier</h4>
+                        <p>Vous pouvez changer le statut, le responsable, ajouter des détails...</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number"></div>
+                    <div class="step-content">
+                        <h4>Créez de nouvelles actions avec ➕</h4>
+                        <p>Remplissez le formulaire et enregistrez. C'est visible par tous !</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip">
+                <div class="tip-title">💡 Bon à savoir</div>
+                <p>Pas besoin de sauvegarder manuellement. Tout est enregistré automatiquement !</p>
+            </div>
+        </div>
+        
+        <!-- LES BOUTONS -->
+        <div class="section">
+            <h2><span class="icon">🔘</span> Les boutons importants</h2>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number" style="background: #3498db; color: white;">➕</div>
+                    <div class="step-content">
+                        <h4>Nouvelle action</h4>
+                        <p>Créer une tâche de communication</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number" style="background: #9b59b6; color: white;">👥</div>
+                    <div class="step-content">
+                        <h4>Équipe</h4>
+                        <p>Gérer les responsables (Michel, Laurent, Catherine...)</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number" style="background: #1abc9c; color: white;">📢</div>
+                    <div class="step-content">
+                        <h4>Groupe</h4>
+                        <p>Voir tous les membres avec leurs coordonnées</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number" style="background: #e74c3c; color: white;">🚨</div>
+                    <div class="step-content">
+                        <h4>Alerte</h4>
+                        <p>Envoyer un message urgent par email ou WhatsApp</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- ENVOYER UNE ALERTE -->
+        <div class="section">
+            <h2><span class="icon">🚨</span> Envoyer une alerte au groupe</h2>
+            
+            <p>Pour prévenir rapidement les membres d'une info importante :</p>
+            
+            <div class="steps">
+                <div class="step">
+                    <div class="step-number"></div>
+                    <div class="step-content">
+                        <h4>Cliquez sur 🚨 Alerte</h4>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number"></div>
+                    <div class="step-content">
+                        <h4>Écrivez votre message</h4>
+                        <p>Objet + contenu du message</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number"></div>
+                    <div class="step-content">
+                        <h4>Choisissez les destinataires</h4>
+                        <p>"Tout sélectionner" pour tout le monde, ou cochez individuellement</p>
+                    </div>
+                </div>
+                <div class="step">
+                    <div class="step-number"></div>
+                    <div class="step-content">
+                        <h4>Envoyez !</h4>
+                        <p><strong>📧 Email</strong> = envoi automatique<br>
+                        <strong>📋 WhatsApp</strong> = copie le message, collez-le dans le groupe</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="tip">
+                <div class="tip-title">💡 Conseil</div>
+                <p>Utilisez les deux méthodes : l'email laisse une trace, WhatsApp est lu plus vite.</p>
+            </div>
+        </div>
+        
+        <!-- SUPPORT -->
+        <div class="support-box">
+            <h2><span class="icon">🆘</span> Besoin d'aide ?</h2>
+            <p>Une question ? Un souci technique ? Un bug ?<br>Contactez Michel directement :</p>
+            
+            <a href="https://wa.me/33637216008?text=Bonjour%20Michel%2C%20j%27ai%20besoin%20d%27aide%20avec%20l%27application%20Suivi%20Communication%20%F0%9F%99%8F" class="whatsapp-btn" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+                Contacter Michel
+            </a>
+            
+            <p class="phone-number">📱 <strong>06 37 21 60 08</strong></p>
+        </div>
+        
+        <div class="footer">
+            <p><strong>Vizille en Mouvement</strong><br>
+            Ensemble pour une ville dynamique et solidaire<br>
+            Campagne 2026-2032</p>
+        </div>
+    </div>
+</body>
+</html>
