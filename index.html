@@ -476,7 +476,10 @@
                 r = await fetch(`${base}/${GITHUB_MEMBERS_FILE}`); if (r.ok) { members = await r.json(); localStorage.setItem('vizille_members', JSON.stringify(members)); }
                 r = await fetch(`${base}/${GITHUB_CATEGORIES_FILE}`); if (r.ok) { categories = await r.json(); localStorage.setItem('vizille_categories', JSON.stringify(categories)); }
                 showSyncIndicator('Lecture seule', 'warning'); return true;
-            } catch (e) { showSyncIndicator('Erreur', 'error'); return false; }
+            } catch (e) { 
+                console.log('Chargement public échoué, données par défaut');
+                return false; 
+            }
         }
         
         async function loadFromGitHub() { const token = getGithubToken(); if (!token) return false; try { showSyncIndicator('Chargement...'); 
@@ -484,8 +487,7 @@
             r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_TEAM_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubTeamSha = d.sha; team = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_team', JSON.stringify(team)); } 
             r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_MEMBERS_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubMembersSha = d.sha; members = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_members', JSON.stringify(members)); } 
             r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_CATEGORIES_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubCategoriesSha = d.sha; categories = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_categories', JSON.stringify(categories)); } 
-            showSyncIndicator('Sync ✓', 'success'); return true; } catch (e) { showSyncIndicator('Erreur', 'error'); return false; } } 
-            showSyncIndicator('Chargé ✓', 'success'); return true; } catch (e) { showSyncIndicator('Erreur', 'error'); return false; } }
+            showSyncIndicator('Sync ✓', 'success'); return true; } catch (e) { showSyncIndicator('Erreur', 'error'); return false; } }
         
         async function saveToGitHub(file, data, sha) { const token = getGithubToken(); if (!token) return null; try { if (!sha) { const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${file}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) sha = (await r.json()).sha; } const body = { message: `MAJ ${file.split('/').pop()}`, content: encodeBase64UTF8(JSON.stringify(data, null, 2)), branch: GITHUB_BRANCH }; if (sha) body.sha = sha; const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${file}`, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (response.ok) return (await response.json()).content.sha; return null; } catch (e) { return null; } }
         
@@ -685,9 +687,7 @@
             
             document.getElementById('btn-github').addEventListener('click', () => { document.getElementById('github-token').value = getGithubToken(); document.getElementById('github-connection-status').style.display = 'none'; document.getElementById('github-modal-overlay').classList.add('active'); });
             document.getElementById('github-modal-close').addEventListener('click', () => document.getElementById('github-modal-overlay').classList.remove('active'));
-            document.getElementById('github-test').addEventListener('click', testGithubConnection);
-            document.getElementById('github-save-config').addEventListener('click', async () => { setGithubToken(document.getElementById('github-token').value); document.getElementById('github-modal-overlay').classList.remove('active'); await loadFromGitHub(); filteredActions = [...actions]; populateFilters(); updateStats(); updateChart(); renderView(); });
-            document.getElementById('github-disconnect').addEventListener('click', () => { setGithubToken(''); document.getElementById('github-token').value = ''; });
+            document.getElementById('github-save-config').addEventListener('click', async () => { setGithubToken(document.getElementById('github-token').value); document.getElementById('github-modal-overlay').classList.remove('active'); await loadFromGitHub(); filteredActions = [...actions]; populateFilters(); updateStats(); updateChart(); renderView(); updateGithubStatus(); });
             
             document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAllModals(); });
         }
