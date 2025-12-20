@@ -185,5 +185,16 @@
     "statut": "Fait",
     "priorite": "Haute",
     "echeance": "2025-02-28"
+  },
+  {
+    "id": "COM-018",
+    "axe": "Réseaux sociaux",
+    "categorie": "Création",
+    "tache": "Vidéos Catherine",
+    "description": "Vidéo présentation officielle de la candidature\n3 vidéos de 2 minutes : questions à la candidate",
+    "responsable": "Équipe",
+    "statut": "À faire",
+    "priorite": "Haute",
+    "echeance": "2025-12-31"
   }
 ]
