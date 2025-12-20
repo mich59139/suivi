@@ -79,25 +79,64 @@
         .sync-indicator.warning { background: #f39c12; }
         @keyframes slideIn { from { transform: translateY(20px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
         
-        .cards-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem 2rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
-        .action-card { background: white; border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); overflow: hidden; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
-        .action-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--or); }
-        .card-header { padding: 1rem 1.25rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 0.75rem; }
-        .card-id { font-family: 'Playfair Display', serif; font-size: 0.85rem; font-weight: 700; color: var(--bleu-vizille); background: var(--gris-doux); padding: 0.25rem 0.6rem; border-radius: 6px; }
-        .card-badges { display: flex; gap: 0.5rem; flex-wrap: wrap; }
-        .badge { font-size: 0.75rem; padding: 0.2rem 0.6rem; border-radius: 20px; font-weight: 600; }
+        /* ===== VUE GROUPÉE PAR AXE ===== */
+        .grouped-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem 2rem; }
+        
+        .axe-group { margin-bottom: 1.5rem; border-radius: var(--radius-lg); overflow: hidden; box-shadow: var(--shadow-sm); }
+        
+        .axe-header { padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; cursor: pointer; transition: all 0.2s ease; color: white; }
+        .axe-header:hover { filter: brightness(1.1); }
+        .axe-header.siteweb { background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); }
+        .axe-header.reseaux { background: linear-gradient(135deg, #9b59b6 0%, #8e44ad 100%); }
+        .axe-header.papier { background: linear-gradient(135deg, #e67e22 0%, #d35400 100%); }
+        .axe-header.evenementiel { background: linear-gradient(135deg, #1abc9c 0%, #16a085 100%); }
+        .axe-header.presse { background: linear-gradient(135deg, #34495e 0%, #2c3e50 100%); }
+        .axe-header.email { background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%); }
+        
+        .axe-title { display: flex; align-items: center; gap: 0.75rem; }
+        .axe-icon { font-size: 1.5rem; }
+        .axe-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; }
+        .axe-count { background: rgba(255,255,255,0.25); padding: 0.2rem 0.6rem; border-radius: 12px; font-size: 0.85rem; font-weight: 600; margin-left: 0.5rem; }
+        
+        .axe-stats { display: flex; gap: 1rem; align-items: center; }
+        .axe-stat { display: flex; align-items: center; gap: 0.3rem; font-size: 0.85rem; opacity: 0.9; }
+        .axe-stat-dot { width: 10px; height: 10px; border-radius: 50%; }
+        .axe-stat-dot.afaire { background: #3498db; }
+        .axe-stat-dot.encours { background: #f39c12; }
+        .axe-stat-dot.fait { background: #27ae60; }
+        .axe-stat-dot.bloque { background: #e74c3c; }
+        
+        .axe-toggle { font-size: 1.25rem; transition: transform 0.3s ease; }
+        .axe-group.collapsed .axe-toggle { transform: rotate(-90deg); }
+        
+        .axe-content { background: white; padding: 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; transition: all 0.3s ease; }
+        .axe-group.collapsed .axe-content { display: none; }
+        
+        .action-card { background: var(--blanc-casse); border-radius: var(--radius-md); box-shadow: var(--shadow-sm); overflow: hidden; cursor: pointer; transition: all 0.3s ease; border: 2px solid transparent; }
+        .action-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); border-color: var(--or); }
+        .card-header { padding: 0.75rem 1rem; display: flex; justify-content: space-between; align-items: flex-start; gap: 0.5rem; }
+        .card-id { font-family: 'Playfair Display', serif; font-size: 0.8rem; font-weight: 700; color: var(--bleu-vizille); background: white; padding: 0.15rem 0.5rem; border-radius: 4px; }
+        .card-badges { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+        .badge { font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 12px; font-weight: 600; }
         .badge-statut { color: white; }
         .badge-statut.afaire { background: var(--bleu-afaire); }
         .badge-statut.encours { background: var(--orange-encours); }
         .badge-statut.bloque { background: var(--rouge-bloque); }
         .badge-statut.fait { background: var(--vert-fait); }
         .badge-priorite { background: rgba(155, 89, 182, 0.15); color: var(--violet-haute); }
-        .card-body { padding: 0 1.25rem 1rem; }
-        .card-title { font-weight: 600; color: var(--bleu-vizille); margin-bottom: 0.5rem; font-size: 1rem; line-height: 1.4; }
-        .card-description { font-size: 0.9rem; color: var(--gris-texte); opacity: 0.85; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
-        .card-footer { padding: 0.75rem 1.25rem; background: var(--blanc-casse); display: flex; justify-content: space-between; align-items: center; font-size: 0.85rem; }
-        .card-meta { display: flex; align-items: center; gap: 0.5rem; color: var(--gris-texte); }
-        .card-axe { background: var(--bleu-vizille); color: white; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
+        .card-body { padding: 0 1rem 0.75rem; }
+        .card-title { font-weight: 600; color: var(--bleu-vizille); margin-bottom: 0.25rem; font-size: 0.95rem; line-height: 1.3; }
+        .card-description { font-size: 0.85rem; color: var(--gris-texte); opacity: 0.8; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+        .card-footer { padding: 0.5rem 1rem; background: white; display: flex; justify-content: space-between; align-items: center; font-size: 0.8rem; border-top: 1px solid var(--gris-doux); }
+        .card-meta { display: flex; align-items: center; gap: 0.4rem; color: var(--gris-texte); }
+        .card-echeance { font-size: 0.75rem; color: var(--gris-texte); }
+        .card-echeance.urgent { color: var(--rouge-bloque); font-weight: 600; }
+        
+        /* Vue cartes classique */
+        .cards-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem 2rem; display: none; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem; }
+        .cards-container.active { display: grid; }
+        .cards-container .action-card { background: white; }
+        .cards-container .card-axe { background: var(--bleu-vizille); color: white; padding: 0.2rem 0.6rem; border-radius: 6px; font-size: 0.75rem; font-weight: 600; }
         
         .table-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem 2rem; display: none; }
         .table-container.active { display: block; }
@@ -146,7 +185,6 @@
         .alert-header { background: linear-gradient(135deg, var(--rouge-bloque) 0%, #c0392b 100%) !important; }
         .group-header { background: linear-gradient(135deg, var(--violet-haute) 0%, #8e44ad 100%) !important; }
         
-        /* Sélection destinataires */
         .recipients-selection { margin: 1rem 0; }
         .recipients-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem; }
         .recipients-header h4 { color: var(--bleu-vizille); font-size: 0.95rem; }
@@ -181,11 +219,10 @@
         .legend-label { flex: 1; font-weight: 500; }
         .legend-value { font-family: 'Playfair Display', serif; font-weight: 700; color: var(--bleu-vizille); }
         
-        .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gris-texte); }
+        .empty-state { text-align: center; padding: 4rem 2rem; color: var(--gris-texte); background: white; border-radius: var(--radius-lg); }
         .empty-state-icon { font-size: 4rem; opacity: 0.3; margin-bottom: 1rem; }
         .empty-state h3 { font-family: 'Playfair Display', serif; color: var(--bleu-vizille); }
         
-        /* Boutons flottants */
         .floating-buttons { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 12px; z-index: 999; }
         .float-btn { width: 56px; height: 56px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); transition: all 0.3s ease; cursor: pointer; }
         .float-btn:hover { transform: scale(1.1); }
@@ -199,11 +236,13 @@
             .header-top, .logo-section { flex-direction: column; text-align: center; }
             .toolbar { flex-direction: column; }
             .search-box { width: 100%; }
+            .axe-content { grid-template-columns: 1fr; }
             .cards-container { grid-template-columns: 1fr; }
             .form-row { grid-template-columns: 1fr; }
             .modal-footer { flex-direction: column; }
             .add-member-form { grid-template-columns: 1fr; }
             .alert-buttons { flex-direction: column; }
+            .axe-stats { display: none; }
         }
     </style>
 </head>
@@ -229,10 +268,17 @@
     <div class="toolbar">
         <div class="search-box"><input type="text" id="search-input" placeholder="Rechercher une action..."></div>
         <select class="filter-select" id="filter-responsable"><option value="">Tous responsables</option></select>
-        <select class="filter-select" id="filter-axe"><option value="">Tous les axes</option></select>
+        <select class="filter-select" id="filter-statut">
+            <option value="">Tous statuts</option>
+            <option value="À faire">À faire</option>
+            <option value="En cours">En cours</option>
+            <option value="Bloqué">Bloqué</option>
+            <option value="Fait">Fait</option>
+        </select>
         <div class="view-toggle">
-            <button class="view-btn active" data-view="cards">🃏</button>
-            <button class="view-btn" data-view="table">📊</button>
+            <button class="view-btn active" data-view="grouped" title="Vue groupée">📁</button>
+            <button class="view-btn" data-view="cards" title="Vue cartes">🃏</button>
+            <button class="view-btn" data-view="table" title="Vue tableau">📊</button>
         </div>
         <button class="btn-action btn-primary" id="btn-new"><span>➕</span><span>Nouvelle</span></button>
         <button class="btn-action btn-team" id="btn-team"><span>👥</span><span>Équipe</span></button>
@@ -244,7 +290,7 @@
         <button class="btn-action btn-github" id="btn-github"><span>⚙️</span><span id="github-status">GitHub</span></button>
     </div>
     
-    <!-- TEAM MODAL -->
+    <!-- Modals (identiques) -->
     <div class="modal-overlay" id="team-modal-overlay">
         <div class="modal" style="max-width: 500px;">
             <div class="modal-header"><h2>👥 Équipe Communication</h2><button class="modal-close" id="team-modal-close">×</button></div>
@@ -261,7 +307,6 @@
         </div>
     </div>
     
-    <!-- GROUP MODAL -->
     <div class="modal-overlay" id="group-modal-overlay">
         <div class="modal" style="max-width: 700px;">
             <div class="modal-header group-header"><h2>📢 Groupe complet</h2><button class="modal-close" id="group-modal-close">×</button></div>
@@ -280,14 +325,12 @@
         </div>
     </div>
     
-    <!-- ALERT MODAL -->
     <div class="modal-overlay" id="alert-modal-overlay">
         <div class="modal" style="max-width: 650px;">
             <div class="modal-header alert-header"><h2>🚨 Alerte</h2><button class="modal-close" id="alert-modal-close">×</button></div>
             <div class="modal-body">
                 <div class="form-group"><label for="alert-subject">Objet</label><input type="text" id="alert-subject" placeholder="[URGENT] Vizille en Mouvement - ..."></div>
                 <div class="form-group"><label for="alert-message">Message</label><textarea id="alert-message" placeholder="Votre message..." style="min-height: 120px;"></textarea></div>
-                
                 <div class="recipients-selection">
                     <div class="recipients-header">
                         <h4>📧 Destinataires <span class="selected-count" id="selected-count">0</span></h4>
@@ -298,7 +341,6 @@
                     </div>
                     <div class="recipients-list" id="recipients-list"></div>
                 </div>
-                
                 <div class="sending-status" id="sending-status"></div>
             </div>
             <div class="modal-footer">
@@ -312,7 +354,6 @@
         </div>
     </div>
     
-    <!-- CATEGORIES MODAL -->
     <div class="modal-overlay" id="categories-modal-overlay">
         <div class="modal" style="max-width: 450px;">
             <div class="modal-header"><h2>🏷️ Catégories</h2><button class="modal-close" id="categories-modal-close">×</button></div>
@@ -328,23 +369,28 @@
         </div>
     </div>
     
-    <!-- GITHUB MODAL -->
     <div class="modal-overlay" id="github-modal-overlay">
         <div class="modal" style="max-width: 500px;">
             <div class="modal-header"><h2>🔐 Connexion requise</h2><button class="modal-close" id="github-modal-close">×</button></div>
             <div class="modal-body">
                 <p style="margin-bottom:1rem;color:#555;background:#e8f4fc;padding:1rem;border-radius:8px;">📖 <strong>Mode lecture</strong> : vous pouvez consulter les données.<br>🔐 <strong>Pour modifier</strong>, entrez le jeton fourni par Michel.</p>
                 <div class="form-group"><label for="github-token">Jeton d'accès</label><input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxx"></div>
-                <div class="form-group" style="display:none;"><label>Repository</label><input type="text" value="mich59139/suivi" readonly style="background: #f0f0f0;"></div>
                 <div id="github-connection-status" style="margin: 1rem 0; padding: 0.75rem; border-radius: 8px; display: none;"></div>
             </div>
             <div class="modal-footer"><button class="btn-action btn-save" id="github-save-config" style="background: #27ae60; width:100%;">✅ Valider</button></div>
         </div>
     </div>
     
-    <div class="chart-section"><div class="chart-card"><h3>📊 Répartition</h3><div class="chart-container"><div class="chart-wrapper"><canvas id="statusChart"></canvas></div><div class="chart-legend" id="chart-legend"></div></div></div></div>
+    <div class="chart-section"><div class="chart-card"><h3>📊 Répartition par statut</h3><div class="chart-container"><div class="chart-wrapper"><canvas id="statusChart"></canvas></div><div class="chart-legend" id="chart-legend"></div></div></div></div>
+    
+    <!-- Vue groupée par axe -->
+    <div class="grouped-container" id="grouped-container"></div>
+    
+    <!-- Vue cartes classique -->
     <div class="cards-container" id="cards-container"></div>
-    <div class="table-container" id="table-container"><table class="data-table"><thead><tr><th>ID</th><th>Tâche</th><th>Responsable</th><th>Statut</th><th>Priorité</th><th>Axe</th></tr></thead><tbody id="table-body"></tbody></table></div>
+    
+    <!-- Vue tableau -->
+    <div class="table-container" id="table-container"><table class="data-table"><thead><tr><th>ID</th><th>Axe</th><th>Tâche</th><th>Responsable</th><th>Statut</th><th>Priorité</th></tr></thead><tbody id="table-body"></tbody></table></div>
     
     <!-- ACTION MODAL -->
     <div class="modal-overlay" id="modal-overlay">
@@ -354,7 +400,7 @@
                 <form id="action-form">
                     <input type="hidden" id="form-id">
                     <div class="form-row">
-                        <div class="form-group"><label>Axe</label><select id="form-axe"><option value="Site web">Site web</option><option value="Réseaux sociaux">Réseaux sociaux</option><option value="Supports papier">Supports papier</option><option value="Événementiel">Événementiel</option><option value="Presse">Presse</option><option value="Email">Email</option></select></div>
+                        <div class="form-group"><label>Axe</label><select id="form-axe"><option value="Site web">🌐 Site web</option><option value="Réseaux sociaux">📱 Réseaux sociaux</option><option value="Supports papier">📄 Supports papier</option><option value="Événementiel">🎉 Événementiel</option><option value="Presse">📰 Presse</option><option value="Email">✉️ Email</option></select></div>
                         <div class="form-group"><label>Catégorie <button type="button" id="btn-manage-categories" style="background:none;border:none;cursor:pointer;">⚙️</button></label><select id="form-categorie"></select></div>
                     </div>
                     <div class="form-group"><label>Tâche</label><input type="text" id="form-tache" required></div>
@@ -375,28 +421,36 @@
     
     <div class="sync-indicator" id="sync-indicator"><span id="sync-icon">🔄</span><span id="sync-text">Sync...</span></div>
     
-    <!-- BOUTONS FLOTTANTS -->
     <div class="floating-buttons">
         <a href="aide.html" class="float-btn help-btn" title="Aide">❓</a>
         <a href="https://wa.me/33637216008?text=Bonjour%20Michel%2C%20j%27ai%20besoin%20d%27aide%20avec%20l%27application%20Suivi%20Communication" target="_blank" class="float-btn whatsapp-float" title="Support WhatsApp">
-            <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         </a>
     </div>
     
     <script>
-        // EmailJS
+        // EmailJS & GitHub config
         const EMAILJS_PUBLIC_KEY = 'mC3PZzXAloxLTMDW6';
         const EMAILJS_SERVICE_ID = 'service_7l8j34p';
         const EMAILJS_TEMPLATE_ID = 'template_mrm462e';
         emailjs.init(EMAILJS_PUBLIC_KEY);
         
-        // GitHub
         const GITHUB_REPO = 'mich59139/suivi';
         const GITHUB_FILE = 'data/communication.json';
         const GITHUB_TEAM_FILE = 'data/equipe.json';
         const GITHUB_MEMBERS_FILE = 'data/membres.json';
         const GITHUB_CATEGORIES_FILE = 'data/categories.json';
         const GITHUB_BRANCH = 'main';
+        
+        // Configuration des axes
+        const axeConfig = {
+            'Site web': { icon: '🌐', class: 'siteweb' },
+            'Réseaux sociaux': { icon: '📱', class: 'reseaux' },
+            'Supports papier': { icon: '📄', class: 'papier' },
+            'Événementiel': { icon: '🎉', class: 'evenementiel' },
+            'Presse': { icon: '📰', class: 'presse' },
+            'Email': { icon: '✉️', class: 'email' }
+        };
         
         const defaultActions = [
             { id: "COM-001", axe: "Site web", categorie: "Infrastructure", tache: "Mise en place hébergement", description: "Configuration serveur", responsable: "Michel", statut: "Fait", priorite: "Haute", echeance: "2025-01-15" },
@@ -408,44 +462,11 @@
         
         const defaultCategories = ["Infrastructure", "Développement", "Contenu", "Organisation", "Création", "Relations", "Technique", "Administration"];
         const defaultTeam = ["Michel", "Laurent", "Catherine", "Ignazio", "Équipe"];
-        
         const defaultMembers = [
-            { name: "AbdelKarim Sadgui", email: "karim_sadgui@hotmail.fr", phone: "06 98 95 85 48" },
-            { name: "Ali Mendess", email: "ali.mendess38@gmail.com", phone: "06 25 19 14 58" },
-            { name: "André Paul Venans", email: "andrepaul.v@gmail.com", phone: "06 10 75 51 85" },
-            { name: "Angelique Hermitte", email: "angelique.hermitte@free.fr", phone: "06 27 84 39 78" },
-            { name: "Axel Servant", email: "axel.servant@lettres.ucly.fr", phone: "07 83 65 07 00" },
-            { name: "Bernard et Silvia Faure", email: "bernard.faure15@wanadoo.fr", phone: "06 81 46 45 19" },
-            { name: "Bernard Ughetto", email: "bernard.ughettocgt@gmail.com", phone: "06 76 95 28 33" },
-            { name: "Catherine Troton", email: "alain.troton@sfr.fr", phone: "06 64 11 47 07" },
-            { name: "Chantal Nadi", email: "zampanette@yahoo.fr", phone: "06 62 55 58 02" },
-            { name: "Christine Sanchez", email: "sanchez7.christine@gmail.com", phone: "06 32 56 55 54" },
-            { name: "Evelyne Specia", email: "evelyne.specia@orange.fr", phone: "06 82 49 03 30" },
-            { name: "Fabrice Pasquiou", email: "pasquiou.fab@gmail.com", phone: "06 17 08 17 84" },
-            { name: "Fred Vivancos", email: "fredvivancos@gmail.com", phone: "07 82 57 20 36" },
-            { name: "Georges Claveri", email: "georges.claveri@wanadoo.fr", phone: "" },
-            { name: "Gérard Forestier", email: "gerard.forestier@gmail.com", phone: "06 08 07 86 94" },
-            { name: "Ignazio Cosentino", email: "ignazio.cosentino@free.fr", phone: "06 95 49 64 94" },
-            { name: "Jean Christophe Garcia", email: "jeanchristophe.garcia38@gmail.com", phone: "07 68 15 07 74" },
-            { name: "Jean François Gutierez", email: "gutierrez.jean.francois@laposte.fr", phone: "07 86 99 22 67" },
-            { name: "Jean Marie Gutierrez", email: "jeanmariegutierrez@gmail.com", phone: "06 51 55 32 14" },
-            { name: "Julien Pathoux", email: "julien.pathoux@gmail.com", phone: "06 62 29 34 38" },
-            { name: "Katherine Merle", email: "cknds.merle@free.fr", phone: "06 32 06 73 12" },
-            { name: "Lamarca Louis", email: "louislamarca@free.fr", phone: "06 24 96 41 44" },
-            { name: "Laurent Pichon", email: "pichon.laurent@wanadoo.fr", phone: "06 03 59 20 17" },
-            { name: "Maelle Pathoux", email: "maellepathoux38220@gmail.com", phone: "06 99 35 16 93" },
-            { name: "Marie Claude Argoud", email: "marie-claude.argoud@wanadoo.fr", phone: "06 81 12 28 50" },
-            { name: "Maryline Desnoulet", email: "maryline.desnoulet@outlook.fr", phone: "06 16 21 92 87" },
             { name: "Michel Thuillier", email: "thuilliermichel@mac.com", phone: "06 37 21 60 08" },
-            { name: "Mohamed Cherigui", email: "mohamed.cherigui@sdis38.fr", phone: "06 51 34 36 53" },
-            { name: "Muriel Pasquiou", email: "muriel.pasquiou@gmail.com", phone: "06 76 57 82 21" },
-            { name: "Nicole Bresson", email: "nclbrssn@gmail.com", phone: "" },
-            { name: "Roger Tournier", email: "pierogtou@free.fr", phone: "06 83 30 87 43" },
-            { name: "Saida Berriche", email: "saidabvizille@gmail.com", phone: "07 80 54 43 03" },
-            { name: "Sakina Yahiaoui-Servant", email: "servant.romain@wanadoo.fr", phone: "06 73 80 23 52" },
-            { name: "Stéphane Lasserre", email: "scnoema@gmail.com", phone: "06 48 38 32 86" },
-            { name: "Valerie Foucher", email: "vale.foucher@gmail.com", phone: "06 75 00 95 99" },
-            { name: "Vincent Alessi", email: "vincent.alessi38@gmail.com", phone: "06 78 96 88 68" }
+            { name: "Catherine Troton", email: "alain.troton@sfr.fr", phone: "06 64 11 47 07" },
+            { name: "Laurent Pichon", email: "pichon.laurent@wanadoo.fr", phone: "06 03 59 20 17" },
+            { name: "Ignazio Cosentino", email: "ignazio.cosentino@free.fr", phone: "06 95 49 64 94" }
         ];
         
         let actions = JSON.parse(localStorage.getItem('vizille_actions')) || defaultActions;
@@ -453,10 +474,10 @@
         let members = JSON.parse(localStorage.getItem('vizille_members')) || defaultMembers;
         let categories = JSON.parse(localStorage.getItem('vizille_categories')) || defaultCategories;
         let filteredActions = [...actions];
-        let currentView = 'cards';
+        let currentView = 'grouped';
         let editingId = null;
         let githubSha = null, githubTeamSha = null, githubMembersSha = null, githubCategoriesSha = null;
-        let selectedRecipients = new Set();
+        let collapsedAxes = new Set();
         
         // GitHub functions
         function getGithubToken() { return localStorage.getItem('github_token') || ''; }
@@ -467,150 +488,35 @@
         function decodeBase64UTF8(base64) { try { const bin = atob(base64); const bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i); return new TextDecoder('utf-8').decode(bytes); } catch (e) { return atob(base64); } }
         function encodeBase64UTF8(str) { const bytes = new TextEncoder().encode(str); let bin = ''; for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]); return btoa(bin); }
         
-        async function loadPublic() {
-            try {
-                showSyncIndicator('Chargement...');
-                const base = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}`;
-                let r = await fetch(`${base}/${GITHUB_FILE}`); if (r.ok) { actions = await r.json(); localStorage.setItem('vizille_actions', JSON.stringify(actions)); }
-                r = await fetch(`${base}/${GITHUB_TEAM_FILE}`); if (r.ok) { team = await r.json(); localStorage.setItem('vizille_team', JSON.stringify(team)); }
-                r = await fetch(`${base}/${GITHUB_MEMBERS_FILE}`); if (r.ok) { members = await r.json(); localStorage.setItem('vizille_members', JSON.stringify(members)); }
-                r = await fetch(`${base}/${GITHUB_CATEGORIES_FILE}`); if (r.ok) { categories = await r.json(); localStorage.setItem('vizille_categories', JSON.stringify(categories)); }
-                showSyncIndicator('Lecture seule', 'warning'); return true;
-            } catch (e) { 
-                console.log('Chargement public échoué, données par défaut');
-                return false; 
-            }
-        }
+        async function loadPublic() { try { showSyncIndicator('Chargement...'); const base = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}`; let r = await fetch(`${base}/${GITHUB_FILE}`); if (r.ok) { actions = await r.json(); localStorage.setItem('vizille_actions', JSON.stringify(actions)); } r = await fetch(`${base}/${GITHUB_TEAM_FILE}`); if (r.ok) { team = await r.json(); localStorage.setItem('vizille_team', JSON.stringify(team)); } r = await fetch(`${base}/${GITHUB_MEMBERS_FILE}`); if (r.ok) { members = await r.json(); localStorage.setItem('vizille_members', JSON.stringify(members)); } r = await fetch(`${base}/${GITHUB_CATEGORIES_FILE}`); if (r.ok) { categories = await r.json(); localStorage.setItem('vizille_categories', JSON.stringify(categories)); } showSyncIndicator('Lecture seule', 'warning'); return true; } catch (e) { return false; } }
         
-        async function loadFromGitHub() { const token = getGithubToken(); if (!token) return false; try { showSyncIndicator('Chargement...'); 
-            let r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubSha = d.sha; actions = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_actions', JSON.stringify(actions)); } 
-            r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_TEAM_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubTeamSha = d.sha; team = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_team', JSON.stringify(team)); } 
-            r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_MEMBERS_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubMembersSha = d.sha; members = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_members', JSON.stringify(members)); } 
-            r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_CATEGORIES_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubCategoriesSha = d.sha; categories = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_categories', JSON.stringify(categories)); } 
-            showSyncIndicator('Sync ✓', 'success'); return true; } catch (e) { showSyncIndicator('Erreur', 'error'); return false; } }
+        async function loadFromGitHub() { const token = getGithubToken(); if (!token) return false; try { showSyncIndicator('Chargement...'); let r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubSha = d.sha; actions = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_actions', JSON.stringify(actions)); } r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_TEAM_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubTeamSha = d.sha; team = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_team', JSON.stringify(team)); } r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_MEMBERS_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubMembersSha = d.sha; members = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_members', JSON.stringify(members)); } r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_CATEGORIES_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubCategoriesSha = d.sha; categories = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_categories', JSON.stringify(categories)); } showSyncIndicator('Sync ✓', 'success'); return true; } catch (e) { showSyncIndicator('Erreur', 'error'); return false; } }
         
         async function saveToGitHub(file, data, sha) { const token = getGithubToken(); if (!token) return null; try { if (!sha) { const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${file}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) sha = (await r.json()).sha; } const body = { message: `MAJ ${file.split('/').pop()}`, content: encodeBase64UTF8(JSON.stringify(data, null, 2)), branch: GITHUB_BRANCH }; if (sha) body.sha = sha; const response = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${file}`, { method: 'PUT', headers: { 'Authorization': `token ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body) }); if (response.ok) return (await response.json()).content.sha; return null; } catch (e) { return null; } }
         
-        async function testGithubConnection() { const token = document.getElementById('github-token').value; const s = document.getElementById('github-connection-status'); if (!token) { s.style.display = 'block'; s.style.background = '#fee'; s.style.color = '#c00'; s.textContent = '❌ Token requis'; return; } s.style.display = 'block'; s.style.background = '#ffe'; s.style.color = '#860'; s.textContent = '⏳ Test...'; try { const r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}`, { headers: { 'Authorization': `token ${token}` } }); s.style.background = r.ok ? '#efe' : '#fee'; s.style.color = r.ok ? '#080' : '#c00'; s.textContent = r.ok ? '✅ OK !' : '❌ Erreur'; } catch (e) { s.style.background = '#fee'; s.style.color = '#c00'; s.textContent = '❌ ' + e.message; } }
-        
-        // Team
+        // Team, Members, Categories
         function renderTeamList() { const list = document.getElementById('team-list'); document.getElementById('team-count').textContent = team.length; list.innerHTML = team.map((t, i) => `<li class="member-item"><div class="member-info"><div class="member-name">${t}</div></div><button class="btn-remove-member" data-index="${i}">✕</button></li>`).join(''); list.querySelectorAll('.btn-remove-member').forEach(btn => btn.addEventListener('click', () => removeTeamMember(parseInt(btn.dataset.index)))); }
         function addTeamMember() { const name = document.getElementById('new-team-member').value.trim(); if (!name || team.includes(name)) return; team.push(name); localStorage.setItem('vizille_team', JSON.stringify(team)); if (isGithubConnected()) saveToGitHub(GITHUB_TEAM_FILE, team, githubTeamSha).then(sha => githubTeamSha = sha); document.getElementById('new-team-member').value = ''; renderTeamList(); updateResponsableSelects(); }
         function removeTeamMember(i) { team.splice(i, 1); localStorage.setItem('vizille_team', JSON.stringify(team)); if (isGithubConnected()) saveToGitHub(GITHUB_TEAM_FILE, team, githubTeamSha).then(sha => githubTeamSha = sha); renderTeamList(); updateResponsableSelects(); }
         function updateResponsableSelects() { const opts = team.map(t => `<option value="${t}">${t}</option>`).join(''); document.getElementById('form-responsable').innerHTML = opts; document.getElementById('filter-responsable').innerHTML = '<option value="">Tous</option>' + opts; }
         
-        // Members
         function renderMembersList() { const list = document.getElementById('members-list'); document.getElementById('members-count').textContent = members.length; list.innerHTML = members.map((m, i) => `<li class="member-item"><div class="member-info"><div class="member-name">${m.name}</div><div class="member-contact">${m.email ? `<a href="mailto:${m.email}">${m.email}</a>` : ''}${m.email && m.phone ? ' • ' : ''}${m.phone || ''}</div></div><button class="btn-remove-member" data-index="${i}">✕</button></li>`).join(''); list.querySelectorAll('.btn-remove-member').forEach(btn => btn.addEventListener('click', () => removeMember(parseInt(btn.dataset.index)))); }
         function addMember() { const name = document.getElementById('new-member-name').value.trim(); const email = document.getElementById('new-member-email').value.trim(); const phone = document.getElementById('new-member-phone').value.trim(); if (!name) return; members.push({ name, email, phone }); localStorage.setItem('vizille_members', JSON.stringify(members)); if (isGithubConnected()) saveToGitHub(GITHUB_MEMBERS_FILE, members, githubMembersSha).then(sha => githubMembersSha = sha); document.getElementById('new-member-name').value = ''; document.getElementById('new-member-email').value = ''; document.getElementById('new-member-phone').value = ''; renderMembersList(); }
         function removeMember(i) { members.splice(i, 1); localStorage.setItem('vizille_members', JSON.stringify(members)); if (isGithubConnected()) saveToGitHub(GITHUB_MEMBERS_FILE, members, githubMembersSha).then(sha => githubMembersSha = sha); renderMembersList(); }
         
-        // Categories
         function renderCategoriesList() { const list = document.getElementById('categories-list'); document.getElementById('categories-count').textContent = categories.length; list.innerHTML = categories.map((c, i) => `<li class="member-item"><div class="member-info"><div class="member-name">🏷️ ${c}</div></div><button class="btn-remove-member" data-index="${i}">✕</button></li>`).join(''); list.querySelectorAll('.btn-remove-member').forEach(btn => btn.addEventListener('click', () => removeCategory(parseInt(btn.dataset.index)))); }
         function addCategory() { const name = document.getElementById('new-category-name').value.trim(); if (!name || categories.includes(name)) return; categories.push(name); localStorage.setItem('vizille_categories', JSON.stringify(categories)); if (isGithubConnected()) saveToGitHub(GITHUB_CATEGORIES_FILE, categories, githubCategoriesSha).then(sha => githubCategoriesSha = sha); document.getElementById('new-category-name').value = ''; renderCategoriesList(); updateCategoriesSelect(); }
         function removeCategory(i) { categories.splice(i, 1); localStorage.setItem('vizille_categories', JSON.stringify(categories)); if (isGithubConnected()) saveToGitHub(GITHUB_CATEGORIES_FILE, categories, githubCategoriesSha).then(sha => githubCategoriesSha = sha); renderCategoriesList(); updateCategoriesSelect(); }
         function updateCategoriesSelect() { document.getElementById('form-categorie').innerHTML = categories.map(c => `<option value="${c}">${c}</option>`).join(''); }
         
-        // Alert with selection
-        function openAlertModal() { 
-            selectedRecipients.clear();
-            const emailMembers = members.filter(m => m.email);
-            
-            // Render recipients list with checkboxes
-            const list = document.getElementById('recipients-list');
-            list.innerHTML = emailMembers.map((m, i) => `
-                <div class="recipient-item">
-                    <input type="checkbox" id="recipient-${i}" data-email="${m.email}" data-name="${m.name}">
-                    <label for="recipient-${i}">
-                        <strong>${m.name}</strong>
-                        <span class="email">${m.email}</span>
-                    </label>
-                </div>
-            `).join('');
-            
-            // Add event listeners to checkboxes
-            list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
-                cb.addEventListener('change', updateSelectedCount);
-            });
-            
-            document.getElementById('alert-subject').value = '[URGENT] Vizille en Mouvement - '; 
-            document.getElementById('alert-message').value = ''; 
-            document.getElementById('sending-status').className = 'sending-status';
-            updateSelectedCount();
-            document.getElementById('alert-modal-overlay').classList.add('active'); 
-        }
-        
-        function updateSelectedCount() {
-            const checkboxes = document.querySelectorAll('#recipients-list input[type="checkbox"]:checked');
-            document.getElementById('selected-count').textContent = checkboxes.length;
-        }
-        
-        function selectAllRecipients() {
-            document.querySelectorAll('#recipients-list input[type="checkbox"]').forEach(cb => cb.checked = true);
-            updateSelectedCount();
-        }
-        
-        function deselectAllRecipients() {
-            document.querySelectorAll('#recipients-list input[type="checkbox"]').forEach(cb => cb.checked = false);
-            updateSelectedCount();
-        }
-        
-        function getSelectedRecipients() {
-            const selected = [];
-            document.querySelectorAll('#recipients-list input[type="checkbox"]:checked').forEach(cb => {
-                selected.push({ email: cb.dataset.email, name: cb.dataset.name });
-            });
-            return selected;
-        }
-        
-        function copyForWhatsApp() {
-            const subject = document.getElementById('alert-subject').value.trim();
-            const message = document.getElementById('alert-message').value.trim();
-            if (!message) { alert('Écrivez un message'); return; }
-            
-            const selected = getSelectedRecipients();
-            let whatsappText = `🚨 *${subject}*\n\n${message}\n\n--\n_Vizille en Mouvement_`;
-            
-            if (selected.length > 0 && selected.length < members.filter(m => m.email).length) {
-                whatsappText += `\n\n📌 Destinataires: ${selected.map(r => r.name).join(', ')}`;
-            }
-            
-            navigator.clipboard.writeText(whatsappText).then(() => {
-                const s = document.getElementById('sending-status');
-                s.className = 'sending-status show success';
-                s.textContent = '✅ Copié ! Collez dans WhatsApp.';
-            });
-        }
-        
-        async function sendEmailAlert() {
-            const subject = document.getElementById('alert-subject').value.trim();
-            const message = document.getElementById('alert-message').value.trim();
-            const selected = getSelectedRecipients();
-            
-            if (!subject || !message) { alert('Remplissez objet et message'); return; }
-            if (selected.length === 0) { alert('Sélectionnez au moins un destinataire'); return; }
-            
-            const s = document.getElementById('sending-status');
-            s.className = 'sending-status show sending';
-            s.textContent = '⏳ Envoi...';
-            
-            let sent = 0, errors = 0;
-            
-            for (const recipient of selected) {
-                try {
-                    await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, {
-                        to_email: recipient.email,
-                        subject: subject,
-                        message: message + '\n\n--\nVizille en Mouvement',
-                        reply_to: 'mth144443@gmail.com'
-                    });
-                    sent++;
-                    s.textContent = `⏳ ${sent}/${selected.length}...`;
-                } catch (e) { errors++; console.error(e); }
-            }
-            
-            s.className = errors === 0 ? 'sending-status show success' : 'sending-status show error';
-            s.textContent = errors === 0 ? `✅ ${sent} email(s) envoyé(s) !` : `⚠️ ${sent} envoyés, ${errors} erreurs`;
-        }
+        // Alert
+        function openAlertModal() { const emailMembers = members.filter(m => m.email); const list = document.getElementById('recipients-list'); list.innerHTML = emailMembers.map((m, i) => `<div class="recipient-item"><input type="checkbox" id="recipient-${i}" data-email="${m.email}" data-name="${m.name}"><label for="recipient-${i}"><strong>${m.name}</strong><span class="email">${m.email}</span></label></div>`).join(''); list.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.addEventListener('change', updateSelectedCount)); document.getElementById('alert-subject').value = '[URGENT] Vizille en Mouvement - '; document.getElementById('alert-message').value = ''; document.getElementById('sending-status').className = 'sending-status'; updateSelectedCount(); document.getElementById('alert-modal-overlay').classList.add('active'); }
+        function updateSelectedCount() { document.getElementById('selected-count').textContent = document.querySelectorAll('#recipients-list input:checked').length; }
+        function selectAllRecipients() { document.querySelectorAll('#recipients-list input').forEach(cb => cb.checked = true); updateSelectedCount(); }
+        function deselectAllRecipients() { document.querySelectorAll('#recipients-list input').forEach(cb => cb.checked = false); updateSelectedCount(); }
+        function getSelectedRecipients() { const selected = []; document.querySelectorAll('#recipients-list input:checked').forEach(cb => selected.push({ email: cb.dataset.email, name: cb.dataset.name })); return selected; }
+        function copyForWhatsApp() { const subject = document.getElementById('alert-subject').value.trim(); const message = document.getElementById('alert-message').value.trim(); if (!message) { alert('Écrivez un message'); return; } navigator.clipboard.writeText(`🚨 *${subject}*\n\n${message}\n\n--\n_Vizille en Mouvement_`).then(() => { const s = document.getElementById('sending-status'); s.className = 'sending-status show success'; s.textContent = '✅ Copié !'; }); }
+        async function sendEmailAlert() { const subject = document.getElementById('alert-subject').value.trim(); const message = document.getElementById('alert-message').value.trim(); const selected = getSelectedRecipients(); if (!subject || !message) { alert('Remplissez objet et message'); return; } if (selected.length === 0) { alert('Sélectionnez au moins un destinataire'); return; } const s = document.getElementById('sending-status'); s.className = 'sending-status show sending'; s.textContent = '⏳ Envoi...'; let sent = 0, errors = 0; for (const recipient of selected) { try { await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { to_email: recipient.email, subject: subject, message: message + '\n\n--\nVizille en Mouvement', reply_to: 'mth144443@gmail.com' }); sent++; s.textContent = `⏳ ${sent}/${selected.length}...`; } catch (e) { errors++; } } s.className = errors === 0 ? 'sending-status show success' : 'sending-status show error'; s.textContent = errors === 0 ? `✅ ${sent} email(s) envoyé(s) !` : `⚠️ ${sent} envoyés, ${errors} erreurs`; }
         
         // Data
         async function saveData() { localStorage.setItem('vizille_actions', JSON.stringify(actions)); if (isGithubConnected()) { githubSha = await saveToGitHub(GITHUB_FILE, actions, githubSha); showSyncIndicator('Sync ✓', 'success'); } }
@@ -622,35 +528,182 @@
         function updateChart() { const c = { afaire: actions.filter(a => a.statut === 'À faire').length, encours: actions.filter(a => a.statut === 'En cours').length, bloque: actions.filter(a => a.statut === 'Bloqué').length, fait: actions.filter(a => a.statut === 'Fait').length }; const ctx = document.getElementById('statusChart').getContext('2d'); if (statusChart) statusChart.destroy(); statusChart = new Chart(ctx, { type: 'doughnut', data: { labels: ['À faire', 'En cours', 'Bloqué', 'Fait'], datasets: [{ data: [c.afaire, c.encours, c.bloque, c.fait], backgroundColor: ['#3498db', '#f39c12', '#e74c3c', '#27ae60'], borderWidth: 0 }] }, options: { responsive: true, cutout: '60%', plugins: { legend: { display: false } } } }); document.getElementById('chart-legend').innerHTML = [{ l: 'À faire', v: c.afaire, c: '#3498db' }, { l: 'En cours', v: c.encours, c: '#f39c12' }, { l: 'Bloqué', v: c.bloque, c: '#e74c3c' }, { l: 'Fait', v: c.fait, c: '#27ae60' }].map(i => `<div class="legend-item" data-filter="${i.l}"><div class="legend-color" style="background:${i.c}"></div><span class="legend-label">${i.l}</span><span class="legend-value">${i.v}</span></div>`).join(''); document.querySelectorAll('.legend-item').forEach(item => item.addEventListener('click', () => { filteredActions = actions.filter(a => a.statut === item.dataset.filter); renderView(); })); }
         function updateStats() { const t = actions.length, af = actions.filter(a => a.statut === 'À faire').length, ec = actions.filter(a => a.statut === 'En cours').length, bl = actions.filter(a => a.statut === 'Bloqué').length, fa = actions.filter(a => a.statut === 'Fait').length, ha = actions.filter(a => a.priorite === 'Haute').length; document.getElementById('stats-bar').innerHTML = `<div class="stat-chip" data-filter="all"><span class="stat-number">${t}</span><span>Total</span></div><div class="stat-chip afaire" data-filter="À faire"><span class="stat-number">${af}</span><span>À faire</span></div><div class="stat-chip encours" data-filter="En cours"><span class="stat-number">${ec}</span><span>En cours</span></div><div class="stat-chip bloque" data-filter="Bloqué"><span class="stat-number">${bl}</span><span>Bloqué</span></div><div class="stat-chip fait" data-filter="Fait"><span class="stat-number">${fa}</span><span>Fait</span></div><div class="stat-chip haute" data-filter="Haute"><span class="stat-number">${ha}</span><span>Haute</span></div>`; document.querySelectorAll('.stat-chip').forEach(chip => chip.addEventListener('click', () => { const f = chip.dataset.filter; document.querySelectorAll('.stat-chip').forEach(c => c.classList.remove('active')); filteredActions = f === 'all' ? [...actions] : f === 'Haute' ? actions.filter(a => a.priorite === 'Haute') : actions.filter(a => a.statut === f); if (f !== 'all') chip.classList.add('active'); renderView(); })); }
         
-        // Filters & render
-        function populateFilters() { updateResponsableSelects(); updateCategoriesSelect(); document.getElementById('filter-axe').innerHTML = '<option value="">Tous axes</option>' + [...new Set(actions.map(a => a.axe))].sort().map(a => `<option value="${a}">${a}</option>`).join(''); }
-        function applyFilters() { const s = document.getElementById('search-input').value.toLowerCase(), r = document.getElementById('filter-responsable').value, x = document.getElementById('filter-axe').value; filteredActions = actions.filter(a => (!s || a.tache.toLowerCase().includes(s) || a.id.toLowerCase().includes(s)) && (!r || a.responsable === r) && (!x || a.axe === x)); document.querySelectorAll('.stat-chip').forEach(c => c.classList.remove('active')); renderView(); }
-        function renderView() { currentView === 'cards' ? (renderCards(), document.getElementById('cards-container').style.display = 'grid', document.getElementById('table-container').classList.remove('active')) : (renderTable(), document.getElementById('cards-container').style.display = 'none', document.getElementById('table-container').classList.add('active')); }
-        function renderCards() { const c = document.getElementById('cards-container'); if (!filteredActions.length) { c.innerHTML = '<div class="empty-state" style="grid-column:1/-1"><div class="empty-state-icon">📭</div><h3>Aucune action</h3></div>'; return; } c.innerHTML = filteredActions.map(a => `<div class="action-card" data-id="${a.id}"><div class="card-header"><span class="card-id">${a.id}</span><div class="card-badges"><span class="badge badge-statut ${getStatutClass(a.statut)}">${a.statut}</span>${a.priorite === 'Haute' ? '<span class="badge badge-priorite">⚡</span>' : ''}</div></div><div class="card-body"><div class="card-title">${a.tache}</div><div class="card-description">${a.description || ''}</div></div><div class="card-footer"><div class="card-meta"><span>👤</span><span>${a.responsable}</span></div><span class="card-axe">${a.axe}</span></div></div>`).join(''); c.querySelectorAll('.action-card').forEach(card => card.addEventListener('click', () => { if (!isGithubConnected()) { document.getElementById('github-modal-overlay').classList.add('active'); return; } openModal(card.dataset.id); })); }
-        function renderTable() { const b = document.getElementById('table-body'); if (!filteredActions.length) { b.innerHTML = '<tr><td colspan="6">Aucune</td></tr>'; return; } b.innerHTML = filteredActions.map(a => `<tr data-id="${a.id}"><td><span class="card-id">${a.id}</span></td><td>${a.tache}</td><td>${a.responsable}</td><td><span class="badge badge-statut ${getStatutClass(a.statut)}">${a.statut}</span></td><td>${a.priorite}</td><td>${a.axe}</td></tr>`).join(''); b.querySelectorAll('tr').forEach(row => row.addEventListener('click', () => { if (!isGithubConnected()) { document.getElementById('github-modal-overlay').classList.add('active'); return; } openModal(row.dataset.id); })); }
+        // Filters
+        function populateFilters() { updateResponsableSelects(); updateCategoriesSelect(); }
+        function applyFilters() { const s = document.getElementById('search-input').value.toLowerCase(); const r = document.getElementById('filter-responsable').value; const st = document.getElementById('filter-statut').value; filteredActions = actions.filter(a => (!s || a.tache.toLowerCase().includes(s) || a.id.toLowerCase().includes(s) || (a.description || '').toLowerCase().includes(s)) && (!r || a.responsable === r) && (!st || a.statut === st)); document.querySelectorAll('.stat-chip').forEach(c => c.classList.remove('active')); renderView(); }
+        
+        // ===== RENDER FUNCTIONS =====
+        function renderGrouped() {
+            const container = document.getElementById('grouped-container');
+            const grouped = {};
+            
+            // Grouper par axe
+            filteredActions.forEach(a => {
+                if (!grouped[a.axe]) grouped[a.axe] = [];
+                grouped[a.axe].push(a);
+            });
+            
+            // Ordre des axes
+            const axeOrder = ['Site web', 'Réseaux sociaux', 'Supports papier', 'Événementiel', 'Presse', 'Email'];
+            
+            let html = '';
+            axeOrder.forEach(axe => {
+                const items = grouped[axe];
+                if (!items || items.length === 0) return;
+                
+                const config = axeConfig[axe] || { icon: '📌', class: 'siteweb' };
+                const isCollapsed = collapsedAxes.has(axe);
+                
+                // Stats par statut
+                const stats = {
+                    afaire: items.filter(a => a.statut === 'À faire').length,
+                    encours: items.filter(a => a.statut === 'En cours').length,
+                    fait: items.filter(a => a.statut === 'Fait').length,
+                    bloque: items.filter(a => a.statut === 'Bloqué').length
+                };
+                
+                html += `
+                    <div class="axe-group ${isCollapsed ? 'collapsed' : ''}" data-axe="${axe}">
+                        <div class="axe-header ${config.class}">
+                            <div class="axe-title">
+                                <span class="axe-icon">${config.icon}</span>
+                                <span class="axe-name">${axe}</span>
+                                <span class="axe-count">${items.length}</span>
+                            </div>
+                            <div class="axe-stats">
+                                ${stats.afaire > 0 ? `<div class="axe-stat"><span class="axe-stat-dot afaire"></span>${stats.afaire}</div>` : ''}
+                                ${stats.encours > 0 ? `<div class="axe-stat"><span class="axe-stat-dot encours"></span>${stats.encours}</div>` : ''}
+                                ${stats.bloque > 0 ? `<div class="axe-stat"><span class="axe-stat-dot bloque"></span>${stats.bloque}</div>` : ''}
+                                ${stats.fait > 0 ? `<div class="axe-stat"><span class="axe-stat-dot fait"></span>${stats.fait}</div>` : ''}
+                            </div>
+                            <span class="axe-toggle">▼</span>
+                        </div>
+                        <div class="axe-content">
+                            ${items.map(a => renderCard(a)).join('')}
+                        </div>
+                    </div>
+                `;
+            });
+            
+            if (!html) {
+                html = '<div class="empty-state"><div class="empty-state-icon">📭</div><h3>Aucune action trouvée</h3></div>';
+            }
+            
+            container.innerHTML = html;
+            
+            // Event listeners
+            container.querySelectorAll('.axe-header').forEach(header => {
+                header.addEventListener('click', () => {
+                    const group = header.closest('.axe-group');
+                    const axe = group.dataset.axe;
+                    group.classList.toggle('collapsed');
+                    if (group.classList.contains('collapsed')) {
+                        collapsedAxes.add(axe);
+                    } else {
+                        collapsedAxes.delete(axe);
+                    }
+                });
+            });
+            
+            container.querySelectorAll('.action-card').forEach(card => {
+                card.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    if (!isGithubConnected()) { document.getElementById('github-modal-overlay').classList.add('active'); return; }
+                    openModal(card.dataset.id);
+                });
+            });
+        }
+        
+        function renderCard(a) {
+            const isUrgent = a.echeance && new Date(a.echeance) < new Date();
+            return `
+                <div class="action-card" data-id="${a.id}">
+                    <div class="card-header">
+                        <span class="card-id">${a.id}</span>
+                        <div class="card-badges">
+                            <span class="badge badge-statut ${getStatutClass(a.statut)}">${a.statut}</span>
+                            ${a.priorite === 'Haute' ? '<span class="badge badge-priorite">⚡</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">${a.tache}</div>
+                        <div class="card-description">${a.description || ''}</div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-meta"><span>👤</span><span>${a.responsable}</span></div>
+                        ${a.echeance ? `<span class="card-echeance ${isUrgent ? 'urgent' : ''}">📅 ${new Date(a.echeance).toLocaleDateString('fr-FR')}</span>` : ''}
+                    </div>
+                </div>
+            `;
+        }
+        
+        function renderCards() {
+            const c = document.getElementById('cards-container');
+            if (!filteredActions.length) { c.innerHTML = '<div class="empty-state"><div class="empty-state-icon">📭</div><h3>Aucune action</h3></div>'; return; }
+            c.innerHTML = filteredActions.map(a => `
+                <div class="action-card" data-id="${a.id}">
+                    <div class="card-header">
+                        <span class="card-id">${a.id}</span>
+                        <div class="card-badges">
+                            <span class="badge badge-statut ${getStatutClass(a.statut)}">${a.statut}</span>
+                            ${a.priorite === 'Haute' ? '<span class="badge badge-priorite">⚡</span>' : ''}
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title">${a.tache}</div>
+                        <div class="card-description">${a.description || ''}</div>
+                    </div>
+                    <div class="card-footer">
+                        <div class="card-meta"><span>👤</span><span>${a.responsable}</span></div>
+                        <span class="card-axe">${a.axe}</span>
+                    </div>
+                </div>
+            `).join('');
+            c.querySelectorAll('.action-card').forEach(card => card.addEventListener('click', () => { if (!isGithubConnected()) { document.getElementById('github-modal-overlay').classList.add('active'); return; } openModal(card.dataset.id); }));
+        }
+        
+        function renderTable() {
+            const b = document.getElementById('table-body');
+            if (!filteredActions.length) { b.innerHTML = '<tr><td colspan="6">Aucune action</td></tr>'; return; }
+            b.innerHTML = filteredActions.map(a => `<tr data-id="${a.id}"><td><span class="card-id">${a.id}</span></td><td>${a.axe}</td><td>${a.tache}</td><td>${a.responsable}</td><td><span class="badge badge-statut ${getStatutClass(a.statut)}">${a.statut}</span></td><td>${a.priorite}</td></tr>`).join('');
+            b.querySelectorAll('tr').forEach(row => row.addEventListener('click', () => { if (!isGithubConnected()) { document.getElementById('github-modal-overlay').classList.add('active'); return; } openModal(row.dataset.id); }));
+        }
+        
+        function renderView() {
+            document.getElementById('grouped-container').style.display = currentView === 'grouped' ? 'block' : 'none';
+            document.getElementById('cards-container').classList.toggle('active', currentView === 'cards');
+            document.getElementById('table-container').classList.toggle('active', currentView === 'table');
+            
+            if (currentView === 'grouped') renderGrouped();
+            else if (currentView === 'cards') renderCards();
+            else renderTable();
+        }
         
         // Modal
-        function openModal(id = null) { editingId = id; updateResponsableSelects(); updateCategoriesSelect(); if (id) { const a = actions.find(x => x.id === id); if (!a) return; document.getElementById('modal-icon').textContent = '📝'; document.getElementById('modal-title').textContent = a.id; document.getElementById('form-id').value = a.id; document.getElementById('form-axe').value = a.axe; document.getElementById('form-categorie').value = a.categorie || categories[0]; document.getElementById('form-tache').value = a.tache; document.getElementById('form-description').value = a.description || ''; document.getElementById('form-responsable').value = a.responsable; document.getElementById('form-statut').value = a.statut; document.getElementById('form-priorite').value = a.priorite; document.getElementById('form-echeance').value = a.echeance || ''; document.getElementById('btn-delete').style.display = 'flex'; } else { document.getElementById('modal-icon').textContent = '➕'; document.getElementById('modal-title').textContent = 'Nouvelle'; document.getElementById('form-id').value = getNextId(); document.getElementById('form-axe').value = 'Site web'; document.getElementById('form-categorie').value = categories[0]; document.getElementById('form-tache').value = ''; document.getElementById('form-description').value = ''; document.getElementById('form-responsable').value = team[0] || ''; document.getElementById('form-statut').value = 'À faire'; document.getElementById('form-priorite').value = 'Moyenne'; document.getElementById('form-echeance').value = ''; document.getElementById('btn-delete').style.display = 'none'; } document.getElementById('modal-overlay').classList.add('active'); }
+        function openModal(id = null) { editingId = id; updateResponsableSelects(); updateCategoriesSelect(); if (id) { const a = actions.find(x => x.id === id); if (!a) return; document.getElementById('modal-icon').textContent = '📝'; document.getElementById('modal-title').textContent = a.id; document.getElementById('form-id').value = a.id; document.getElementById('form-axe').value = a.axe; document.getElementById('form-categorie').value = a.categorie || categories[0]; document.getElementById('form-tache').value = a.tache; document.getElementById('form-description').value = a.description || ''; document.getElementById('form-responsable').value = a.responsable; document.getElementById('form-statut').value = a.statut; document.getElementById('form-priorite').value = a.priorite; document.getElementById('form-echeance').value = a.echeance || ''; document.getElementById('btn-delete').style.display = 'flex'; } else { document.getElementById('modal-icon').textContent = '➕'; document.getElementById('modal-title').textContent = 'Nouvelle action'; document.getElementById('form-id').value = getNextId(); document.getElementById('form-axe').value = 'Site web'; document.getElementById('form-categorie').value = categories[0]; document.getElementById('form-tache').value = ''; document.getElementById('form-description').value = ''; document.getElementById('form-responsable').value = team[0] || ''; document.getElementById('form-statut').value = 'À faire'; document.getElementById('form-priorite').value = 'Moyenne'; document.getElementById('form-echeance').value = ''; document.getElementById('btn-delete').style.display = 'none'; } document.getElementById('modal-overlay').classList.add('active'); }
         function closeModal() { document.getElementById('modal-overlay').classList.remove('active'); editingId = null; }
         function saveAction() { const d = { id: document.getElementById('form-id').value, axe: document.getElementById('form-axe').value, categorie: document.getElementById('form-categorie').value, tache: document.getElementById('form-tache').value, description: document.getElementById('form-description').value, responsable: document.getElementById('form-responsable').value, statut: document.getElementById('form-statut').value, priorite: document.getElementById('form-priorite').value, echeance: document.getElementById('form-echeance').value }; if (!d.tache.trim()) return; if (editingId) { const i = actions.findIndex(a => a.id === editingId); if (i !== -1) actions[i] = d; } else actions.push(d); saveData(); populateFilters(); updateStats(); updateChart(); applyFilters(); closeModal(); }
-        function deleteAction() { if (!editingId || !confirm('Supprimer ?')) return; actions = actions.filter(a => a.id !== editingId); saveData(); populateFilters(); updateStats(); updateChart(); applyFilters(); closeModal(); }
+        function deleteAction() { if (!editingId || !confirm('Supprimer cette action ?')) return; actions = actions.filter(a => a.id !== editingId); saveData(); populateFilters(); updateStats(); updateChart(); applyFilters(); closeModal(); }
         
         // Export/Import
         function exportData() { const BOM = '\uFEFF'; const h = ['ID', 'Axe', 'Catégorie', 'Tâche', 'Description', 'Responsable', 'Statut', 'Priorité', 'Échéance']; const csv = BOM + h.join(';') + '\n' + actions.map(a => [a.id, a.axe, a.categorie || '', a.tache, (a.description || '').replace(/[\n\r;]/g, ' '), a.responsable, a.statut, a.priorite, a.echeance || ''].map(v => `"${(v || '').replace(/"/g, '""')}"`).join(';')).join('\n'); const el = document.createElement('a'); el.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv); el.download = `suivi-${new Date().toISOString().split('T')[0]}.csv`; el.click(); }
-        function importData(e) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { try { let d; if (f.name.endsWith('.csv')) { const lines = ev.target.result.split('\n').filter(l => l.trim()); d = lines.slice(1).map(line => { const v = line.split(';').map(x => x.replace(/^"|"$/g, '').trim()); return { id: v[0], axe: v[1], categorie: v[2], tache: v[3], description: v[4], responsable: v[5], statut: v[6], priorite: v[7], echeance: v[8] }; }).filter(x => x.id); } else d = JSON.parse(ev.target.result); if (Array.isArray(d) && confirm(`Importer ${d.length} actions ?`)) { actions = d; saveData(); populateFilters(); updateStats(); updateChart(); applyFilters(); } } catch(err) { alert('Erreur'); } }; r.readAsText(f, 'UTF-8'); e.target.value = ''; }
+        function importData(e) { const f = e.target.files[0]; if (!f) return; const r = new FileReader(); r.onload = ev => { try { let d; if (f.name.endsWith('.csv')) { const lines = ev.target.result.split('\n').filter(l => l.trim()); d = lines.slice(1).map(line => { const v = line.split(';').map(x => x.replace(/^"|"$/g, '').trim()); return { id: v[0], axe: v[1], categorie: v[2], tache: v[3], description: v[4], responsable: v[5], statut: v[6], priorite: v[7], echeance: v[8] }; }).filter(x => x.id); } else d = JSON.parse(ev.target.result); if (Array.isArray(d) && confirm(`Importer ${d.length} actions ?`)) { actions = d; saveData(); populateFilters(); updateStats(); updateChart(); applyFilters(); } } catch(err) { alert('Erreur import'); } }; r.readAsText(f, 'UTF-8'); e.target.value = ''; }
         
         function closeAllModals() { ['modal-overlay', 'team-modal-overlay', 'group-modal-overlay', 'categories-modal-overlay', 'alert-modal-overlay', 'github-modal-overlay'].forEach(id => document.getElementById(id).classList.remove('active')); }
         
         // Init
         async function init() {
             updateGithubStatus();
-            if (isGithubConnected()) { await loadFromGitHub(); } else { await loadPublic(); } filteredActions = [...actions];
+            if (isGithubConnected()) { await loadFromGitHub(); } else { await loadPublic(); }
+            filteredActions = [...actions];
             populateFilters(); updateStats(); updateChart(); renderView();
             
             document.getElementById('search-input').addEventListener('input', applyFilters);
             document.getElementById('filter-responsable').addEventListener('change', applyFilters);
-            document.getElementById('filter-axe').addEventListener('change', applyFilters);
+            document.getElementById('filter-statut').addEventListener('change', applyFilters);
+            
             document.querySelectorAll('.view-btn').forEach(b => b.addEventListener('click', () => { document.querySelectorAll('.view-btn').forEach(x => x.classList.remove('active')); b.classList.add('active'); currentView = b.dataset.view; renderView(); }));
+            
             document.getElementById('btn-new').addEventListener('click', () => { if (!isGithubConnected()) { document.getElementById('github-modal-overlay').classList.add('active'); return; } openModal(); });
             document.getElementById('btn-export').addEventListener('click', exportData);
             document.getElementById('btn-import').addEventListener('click', () => document.getElementById('import-file').click());
