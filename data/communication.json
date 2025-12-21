@@ -46,13 +46,13 @@
   {
     "id": "COM-005",
     "axe": "Réseaux sociaux",
-    "categorie": "Organisation",
+    "categorie": "Création",
     "tache": "Coordination FB/Site",
     "description": "Guide de synchronisation entre publications Facebook et site web",
     "responsable": "Laurent",
-    "statut": "À faire",
-    "priorite": "Moyenne",
-    "echeance": "2025-02-10"
+    "statut": "En cours",
+    "priorite": "Haute",
+    "echeance": "2026-01-02"
   },
   {
     "id": "COM-006",
