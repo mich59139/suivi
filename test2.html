@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Rendu</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; }
+        .card { background: #f0f0f0; padding: 15px; margin: 10px 0; border-radius: 8px; border-left: 4px solid #3498db; }
+        .card h3 { margin: 0 0 5px 0; color: #1a3a5c; }
+        .card p { margin: 0; color: #666; font-size: 14px; }
+        .badge { display: inline-block; padding: 2px 8px; border-radius: 10px; font-size: 12px; color: white; margin-left: 10px; }
+        .fait { background: #27ae60; }
+        .encours { background: #f39c12; }
+        .afaire { background: #3498db; }
+    </style>
+</head>
+<body>
+    <h1>Test Rendu - Suivi Communication</h1>
+    <div id="container">Chargement...</div>
+    
+    <script>
+        async function load() {
+            try {
+                const r = await fetch('https://raw.githubusercontent.com/mich59139/suivi/main/data/communication.json');
+                const actions = await r.json();
+                
+                let html = '<p><strong>' + actions.length + ' actions chargées</strong></p>';
+                
+                // Grouper par axe
+                const grouped = {};
+                actions.forEach(a => {
+                    if (!grouped[a.axe]) grouped[a.axe] = [];
+                    grouped[a.axe].push(a);
+                });
+                
+                for (const axe in grouped) {
+                    html += '<h2>' + axe + ' (' + grouped[axe].length + ')</h2>';
+                    grouped[axe].slice(0, 3).forEach(a => {
+                        const statutClass = a.statut === 'Fait' ? 'fait' : a.statut === 'En cours' ? 'encours' : 'afaire';
+                        html += '<div class="card"><h3>' + a.id + ' - ' + a.tache + '<span class="badge ' + statutClass + '">' + a.statut + '</span></h3><p>' + a.responsable + '</p></div>';
+                    });
+                    if (grouped[axe].length > 3) html += '<p><em>... et ' + (grouped[axe].length - 3) + ' autres</em></p>';
+                }
+                
+                document.getElementById('container').innerHTML = html;
+            } catch(e) {
+                document.getElementById('container').innerHTML = '<p style="color:red;">Erreur: ' + e.message + '</p>';
+            }
+        }
+        load();
+    </script>
+</body>
+</html>
