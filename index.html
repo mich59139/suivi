@@ -466,7 +466,31 @@
         function decodeBase64UTF8(base64) { try { const bin = atob(base64); const bytes = new Uint8Array(bin.length); for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i); return new TextDecoder('utf-8').decode(bytes); } catch (e) { return atob(base64); } }
         function encodeBase64UTF8(str) { const bytes = new TextEncoder().encode(str); let bin = ''; for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]); return btoa(bin); }
         
-        async function loadPublic() { try { showSyncIndicator('Chargement...'); const base = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}`; let r = await fetch(`${base}/${GITHUB_FILE}`); if (r.ok) { actions = await r.json(); localStorage.setItem('vizille_actions', JSON.stringify(actions)); } r = await fetch(`${base}/${GITHUB_TEAM_FILE}`); if (r.ok) { team = await r.json(); localStorage.setItem('vizille_team', JSON.stringify(team)); } showSyncIndicator('Lecture seule', 'warning'); return true; } catch (e) { actions = JSON.parse(localStorage.getItem('vizille_actions')) || []; return false; } }
+        async function loadPublic() { 
+            try { 
+                showSyncIndicator('Chargement...'); 
+                const base = `https://raw.githubusercontent.com/${GITHUB_REPO}/${GITHUB_BRANCH}`; 
+                console.log('Chargement depuis:', base + '/' + GITHUB_FILE);
+                let r = await fetch(`${base}/${GITHUB_FILE}`); 
+                console.log('Response status:', r.status);
+                if (r.ok) { 
+                    actions = await r.json(); 
+                    console.log('Actions JSON chargées:', actions.length);
+                    localStorage.setItem('vizille_actions', JSON.stringify(actions)); 
+                } 
+                r = await fetch(`${base}/${GITHUB_TEAM_FILE}`); 
+                if (r.ok) { 
+                    team = await r.json(); 
+                    localStorage.setItem('vizille_team', JSON.stringify(team)); 
+                } 
+                showSyncIndicator('Lecture seule', 'warning'); 
+                return true; 
+            } catch (e) { 
+                console.error('Erreur loadPublic:', e);
+                actions = JSON.parse(localStorage.getItem('vizille_actions')) || []; 
+                return false; 
+            } 
+        }
         
         async function loadFromGitHub() { const token = getGithubToken(); if (!token) return false; try { showSyncIndicator('Chargement...'); let r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubSha = d.sha; actions = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_actions', JSON.stringify(actions)); } r = await fetch(`https://api.github.com/repos/${GITHUB_REPO}/contents/${GITHUB_TEAM_FILE}`, { headers: { 'Authorization': `token ${token}` } }); if (r.ok) { const d = await r.json(); githubTeamSha = d.sha; team = JSON.parse(decodeBase64UTF8(d.content)); localStorage.setItem('vizille_team', JSON.stringify(team)); } showSyncIndicator('Sync ✓', 'success'); return true; } catch (e) { showSyncIndicator('Erreur', 'error'); return false; } }
         
@@ -522,9 +546,12 @@
         
         // ===== VUE 1: PAR AXE =====
         function renderGrouped() {
+            console.log('renderGrouped appelé, filteredActions:', filteredActions.length);
             const container = document.getElementById('grouped-container');
+            console.log('Container trouvé:', !!container);
             const grouped = {};
             filteredActions.forEach(a => { if (!grouped[a.axe]) grouped[a.axe] = []; grouped[a.axe].push(a); });
+            console.log('Grouped par axe:', Object.keys(grouped));
             const axeOrder = ['Site web', 'Réseaux sociaux', 'Supports papier', 'Événementiel', 'Production', 'Presse', 'Email'];
             
             let html = '';
@@ -685,6 +712,7 @@
         
         // Main render
         function renderView() {
+            console.log('renderView appelé, currentView:', currentView, 'filteredActions:', filteredActions.length);
             document.querySelectorAll('.view-container').forEach(c => c.classList.remove('active'));
             if (currentView === 'grouped') { document.getElementById('grouped-container').classList.add('active'); renderGrouped(); }
             else if (currentView === 'types') { document.getElementById('types-container').classList.add('active'); renderTypes(); }
@@ -782,14 +810,25 @@
         
         // Init
         async function init() {
+            console.log('Init démarré');
             updateGithubStatus();
-            if (isGithubConnected()) { await loadFromGitHub(); } else { await loadPublic(); }
+            if (isGithubConnected()) { 
+                console.log('Mode GitHub connecté');
+                await loadFromGitHub(); 
+            } else { 
+                console.log('Mode lecture publique');
+                await loadPublic(); 
+            }
+            console.log('Actions chargées:', actions.length);
             filteredActions = [...actions];
+            console.log('Filtered actions:', filteredActions.length);
             updateResponsableSelects();
             updateCategoriesSelect();
             updateStats();
             updateChart();
+            console.log('Avant renderView');
             renderView();
+            console.log('Après renderView');
             
             // Event listeners
             document.getElementById('search-input').addEventListener('input', applyFilters);
