@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head><title>Test</title></head>
+<body>
+<h1>Test chargement données</h1>
+<pre id="result">Chargement...</pre>
+<script>
+fetch('https://raw.githubusercontent.com/mich59139/suivi/main/data/communication.json')
+  .then(r => r.json())
+  .then(data => {
+    document.getElementById('result').textContent = 'OK: ' + data.length + ' actions\n\nPremière: ' + JSON.stringify(data[0], null, 2);
+  })
+  .catch(e => {
+    document.getElementById('result').textContent = 'ERREUR: ' + e.message;
+  });
+</script>
+</body>
+</html>
