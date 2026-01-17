@@ -137,10 +137,10 @@
     "categorie": "Contenu",
     "tache": "Programme 2026-2032",
     "description": "Présentation détaillée du projet municipal",
-    "responsable": "Équipe",
-    "statut": "É faire",
+    "responsable": "",
+    "statut": "En cours",
     "priorite": "Haute",
-    "echeance": "2026-05-01"
+    "echeance": "2026-03-01"
   },
   {
     "id": "COM-014",
