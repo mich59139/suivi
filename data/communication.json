@@ -253,17 +253,6 @@
     "echeance": "2026-01-17"
   },
   {
-    "id": "COM-025",
-    "axe": "Production",
-    "categorie": "Terrain",
-    "tache": "Distribution de la lettre de candidature",
-    "description": "Distribution de la lettre de candidature",
-    "responsable": "Équipe",
-    "statut": "É faire",
-    "priorite": "Haute",
-    "echeance": "2026-01-18"
-  },
-  {
     "id": "COM-026",
     "axe": "Production",
     "categorie": "Vidéo",
