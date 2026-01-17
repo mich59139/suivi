@@ -225,10 +225,10 @@
     "categorie": "Terrain",
     "tache": "Distribution de la lettre de candidature",
     "description": "Distribution de la lettre de candidature",
-    "responsable": "Équipe",
-    "statut": "É faire",
+    "responsable": "",
+    "statut": "En cours",
     "priorite": "Haute",
-    "echeance": "2026-01-16"
+    "echeance": "2026-01-20"
   },
   {
     "id": "COM-022",
