@@ -250,13 +250,20 @@ function updateGhBtn() {
     else { btn.classList.remove('connected'); document.getElementById('gh-status').textContent = 'GitHub'; }
 }
 
+function decodeUTF8(base64) {
+    const bin = atob(base64);
+    const bytes = new Uint8Array(bin.length);
+    for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
+    return new TextDecoder('utf-8').decode(bytes);
+}
+
 async function loadData() {
     showSync('Chargement...');
     try {
         const token = getToken();
         if (token) {
             const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, { headers: { Authorization: `token ${token}` } });
-            if (r.ok) { const d = await r.json(); githubSha = d.sha; actions = JSON.parse(atob(d.content)); }
+            if (r.ok) { const d = await r.json(); githubSha = d.sha; actions = JSON.parse(decodeUTF8(d.content)); }
             showSync('Sync ✓', 'success');
         } else {
             const r = await fetch(`https://raw.githubusercontent.com/${REPO}/${BRANCH}/${FILE}`);
@@ -268,12 +275,19 @@ async function loadData() {
     render();
 }
 
+function encodeUTF8(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
+}
+
 async function saveData() {
     localStorage.setItem('actions', JSON.stringify(actions));
     const token = getToken();
     if (!token) return;
     try {
-        const body = { message: 'MAJ', content: btoa(unescape(encodeURIComponent(JSON.stringify(actions, null, 2)))), branch: BRANCH };
+        const body = { message: 'MAJ', content: encodeUTF8(JSON.stringify(actions, null, 2)), branch: BRANCH };
         if (githubSha) body.sha = githubSha;
         const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
             method: 'PUT', headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body)
