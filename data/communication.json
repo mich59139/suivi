@@ -636,5 +636,82 @@
     "statut": "É faire",
     "priorite": "Moyenne",
     "echeance": "2026-03-16"
+  },
+  {
+    "id": "COM-061",
+    "axe": "Événementiel",
+    "categorie": "Organisation",
+    "tache": "Rencontre Catherine avec le Dauphiné Libéré",
+    "description": "Interview de Catherine par Isabelle Calendre",
+    "responsable": "Équipe",
+    "statut": "Fait",
+    "priorite": "Moyenne",
+    "echeance": "2026-01-16"
+  },
+  {
+    "id": "COM-062",
+    "axe": "Événementiel",
+    "categorie": "Organisation",
+    "tache": "Présence sur le marché",
+    "description": "Présence de l'équipe sur le marché du mardi",
+    "responsable": "Équipe",
+    "statut": "Fait",
+    "priorite": "Moyenne",
+    "echeance": "2026-01-20"
+  },
+  {
+    "id": "COM-063",
+    "axe": "Événementiel",
+    "categorie": "Organisation",
+    "tache": "Présence sur le marché",
+    "description": "Présence de l'équipe sur le marché du samedi",
+    "responsable": "Équipe",
+    "statut": "En cours",
+    "priorite": "Moyenne",
+    "echeance": "2026-01-24"
+  },
+  {
+    "id": "COM-064",
+    "axe": "Événementiel",
+    "categorie": "Organisation",
+    "tache": "Réunion publique #1",
+    "description": "Première réunion publique à 18h30",
+    "responsable": "Équipe",
+    "statut": "À faire",
+    "priorite": "Haute",
+    "echeance": "2026-01-30"
+  },
+  {
+    "id": "COM-065",
+    "axe": "Événementiel",
+    "categorie": "Organisation",
+    "tache": "Réunion de quartier aux Mattons",
+    "description": "Réunion de quartier aux Mattons à 16h15",
+    "responsable": "Équipe",
+    "statut": "À faire",
+    "priorite": "Haute",
+    "echeance": "2026-02-23"
+  },
+  {
+    "id": "COM-066",
+    "axe": "Événementiel",
+    "categorie": "Organisation",
+    "tache": "Réunion publique #2",
+    "description": "Deuxième réunion publique à 18h30",
+    "responsable": "Équipe",
+    "statut": "À faire",
+    "priorite": "Haute",
+    "echeance": "2026-02-27"
+  },
+  {
+    "id": "COM-067",
+    "axe": "Événementiel",
+    "categorie": "Organisation",
+    "tache": "Événement festif",
+    "description": "Événement festif à 10h",
+    "responsable": "Équipe",
+    "statut": "À faire",
+    "priorite": "Haute",
+    "echeance": "2026-03-07"
   }
 ]
