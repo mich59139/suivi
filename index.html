@@ -10,126 +10,150 @@
             --bleu-vizille: #1a3a5c; --bleu-clair: #2d5a87; --or: #c9a227; --or-clair: #e8c84a;
             --blanc-casse: #f8f6f1; --gris-doux: #e8e6e1; --gris-texte: #4a4a4a;
             --vert-fait: #27ae60; --orange-encours: #f39c12; --bleu-afaire: #3498db; --rouge-bloque: #e74c3c;
+            --col-siteweb: #3498db; --col-reseaux: #9b59b6; --col-papier: #e74c3c;
+            --col-evenement: #1abc9c; --col-production: #e67e22; --col-presse: #34495e; --col-email: #c0392b;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: 'Source Sans 3', sans-serif; background: var(--blanc-casse); color: var(--gris-texte); }
         
-        .header { background: linear-gradient(135deg, var(--bleu-vizille), var(--bleu-clair)); color: white; padding: 1.5rem; }
+        /* Header */
+        .header { background: linear-gradient(135deg, var(--bleu-vizille), var(--bleu-clair)); color: white; padding: 1rem 1.5rem; }
         .header-content { max-width: 1200px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
         .logo-section { display: flex; align-items: center; gap: 1rem; }
-        .logo-section img { width: 100px; height: auto; }
-        .logo-text h1 { font-family: 'Playfair Display', serif; font-size: 1.4rem; }
-        .logo-text .slogan { font-size: 0.9rem; color: var(--or-clair); }
+        .logo-section img { width: 80px; height: auto; }
+        .logo-text h1 { font-family: 'Playfair Display', serif; font-size: 1.3rem; }
+        .logo-text .slogan { font-size: 0.85rem; color: var(--or-clair); }
+        .header-stats { display: flex; gap: 1.5rem; font-size: 0.9rem; }
+        .header-stats .stat { text-align: center; }
+        .header-stats .stat-num { font-size: 1.5rem; font-weight: 700; display: block; }
         
-        .stats-bar { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1rem; justify-content: center; }
-        .stat-chip { background: rgba(255,255,255,0.15); padding: 0.4rem 0.8rem; border-radius: 20px; font-size: 0.85rem; cursor: pointer; }
-        .stat-chip:hover { background: rgba(255,255,255,0.25); }
-        .stat-chip.active { background: var(--or); color: var(--bleu-vizille); font-weight: 600; }
-        .stat-number { font-weight: 700; margin-right: 0.3rem; }
+        /* Onglets */
+        .tabs-container { background: white; border-bottom: 1px solid var(--gris-doux); position: sticky; top: 0; z-index: 100; }
+        .tabs { max-width: 1200px; margin: 0 auto; display: flex; overflow-x: auto; padding: 0; }
+        .tab { padding: 1rem 1.2rem; cursor: pointer; border-bottom: 3px solid transparent; display: flex; align-items: center; gap: 0.5rem; white-space: nowrap; transition: all 0.2s; font-weight: 500; color: var(--gris-texte); }
+        .tab:hover { background: var(--blanc-casse); }
+        .tab.active { border-bottom-color: var(--bleu-vizille); color: var(--bleu-vizille); font-weight: 600; }
+        .tab .icon { font-size: 1.1rem; }
+        .tab .badge { background: var(--gris-doux); color: var(--gris-texte); padding: 0.15rem 0.5rem; border-radius: 10px; font-size: 0.75rem; font-weight: 600; }
+        .tab.active .badge { background: var(--bleu-vizille); color: white; }
         
-        .toolbar { max-width: 1200px; margin: 1.5rem auto; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+        /* Couleurs onglets actifs */
+        .tab[data-axe="Site web"].active { border-bottom-color: var(--col-siteweb); color: var(--col-siteweb); }
+        .tab[data-axe="Site web"].active .badge { background: var(--col-siteweb); }
+        .tab[data-axe="Réseaux sociaux"].active { border-bottom-color: var(--col-reseaux); color: var(--col-reseaux); }
+        .tab[data-axe="Réseaux sociaux"].active .badge { background: var(--col-reseaux); }
+        .tab[data-axe="Supports papier"].active { border-bottom-color: var(--col-papier); color: var(--col-papier); }
+        .tab[data-axe="Supports papier"].active .badge { background: var(--col-papier); }
+        .tab[data-axe="Événementiel"].active { border-bottom-color: var(--col-evenement); color: var(--col-evenement); }
+        .tab[data-axe="Événementiel"].active .badge { background: var(--col-evenement); }
+        .tab[data-axe="Production"].active { border-bottom-color: var(--col-production); color: var(--col-production); }
+        .tab[data-axe="Production"].active .badge { background: var(--col-production); }
+        .tab[data-axe="Presse"].active { border-bottom-color: var(--col-presse); color: var(--col-presse); }
+        .tab[data-axe="Presse"].active .badge { background: var(--col-presse); }
+        .tab[data-axe="Email"].active { border-bottom-color: var(--col-email); color: var(--col-email); }
+        .tab[data-axe="Email"].active .badge { background: var(--col-email); }
+        
+        /* Toolbar */
+        .toolbar { max-width: 1200px; margin: 1rem auto; padding: 0 1rem; display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
         .search-box { flex: 1; min-width: 200px; }
-        .search-box input { width: 100%; padding: 0.7rem 1rem; border: 2px solid var(--gris-doux); border-radius: 8px; font-size: 1rem; }
+        .search-box input { width: 100%; padding: 0.6rem 1rem; border: 2px solid var(--gris-doux); border-radius: 8px; font-size: 0.95rem; }
         .search-box input:focus { outline: none; border-color: var(--bleu-vizille); }
-        select { padding: 0.7rem 1rem; border: 2px solid var(--gris-doux); border-radius: 8px; font-size: 0.9rem; background: white; }
-        
+        select { padding: 0.6rem 0.8rem; border: 2px solid var(--gris-doux); border-radius: 8px; font-size: 0.9rem; background: white; }
         .view-toggle { display: flex; background: var(--gris-doux); border-radius: 8px; overflow: hidden; }
-        .view-btn { padding: 0.6rem 1rem; border: none; background: transparent; cursor: pointer; font-size: 0.9rem; }
+        .view-btn { padding: 0.5rem 0.8rem; border: none; background: transparent; cursor: pointer; font-size: 0.85rem; }
         .view-btn.active { background: var(--bleu-vizille); color: white; }
-        .view-btn:hover:not(.active) { background: rgba(0,0,0,0.1); }
-        
-        .btn { padding: 0.7rem 1.2rem; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.4rem; }
+        .btn { padding: 0.6rem 1rem; border: none; border-radius: 8px; font-size: 0.85rem; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 0.3rem; }
         .btn-primary { background: var(--or); color: var(--bleu-vizille); }
-        .btn-secondary { background: white; color: var(--bleu-vizille); border: 2px solid var(--gris-doux); }
+        .btn-secondary { background: white; border: 2px solid var(--gris-doux); }
         .btn-github { background: #24292e; color: white; }
         .btn-github.connected { background: var(--vert-fait); }
         
+        /* Container */
         .container { max-width: 1200px; margin: 0 auto; padding: 0 1rem 2rem; }
         
-        /* Groupes (Axes ou Types) */
-        .group { margin-bottom: 1.5rem; background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-        .group-header { padding: 1rem 1.5rem; color: white; display: flex; justify-content: space-between; align-items: center; cursor: pointer; }
-        .group-header.siteweb { background: #3498db; }
-        .group-header.reseaux { background: #9b59b6; }
-        .group-header.papier { background: #e67e22; }
-        .group-header.evenementiel { background: #1abc9c; }
-        .group-header.production { background: #e67e22; }
-        .group-header.presse { background: #34495e; }
-        .group-header.email { background: #c0392b; }
-        .group-header.publication { background: #9b59b6; }
-        .group-header.terrain { background: #27ae60; }
-        .group-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem; }
-        .group-count { background: rgba(255,255,255,0.3); padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.8rem; margin-left: 0.5rem; }
-        .group-toggle { font-size: 1.2rem; transition: transform 0.3s; }
-        .group.collapsed .group-toggle { transform: rotate(-90deg); }
-        .group-content { padding: 1rem; display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1rem; }
-        .group.collapsed .group-content { display: none; }
+        /* Vue Liste */
+        .list-view { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 1rem; }
         
         /* Cartes */
-        .card { background: var(--blanc-casse); border-radius: 8px; padding: 1rem; cursor: pointer; border-left: 4px solid #ccc; transition: transform 0.2s, box-shadow 0.2s; }
+        .card { background: white; border-radius: 10px; padding: 1rem; cursor: pointer; border-left: 4px solid #ccc; transition: transform 0.2s, box-shadow 0.2s; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
         .card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
-        .card.type-siteweb { border-left-color: #3498db; }
-        .card.type-publication { border-left-color: #9b59b6; }
-        .card.type-production { border-left-color: #e67e22; }
-        .card.type-evenement { border-left-color: #1abc9c; }
-        .card.type-terrain { border-left-color: #27ae60; }
-        .card.type-papier { border-left-color: #e74c3c; }
-        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.5rem; }
-        .card-id { font-size: 0.75rem; font-weight: 700; color: var(--bleu-vizille); }
-        .badge { font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 10px; color: white; }
-        .badge.fait { background: var(--vert-fait); }
-        .badge.encours { background: var(--orange-encours); }
-        .badge.afaire { background: var(--bleu-afaire); }
-        .badge.bloque { background: var(--rouge-bloque); }
-        .card-title { font-weight: 600; color: var(--bleu-vizille); margin-bottom: 0.25rem; font-size: 0.9rem; }
-        .card-meta { font-size: 0.8rem; color: #888; display: flex; justify-content: space-between; }
+        .card.axe-siteweb { border-left-color: var(--col-siteweb); }
+        .card.axe-reseaux { border-left-color: var(--col-reseaux); }
+        .card.axe-papier { border-left-color: var(--col-papier); }
+        .card.axe-evenement { border-left-color: var(--col-evenement); }
+        .card.axe-production { border-left-color: var(--col-production); }
+        .card.axe-presse { border-left-color: var(--col-presse); }
+        .card.axe-email { border-left-color: var(--col-email); }
+        .card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.4rem; }
+        .card-id { font-size: 0.7rem; font-weight: 700; color: var(--bleu-vizille); opacity: 0.7; }
+        .card-axe { font-size: 0.7rem; padding: 0.1rem 0.4rem; border-radius: 4px; background: var(--gris-doux); }
+        .status-badge { font-size: 0.7rem; padding: 0.15rem 0.5rem; border-radius: 10px; color: white; font-weight: 600; }
+        .status-badge.fait { background: var(--vert-fait); }
+        .status-badge.encours { background: var(--orange-encours); }
+        .status-badge.afaire { background: var(--bleu-afaire); }
+        .status-badge.bloque { background: var(--rouge-bloque); }
+        .card-title { font-weight: 600; color: var(--bleu-vizille); margin-bottom: 0.3rem; font-size: 0.95rem; line-height: 1.3; }
+        .card-meta { font-size: 0.8rem; color: #888; display: flex; justify-content: space-between; align-items: center; }
         
         /* Kanban */
         .kanban { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; }
-        .kanban-col { background: white; border-radius: 12px; overflow: hidden; min-height: 400px; }
-        .kanban-col-header { padding: 1rem; color: white; text-align: center; font-family: 'Playfair Display', serif; }
+        .kanban-col { background: white; border-radius: 10px; overflow: hidden; min-height: 300px; }
+        .kanban-col-header { padding: 0.8rem; color: white; text-align: center; font-weight: 600; font-size: 0.9rem; }
         .kanban-col-header.afaire { background: var(--bleu-afaire); }
         .kanban-col-header.encours { background: var(--orange-encours); }
         .kanban-col-header.bloque { background: var(--rouge-bloque); }
         .kanban-col-header.fait { background: var(--vert-fait); }
-        .kanban-col-body { padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; max-height: 500px; overflow-y: auto; }
-        .kanban-card { background: var(--blanc-casse); padding: 0.75rem; border-radius: 6px; border-left: 3px solid #ccc; cursor: pointer; }
+        .kanban-col-body { padding: 0.5rem; display: flex; flex-direction: column; gap: 0.5rem; max-height: 450px; overflow-y: auto; }
+        .kanban-card { background: var(--blanc-casse); padding: 0.6rem; border-radius: 6px; border-left: 3px solid #ccc; cursor: pointer; font-size: 0.85rem; }
         .kanban-card:hover { background: #eee; }
-        .kanban-card-title { font-size: 0.85rem; font-weight: 600; color: var(--bleu-vizille); }
-        .kanban-card-meta { font-size: 0.75rem; color: #888; margin-top: 0.25rem; }
+        .kanban-card.axe-siteweb { border-left-color: var(--col-siteweb); }
+        .kanban-card.axe-reseaux { border-left-color: var(--col-reseaux); }
+        .kanban-card.axe-papier { border-left-color: var(--col-papier); }
+        .kanban-card.axe-evenement { border-left-color: var(--col-evenement); }
+        .kanban-card.axe-production { border-left-color: var(--col-production); }
+        .kanban-card.axe-presse { border-left-color: var(--col-presse); }
+        .kanban-card.axe-email { border-left-color: var(--col-email); }
+        .kanban-card-title { font-weight: 600; color: var(--bleu-vizille); }
+        .kanban-card-meta { font-size: 0.75rem; color: #888; margin-top: 0.2rem; }
         
         /* Modal */
         .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.6); display: none; align-items: center; justify-content: center; z-index: 1000; padding: 1rem; }
         .modal-overlay.active { display: flex; }
-        .modal { background: white; border-radius: 12px; width: 100%; max-width: 550px; max-height: 90vh; overflow: hidden; }
+        .modal { background: white; border-radius: 12px; width: 100%; max-width: 500px; max-height: 90vh; overflow: hidden; }
         .modal-header { background: var(--bleu-vizille); color: white; padding: 1rem 1.5rem; display: flex; justify-content: space-between; align-items: center; }
-        .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 1.2rem; }
-        .modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 32px; height: 32px; border-radius: 50%; font-size: 1.2rem; cursor: pointer; }
-        .modal-body { padding: 1.5rem; overflow-y: auto; max-height: 60vh; }
+        .modal-header h2 { font-family: 'Playfair Display', serif; font-size: 1.1rem; }
+        .modal-close { background: rgba(255,255,255,0.2); border: none; color: white; width: 30px; height: 30px; border-radius: 50%; font-size: 1.1rem; cursor: pointer; }
+        .modal-body { padding: 1.5rem; overflow-y: auto; max-height: 55vh; }
         .form-group { margin-bottom: 1rem; }
-        .form-group label { display: block; font-weight: 600; margin-bottom: 0.3rem; color: var(--bleu-vizille); font-size: 0.9rem; }
-        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.6rem; border: 2px solid var(--gris-doux); border-radius: 6px; font-size: 0.95rem; }
-        .form-group textarea { min-height: 80px; resize: vertical; }
+        .form-group label { display: block; font-weight: 600; margin-bottom: 0.3rem; color: var(--bleu-vizille); font-size: 0.85rem; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 0.5rem; border: 2px solid var(--gris-doux); border-radius: 6px; font-size: 0.9rem; }
+        .form-group textarea { min-height: 70px; resize: vertical; }
         .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
         .modal-footer { padding: 1rem 1.5rem; background: var(--blanc-casse); display: flex; justify-content: space-between; }
         .btn-delete { background: var(--rouge-bloque); color: white; }
         .btn-save { background: var(--vert-fait); color: white; }
         
-        .sync-indicator { position: fixed; bottom: 20px; right: 20px; background: var(--bleu-vizille); color: white; padding: 0.6rem 1rem; border-radius: 8px; display: none; z-index: 999; }
+        .sync-indicator { position: fixed; bottom: 20px; right: 20px; background: var(--bleu-vizille); color: white; padding: 0.6rem 1rem; border-radius: 8px; display: none; z-index: 999; font-size: 0.9rem; }
         .sync-indicator.show { display: block; }
         .sync-indicator.success { background: var(--vert-fait); }
         .sync-indicator.warning { background: var(--orange-encours); }
         
-        .floating-btns { position: fixed; bottom: 20px; left: 20px; display: flex; flex-direction: column; gap: 10px; }
-        .float-btn { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 3px 10px rgba(0,0,0,0.2); font-size: 1.3rem; }
+        .floating-btns { position: fixed; bottom: 20px; left: 20px; display: flex; gap: 10px; }
+        .float-btn { width: 45px; height: 45px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; box-shadow: 0 3px 10px rgba(0,0,0,0.2); font-size: 1.2rem; }
         .float-btn.help { background: var(--or); color: var(--bleu-vizille); }
         .float-btn.timeline { background: var(--bleu-clair); color: white; }
         
-        @media (max-width: 900px) { .kanban { grid-template-columns: repeat(2, 1fr); } }
+        .empty-state { text-align: center; padding: 3rem; color: #888; }
+        .empty-state .icon { font-size: 3rem; margin-bottom: 1rem; }
+        
+        @media (max-width: 900px) { .kanban { grid-template-columns: repeat(2, 1fr); } .tabs { padding: 0 0.5rem; } }
         @media (max-width: 600px) { 
             .kanban { grid-template-columns: 1fr; }
             .header-content { flex-direction: column; text-align: center; }
-            .group-content { grid-template-columns: 1fr; }
+            .list-view { grid-template-columns: 1fr; }
+            .tab { padding: 0.8rem; font-size: 0.85rem; }
+            .toolbar { flex-direction: column; }
+            .search-box { width: 100%; }
         }
     </style>
 </head>
@@ -137,29 +161,36 @@
     <header class="header">
         <div class="header-content">
             <div class="logo-section">
-                <img src="https://raw.githubusercontent.com/mich59139/Vizille-en-mouvement2/main/images/logo.png" alt="Logo">
+                <img src="https://raw.githubusercontent.com/Vizilleenmouvement/Vizille-en-mouvement/main/images/logo.png" alt="Logo">
                 <div class="logo-text">
                     <h1>Vizille en Mouvement</h1>
-                    <div class="slogan">Suivi Communication</div>
+                    <div class="slogan">📋 Suivi Communication</div>
                 </div>
             </div>
-            <div class="stats-bar" id="stats-bar"></div>
+            <div class="header-stats">
+                <div class="stat"><span class="stat-num" id="stat-total">0</span>Actions</div>
+                <div class="stat"><span class="stat-num" id="stat-fait">0</span>Faites</div>
+                <div class="stat"><span class="stat-num" id="stat-encours">0</span>En cours</div>
+            </div>
         </div>
     </header>
     
+    <div class="tabs-container">
+        <div class="tabs" id="tabs"></div>
+    </div>
+    
     <div class="toolbar">
         <div class="search-box"><input type="text" id="search" placeholder="🔍 Rechercher..."></div>
-        <select id="filter-responsable"><option value="">Tous responsables</option></select>
+        <select id="filter-responsable"><option value="">👤 Tous</option></select>
         <select id="filter-statut">
-            <option value="">Tous statuts</option>
+            <option value="">📊 Tous statuts</option>
             <option value="À faire">À faire</option>
             <option value="En cours">En cours</option>
             <option value="Bloqué">Bloqué</option>
             <option value="Fait">Fait</option>
         </select>
         <div class="view-toggle">
-            <button class="view-btn active" data-view="axes">📁 Axes</button>
-            <button class="view-btn" data-view="types">🎨 Types</button>
+            <button class="view-btn active" data-view="list">📋 Liste</button>
             <button class="view-btn" data-view="kanban">📊 Kanban</button>
         </div>
         <button class="btn btn-primary" id="btn-new">➕ Nouvelle</button>
@@ -179,7 +210,7 @@
             <div class="modal-body">
                 <input type="hidden" id="form-id">
                 <div class="form-row">
-                    <div class="form-group"><label>Axe</label><select id="form-axe"><option>Site web</option><option>Réseaux sociaux</option><option>Supports papier</option><option>Événementiel</option><option>Production</option><option>Presse</option><option>Email</option></select></div>
+                    <div class="form-group"><label>Axe</label><select id="form-axe"></select></div>
                     <div class="form-group"><label>Catégorie</label><input type="text" id="form-categorie"></div>
                 </div>
                 <div class="form-group"><label>Tâche *</label><input type="text" id="form-tache" required></div>
@@ -223,7 +254,19 @@
 
 <script>
 const REPO = 'mich59139/suivi', FILE = 'data/communication.json', BRANCH = 'main';
-let actions = [], filtered = [], team = ['Michel','Laurent','Catherine','Ignazio','Équipe'], currentView = 'axes', editingId = null, githubSha = null;
+const AXES = [
+    { id: 'all', label: 'Tous', icon: '📋' },
+    { id: 'Site web', label: 'Site web', icon: '🌐' },
+    { id: 'Réseaux sociaux', label: 'Réseaux', icon: '📱' },
+    { id: 'Supports papier', label: 'Papier', icon: '📄' },
+    { id: 'Événementiel', label: 'Événements', icon: '🎉' },
+    { id: 'Production', label: 'Production', icon: '🎬' },
+    { id: 'Presse', label: 'Presse', icon: '📰' },
+    { id: 'Email', label: 'Email', icon: '✉️' }
+];
+
+let actions = [], filtered = [], team = ['Michel','Laurent','Catherine','Ignazio','Équipe'];
+let currentView = 'list', currentAxe = 'all', editingId = null, githubSha = null;
 
 // Utils
 const getToken = () => localStorage.getItem('gh_token') || '';
@@ -231,18 +274,7 @@ const setToken = t => { t ? localStorage.setItem('gh_token', t) : localStorage.r
 const isConnected = () => !!getToken();
 const showSync = (msg, type='info') => { const el = document.getElementById('sync'); el.textContent = msg; el.className = 'sync-indicator show ' + type; setTimeout(() => el.classList.remove('show'), 2500); };
 const statutClass = s => ({ 'À faire': 'afaire', 'En cours': 'encours', 'Bloqué': 'bloque', 'Fait': 'fait' }[s] || 'afaire');
-
-function getType(a) {
-    const axe = a.axe || '', cat = (a.categorie || '').toLowerCase(), t = (a.tache || '').toLowerCase();
-    if (axe === 'Événementiel' || t.includes('réunion') || t.includes('marché')) return 'evenement';
-    if (axe === 'Production' || cat === 'vidéo' || t.includes('tournage') || t.includes('montage')) return 'production';
-    if (cat.includes('publication') || cat.includes('fb')) return 'publication';
-    if (axe === 'Site web') return 'siteweb';
-    if (cat === 'terrain' || t.includes('distribution')) return 'terrain';
-    if (axe === 'Supports papier') return 'papier';
-    if (axe === 'Réseaux sociaux') return 'publication';
-    return 'production';
-}
+const axeClass = a => ({ 'Site web': 'siteweb', 'Réseaux sociaux': 'reseaux', 'Supports papier': 'papier', 'Événementiel': 'evenement', 'Production': 'production', 'Presse': 'presse', 'Email': 'email' }[a] || '');
 
 function updateGhBtn() {
     const btn = document.getElementById('btn-github');
@@ -255,6 +287,13 @@ function decodeUTF8(base64) {
     const bytes = new Uint8Array(bin.length);
     for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i);
     return new TextDecoder('utf-8').decode(bytes);
+}
+
+function encodeUTF8(str) {
+    const bytes = new TextEncoder().encode(str);
+    let bin = '';
+    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
+    return btoa(bin);
 }
 
 async function loadData() {
@@ -271,15 +310,7 @@ async function loadData() {
             showSync('Lecture seule', 'warning');
         }
     } catch(e) { console.error(e); showSync('Erreur', 'error'); }
-    filtered = [...actions];
     render();
-}
-
-function encodeUTF8(str) {
-    const bytes = new TextEncoder().encode(str);
-    let bin = '';
-    for (let i = 0; i < bytes.length; i++) bin += String.fromCharCode(bytes[i]);
-    return btoa(bin);
 }
 
 async function saveData() {
@@ -287,39 +318,44 @@ async function saveData() {
     const token = getToken();
     if (!token) return;
     try {
+        showSync('Sauvegarde...');
         const body = { message: 'MAJ', content: encodeUTF8(JSON.stringify(actions, null, 2)), branch: BRANCH };
         if (githubSha) body.sha = githubSha;
         const r = await fetch(`https://api.github.com/repos/${REPO}/contents/${FILE}`, {
             method: 'PUT', headers: { Authorization: `token ${token}`, 'Content-Type': 'application/json' }, body: JSON.stringify(body)
         });
         if (r.ok) { githubSha = (await r.json()).content.sha; showSync('Sync ✓', 'success'); }
-    } catch(e) { console.error(e); }
+    } catch(e) { console.error(e); showSync('Erreur sauvegarde', 'error'); }
+}
+
+// Onglets
+function renderTabs() {
+    const html = AXES.map(ax => {
+        const count = ax.id === 'all' ? actions.length : actions.filter(a => a.axe === ax.id).length;
+        return `<div class="tab ${currentAxe === ax.id ? 'active' : ''}" data-axe="${ax.id}">
+            <span class="icon">${ax.icon}</span>
+            <span class="label">${ax.label}</span>
+            <span class="badge">${count}</span>
+        </div>`;
+    }).join('');
+    document.getElementById('tabs').innerHTML = html;
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.onclick = () => { currentAxe = tab.dataset.axe; applyFilters(); renderTabs(); };
+    });
 }
 
 function updateStats() {
-    const t = actions.length, af = actions.filter(a => a.statut === 'À faire').length, 
-          ec = actions.filter(a => a.statut === 'En cours').length, 
-          bl = actions.filter(a => a.statut === 'Bloqué').length, 
-          fa = actions.filter(a => a.statut === 'Fait').length;
-    document.getElementById('stats-bar').innerHTML = `
-        <div class="stat-chip" data-f="all"><span class="stat-number">${t}</span>Total</div>
-        <div class="stat-chip" data-f="À faire"><span class="stat-number">${af}</span>À faire</div>
-        <div class="stat-chip" data-f="En cours"><span class="stat-number">${ec}</span>En cours</div>
-        <div class="stat-chip" data-f="Bloqué"><span class="stat-number">${bl}</span>Bloqué</div>
-        <div class="stat-chip" data-f="Fait"><span class="stat-number">${fa}</span>Fait</div>`;
-    document.querySelectorAll('.stat-chip').forEach(c => c.onclick = () => {
-        document.querySelectorAll('.stat-chip').forEach(x => x.classList.remove('active'));
-        const f = c.dataset.f;
-        filtered = f === 'all' ? [...actions] : actions.filter(a => a.statut === f);
-        if (f !== 'all') c.classList.add('active');
-        renderView();
-    });
+    const base = currentAxe === 'all' ? actions : actions.filter(a => a.axe === currentAxe);
+    document.getElementById('stat-total').textContent = base.length;
+    document.getElementById('stat-fait').textContent = base.filter(a => a.statut === 'Fait').length;
+    document.getElementById('stat-encours').textContent = base.filter(a => a.statut === 'En cours').length;
 }
 
 function updateSelects() {
     const opts = team.map(t => `<option>${t}</option>`).join('');
     document.getElementById('form-responsable').innerHTML = opts;
-    document.getElementById('filter-responsable').innerHTML = '<option value="">Tous</option>' + opts;
+    document.getElementById('filter-responsable').innerHTML = '<option value="">👤 Tous</option>' + opts;
+    document.getElementById('form-axe').innerHTML = AXES.filter(a => a.id !== 'all').map(a => `<option>${a.id}</option>`).join('');
 }
 
 function applyFilters() {
@@ -327,184 +363,132 @@ function applyFilters() {
     const r = document.getElementById('filter-responsable').value;
     const st = document.getElementById('filter-statut').value;
     filtered = actions.filter(a => 
+        (currentAxe === 'all' || a.axe === currentAxe) &&
         (!s || a.tache.toLowerCase().includes(s) || a.id.toLowerCase().includes(s)) &&
         (!r || a.responsable === r) && (!st || a.statut === st)
     );
-    document.querySelectorAll('.stat-chip').forEach(c => c.classList.remove('active'));
+    updateStats();
     renderView();
 }
 
+// Cartes
 function renderCard(a) {
-    const type = getType(a);
-    return `<div class="card type-${type}" data-id="${a.id}">
-        <div class="card-header"><span class="card-id">${a.id}</span><span class="badge ${statutClass(a.statut)}">${a.statut}</span></div>
+    return `<div class="card axe-${axeClass(a.axe)}" data-id="${a.id}">
+        <div class="card-header">
+            <span class="card-id">${a.id}</span>
+            <span class="status-badge ${statutClass(a.statut)}">${a.statut}</span>
+        </div>
         <div class="card-title">${a.tache}</div>
-        <div class="card-meta"><span>👤 ${a.responsable}</span>${a.echeance ? `<span>📅 ${new Date(a.echeance).toLocaleDateString('fr-FR')}</span>` : ''}</div>
+        <div class="card-meta">
+            <span>👤 ${a.responsable}</span>
+            ${a.echeance ? `<span>📅 ${new Date(a.echeance).toLocaleDateString('fr-FR')}</span>` : ''}
+        </div>
     </div>`;
 }
 
-function renderAxes() {
-    const grouped = {};
-    filtered.forEach(a => { if (!grouped[a.axe]) grouped[a.axe] = []; grouped[a.axe].push(a); });
-    const order = ['Site web', 'Réseaux sociaux', 'Supports papier', 'Événementiel', 'Production', 'Presse', 'Email'];
-    const icons = { 'Site web': '🌐', 'Réseaux sociaux': '📱', 'Supports papier': '📄', 'Événementiel': '🎉', 'Production': '🎬', 'Presse': '📰', 'Email': '✉️' };
-    const classes = { 'Site web': 'siteweb', 'Réseaux sociaux': 'reseaux', 'Supports papier': 'papier', 'Événementiel': 'evenementiel', 'Production': 'production', 'Presse': 'presse', 'Email': 'email' };
-    
-    let html = '';
-    order.forEach(axe => {
-        const items = grouped[axe];
-        if (!items || !items.length) return;
-        html += `<div class="group" data-axe="${axe}">
-            <div class="group-header ${classes[axe]}">
-                <div class="group-title">${icons[axe]} ${axe}<span class="group-count">${items.length}</span></div>
-                <span class="group-toggle">▼</span>
-            </div>
-            <div class="group-content">${items.map(renderCard).join('')}</div>
-        </div>`;
-    });
-    return html || '<p style="text-align:center;padding:2rem">Aucune action</p>';
-}
-
-function renderTypes() {
-    const grouped = {};
-    filtered.forEach(a => { const t = getType(a); if (!grouped[t]) grouped[t] = []; grouped[t].push(a); });
-    const order = ['evenement', 'production', 'publication', 'terrain', 'siteweb', 'papier'];
-    const labels = { evenement: '🎉 Événements', production: '🎬 Production', publication: '📱 Publications', terrain: '🚶 Terrain', siteweb: '🌐 Site web', papier: '📄 Papier' };
-    
-    let html = '';
-    order.forEach(type => {
-        const items = grouped[type];
-        if (!items || !items.length) return;
-        html += `<div class="group">
-            <div class="group-header ${type}">
-                <div class="group-title">${labels[type]}<span class="group-count">${items.length}</span></div>
-                <span class="group-toggle">▼</span>
-            </div>
-            <div class="group-content">${items.map(renderCard).join('')}</div>
-        </div>`;
-    });
-    return html || '<p style="text-align:center;padding:2rem">Aucune action</p>';
+function renderList() {
+    if (filtered.length === 0) {
+        return '<div class="empty-state"><div class="icon">📭</div><p>Aucune action trouvée</p></div>';
+    }
+    return `<div class="list-view">${filtered.map(renderCard).join('')}</div>`;
 }
 
 function renderKanban() {
     const cols = ['À faire', 'En cours', 'Bloqué', 'Fait'];
-    let html = '<div class="kanban">';
-    cols.forEach(statut => {
-        const items = filtered.filter(a => a.statut === statut);
-        html += `<div class="kanban-col">
-            <div class="kanban-col-header ${statutClass(statut)}">${statut} (${items.length})</div>
+    return `<div class="kanban">${cols.map(col => {
+        const items = filtered.filter(a => a.statut === col);
+        return `<div class="kanban-col">
+            <div class="kanban-col-header ${statutClass(col)}">${col} (${items.length})</div>
             <div class="kanban-col-body">${items.map(a => `
-                <div class="kanban-card" data-id="${a.id}">
+                <div class="kanban-card axe-${axeClass(a.axe)}" data-id="${a.id}">
                     <div class="kanban-card-title">${a.tache}</div>
                     <div class="kanban-card-meta">👤 ${a.responsable}</div>
                 </div>`).join('')}
             </div>
         </div>`;
-    });
-    return html + '</div>';
+    }).join('')}</div>`;
 }
 
 function renderView() {
-    const c = document.getElementById('container');
-    if (currentView === 'axes') c.innerHTML = renderAxes();
-    else if (currentView === 'types') c.innerHTML = renderTypes();
-    else if (currentView === 'kanban') c.innerHTML = renderKanban();
-    
-    // Events cartes
-    c.querySelectorAll('.card, .kanban-card').forEach(el => el.onclick = () => {
-        if (!isConnected()) { document.getElementById('gh-modal').classList.add('active'); return; }
-        openModal(el.dataset.id);
-    });
-    // Events groupes
-    c.querySelectorAll('.group-header').forEach(h => h.onclick = () => h.parentElement.classList.toggle('collapsed'));
+    const container = document.getElementById('container');
+    container.innerHTML = currentView === 'list' ? renderList() : renderKanban();
+    container.querySelectorAll('[data-id]').forEach(el => el.onclick = () => openModal(el.dataset.id));
 }
 
 function render() {
-    updateStats();
+    renderTabs();
     updateSelects();
-    renderView();
+    applyFilters();
 }
 
+// Modal
 function openModal(id = null) {
     editingId = id;
-    if (id) {
-        const a = actions.find(x => x.id === id);
-        if (!a) return;
-        document.getElementById('modal-title').textContent = a.id;
-        document.getElementById('form-id').value = a.id;
-        document.getElementById('form-axe').value = a.axe;
-        document.getElementById('form-categorie').value = a.categorie || '';
-        document.getElementById('form-tache').value = a.tache;
-        document.getElementById('form-description').value = a.description || '';
-        document.getElementById('form-responsable').value = a.responsable;
-        document.getElementById('form-statut').value = a.statut;
-        document.getElementById('form-priorite').value = a.priorite;
-        document.getElementById('form-echeance').value = a.echeance || '';
-        document.getElementById('btn-delete').style.display = 'block';
-    } else {
-        const nums = actions.map(a => parseInt(a.id.replace('COM-',''))).filter(n => !isNaN(n));
-        const newId = `COM-${String((nums.length ? Math.max(...nums) : 0) + 1).padStart(3,'0')}`;
-        document.getElementById('modal-title').textContent = 'Nouvelle action';
-        document.getElementById('form-id').value = newId;
-        document.getElementById('form-axe').value = 'Site web';
-        document.getElementById('form-categorie').value = '';
-        document.getElementById('form-tache').value = '';
-        document.getElementById('form-description').value = '';
-        document.getElementById('form-responsable').value = team[0];
-        document.getElementById('form-statut').value = 'À faire';
-        document.getElementById('form-priorite').value = 'Moyenne';
-        document.getElementById('form-echeance').value = '';
-        document.getElementById('btn-delete').style.display = 'none';
-    }
+    const action = id ? actions.find(a => a.id === id) : null;
+    document.getElementById('modal-title').textContent = action ? `Modifier ${id}` : 'Nouvelle action';
+    document.getElementById('form-id').value = id || '';
+    document.getElementById('form-axe').value = action?.axe || (currentAxe !== 'all' ? currentAxe : 'Site web');
+    document.getElementById('form-categorie').value = action?.categorie || '';
+    document.getElementById('form-tache').value = action?.tache || '';
+    document.getElementById('form-description').value = action?.description || '';
+    document.getElementById('form-responsable').value = action?.responsable || 'Michel';
+    document.getElementById('form-statut').value = action?.statut || 'À faire';
+    document.getElementById('form-priorite').value = action?.priorite || 'Moyenne';
+    document.getElementById('form-echeance').value = action?.echeance || '';
+    document.getElementById('btn-delete').style.display = action ? 'block' : 'none';
     document.getElementById('modal').classList.add('active');
 }
 
 function closeModal() { document.getElementById('modal').classList.remove('active'); editingId = null; }
 
 function saveAction() {
+    const tache = document.getElementById('form-tache').value.trim();
+    if (!tache) return alert('La tâche est obligatoire');
+    
     const data = {
-        id: document.getElementById('form-id').value,
         axe: document.getElementById('form-axe').value,
         categorie: document.getElementById('form-categorie').value,
-        tache: document.getElementById('form-tache').value,
+        tache,
         description: document.getElementById('form-description').value,
         responsable: document.getElementById('form-responsable').value,
         statut: document.getElementById('form-statut').value,
         priorite: document.getElementById('form-priorite').value,
         echeance: document.getElementById('form-echeance').value
     };
-    if (!data.tache.trim()) return alert('Tâche requise');
-    if (editingId) { const i = actions.findIndex(a => a.id === editingId); if (i !== -1) actions[i] = data; }
-    else actions.push(data);
-    saveData();
-    filtered = [...actions];
-    render();
+    
+    if (editingId) {
+        const idx = actions.findIndex(a => a.id === editingId);
+        if (idx >= 0) actions[idx] = { ...actions[idx], ...data };
+    } else {
+        const maxId = Math.max(...actions.map(a => parseInt(a.id.replace('COM-', '')) || 0), 0);
+        data.id = `COM-${String(maxId + 1).padStart(3, '0')}`;
+        actions.push(data);
+    }
+    
     closeModal();
+    saveData();
+    render();
 }
 
 function deleteAction() {
-    if (!editingId || !confirm('Supprimer ?')) return;
+    if (!editingId || !confirm('Supprimer cette action ?')) return;
     actions = actions.filter(a => a.id !== editingId);
-    saveData();
-    filtered = [...actions];
-    render();
     closeModal();
+    saveData();
+    render();
 }
 
 function exportCSV() {
-    const h = ['ID','Axe','Catégorie','Tâche','Description','Responsable','Statut','Priorité','Échéance'];
-    const csv = '\uFEFF' + h.join(';') + '\n' + actions.map(a => 
-        [a.id, a.axe, a.categorie||'', a.tache, (a.description||'').replace(/[\n;]/g,' '), a.responsable, a.statut, a.priorite, a.echeance||'']
-        .map(v => `"${(v||'').replace(/"/g,'""')}"`)
-        .join(';')
-    ).join('\n');
-    const el = document.createElement('a');
-    el.href = 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv);
-    el.download = `suivi-${new Date().toISOString().split('T')[0]}.csv`;
-    el.click();
+    const headers = ['ID', 'Axe', 'Catégorie', 'Tâche', 'Responsable', 'Statut', 'Priorité', 'Échéance'];
+    const rows = filtered.map(a => [a.id, a.axe, a.categorie, a.tache, a.responsable, a.statut, a.priorite, a.echeance]);
+    const csv = [headers, ...rows].map(r => r.map(c => `"${(c||'').replace(/"/g, '""')}"`).join(',')).join('\n');
+    const blob = new Blob(['\ufeff' + csv], { type: 'text/csv;charset=utf-8' });
+    const a = document.createElement('a'); a.href = URL.createObjectURL(blob);
+    a.download = `suivi-communication-${currentAxe === 'all' ? 'tous' : currentAxe.replace(/\s/g, '-')}.csv`;
+    a.click();
 }
 
-// Init
+// Events
 document.getElementById('search').oninput = applyFilters;
 document.getElementById('filter-responsable').onchange = applyFilters;
 document.getElementById('filter-statut').onchange = applyFilters;
@@ -514,19 +498,25 @@ document.querySelectorAll('.view-btn').forEach(b => b.onclick = () => {
     currentView = b.dataset.view;
     renderView();
 });
-document.getElementById('btn-new').onclick = () => { if (!isConnected()) { document.getElementById('gh-modal').classList.add('active'); return; } openModal(); };
+document.getElementById('btn-new').onclick = () => openModal();
 document.getElementById('btn-export').onclick = exportCSV;
-document.getElementById('modal-close').onclick = closeModal;
-document.getElementById('btn-cancel').onclick = closeModal;
 document.getElementById('btn-save').onclick = saveAction;
+document.getElementById('btn-cancel').onclick = closeModal;
+document.getElementById('modal-close').onclick = closeModal;
 document.getElementById('btn-delete').onclick = deleteAction;
 document.getElementById('modal').onclick = e => { if (e.target.id === 'modal') closeModal(); };
 
-document.getElementById('btn-github').onclick = () => { document.getElementById('gh-token').value = getToken(); document.getElementById('gh-modal').classList.add('active'); };
+// GitHub modal
+document.getElementById('btn-github').onclick = () => document.getElementById('gh-modal').classList.add('active');
 document.getElementById('gh-close').onclick = () => document.getElementById('gh-modal').classList.remove('active');
-document.getElementById('gh-save').onclick = async () => { setToken(document.getElementById('gh-token').value); document.getElementById('gh-modal').classList.remove('active'); await loadData(); };
 document.getElementById('gh-modal').onclick = e => { if (e.target.id === 'gh-modal') document.getElementById('gh-modal').classList.remove('active'); };
+document.getElementById('gh-save').onclick = () => {
+    setToken(document.getElementById('gh-token').value.trim());
+    document.getElementById('gh-modal').classList.remove('active');
+    loadData();
+};
 
+// Init
 updateGhBtn();
 loadData();
 </script>
