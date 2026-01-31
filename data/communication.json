@@ -647,5 +647,16 @@
     "statut": "À faire",
     "priorite": "Haute",
     "echeance": "2026-03-07"
+  },
+  {
+    "axe": "Événementiel",
+    "categorie": "rencontres",
+    "tache": "Réunion de Quartier",
+    "description": "Chez Saîda,\ndiscussion autour d'un café",
+    "responsable": "Équipe",
+    "statut": "À faire",
+    "priorite": "Haute",
+    "echeance": "2026-02-02",
+    "id": "COM-068"
   }
 ]
